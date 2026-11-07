@@ -35,8 +35,8 @@ function currentDay() {
 }
 
 const TIERS = {
-  "High": { cls: "high", word: "High", what: "Unusually hot for this place and time of year. Extra steps are in tomorrow's plan." },
-  "Elevated": { cls: "elevated", word: "Elevated", what: "Hotter than usual here, or a sudden jump. Extra checks are in tomorrow's plan." },
+  "High": { cls: "high", word: "High", what: "Unusually hot for this place and time of year. Extra steps are in the plan." },
+  "Elevated": { cls: "elevated", word: "Elevated", what: "Hotter than usual here, or a sudden jump. Extra checks are in the plan." },
   "No escalation": { cls: "none", word: "No extra steps", what: "The forecast adds no steps. The law and the always-on protections still apply." },
   "Insufficient data": { cls: "none off", word: "Not enough data", what: "Treat tomorrow as Elevated until the forecast updates." },
   "Outside tested season": { cls: "none off", word: "Outside tested season", what: "Alerts were tested for May to September only. The law and the always-on protections still apply." },

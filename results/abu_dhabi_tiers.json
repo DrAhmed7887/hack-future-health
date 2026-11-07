@@ -1,0 +1,298 @@
+{
+ "Mussafah": {
+  "1": {
+   "median_heat_index_f": 75.2,
+   "R2_alert_share": 0.0,
+   "R4_high_share": 0.0,
+   "R4_any_alert_share": 0.0
+  },
+  "2": {
+   "median_heat_index_f": 79.2,
+   "R2_alert_share": 0.11,
+   "R4_high_share": 0.43,
+   "R4_any_alert_share": 0.43
+  },
+  "3": {
+   "median_heat_index_f": 85.6,
+   "R2_alert_share": 0.13,
+   "R4_high_share": 0.58,
+   "R4_any_alert_share": 0.61
+  },
+  "4": {
+   "median_heat_index_f": 97.3,
+   "R2_alert_share": 0.63,
+   "R4_high_share": 0.73,
+   "R4_any_alert_share": 0.73
+  },
+  "5": {
+   "median_heat_index_f": 105.6,
+   "R2_alert_share": 0.94,
+   "R4_high_share": 0.74,
+   "R4_any_alert_share": 0.74
+  },
+  "6": {
+   "median_heat_index_f": 109.4,
+   "R2_alert_share": 1.0,
+   "R4_high_share": 0.17,
+   "R4_any_alert_share": 0.3
+  },
+  "7": {
+   "median_heat_index_f": 117.8,
+   "R2_alert_share": 1.0,
+   "R4_high_share": 0.45,
+   "R4_any_alert_share": 0.48
+  },
+  "8": {
+   "median_heat_index_f": 116.6,
+   "R2_alert_share": 1.0,
+   "R4_high_share": 0.26,
+   "R4_any_alert_share": 0.26
+  },
+  "9": {
+   "median_heat_index_f": 113.9,
+   "R2_alert_share": 1.0,
+   "R4_high_share": 0.7,
+   "R4_any_alert_share": 0.7
+  },
+  "10": {
+   "median_heat_index_f": 98.9,
+   "R2_alert_share": 0.97,
+   "R4_high_share": 0.35,
+   "R4_any_alert_share": 0.35
+  },
+  "11": {
+   "median_heat_index_f": 87.4,
+   "R2_alert_share": 0.0,
+   "R4_high_share": 0.33,
+   "R4_any_alert_share": 0.33
+  },
+  "12": {
+   "median_heat_index_f": 82.8,
+   "R2_alert_share": 0.0,
+   "R4_high_share": 0.55,
+   "R4_any_alert_share": 0.55
+  }
+ },
+ "Abu Dhabi city": {
+  "1": {
+   "median_heat_index_f": 72.6,
+   "R2_alert_share": 0.0,
+   "R4_high_share": 0.0,
+   "R4_any_alert_share": 0.0
+  },
+  "2": {
+   "median_heat_index_f": 75.5,
+   "R2_alert_share": 0.07,
+   "R4_high_share": 0.25,
+   "R4_any_alert_share": 0.25
+  },
+  "3": {
+   "median_heat_index_f": 82.7,
+   "R2_alert_share": 0.13,
+   "R4_high_share": 0.52,
+   "R4_any_alert_share": 0.55
+  },
+  "4": {
+   "median_heat_index_f": 94.3,
+   "R2_alert_share": 0.43,
+   "R4_high_share": 0.73,
+   "R4_any_alert_share": 0.73
+  },
+  "5": {
+   "median_heat_index_f": 102.8,
+   "R2_alert_share": 0.87,
+   "R4_high_share": 0.68,
+   "R4_any_alert_share": 0.68
+  },
+  "6": {
+   "median_heat_index_f": 108.1,
+   "R2_alert_share": 1.0,
+   "R4_high_share": 0.23,
+   "R4_any_alert_share": 0.27
+  },
+  "7": {
+   "median_heat_index_f": 120.2,
+   "R2_alert_share": 1.0,
+   "R4_high_share": 0.55,
+   "R4_any_alert_share": 0.55
+  },
+  "8": {
+   "median_heat_index_f": 120.7,
+   "R2_alert_share": 1.0,
+   "R4_high_share": 0.52,
+   "R4_any_alert_share": 0.52
+  },
+  "9": {
+   "median_heat_index_f": 116.8,
+   "R2_alert_share": 1.0,
+   "R4_high_share": 0.83,
+   "R4_any_alert_share": 0.83
+  },
+  "10": {
+   "median_heat_index_f": 98.1,
+   "R2_alert_share": 0.74,
+   "R4_high_share": 0.29,
+   "R4_any_alert_share": 0.29
+  },
+  "11": {
+   "median_heat_index_f": 86.1,
+   "R2_alert_share": 0.0,
+   "R4_high_share": 0.23,
+   "R4_any_alert_share": 0.23
+  },
+  "12": {
+   "median_heat_index_f": 82.0,
+   "R2_alert_share": 0.0,
+   "R4_high_share": 0.52,
+   "R4_any_alert_share": 0.52
+  }
+ },
+ "Ruwais": {
+  "1": {
+   "median_heat_index_f": 71.5,
+   "R2_alert_share": 0.0,
+   "R4_high_share": 0.0,
+   "R4_any_alert_share": 0.0
+  },
+  "2": {
+   "median_heat_index_f": 73.4,
+   "R2_alert_share": 0.07,
+   "R4_high_share": 0.11,
+   "R4_any_alert_share": 0.11
+  },
+  "3": {
+   "median_heat_index_f": 80.2,
+   "R2_alert_share": 0.19,
+   "R4_high_share": 0.32,
+   "R4_any_alert_share": 0.35
+  },
+  "4": {
+   "median_heat_index_f": 94.8,
+   "R2_alert_share": 0.5,
+   "R4_high_share": 0.73,
+   "R4_any_alert_share": 0.73
+  },
+  "5": {
+   "median_heat_index_f": 101.4,
+   "R2_alert_share": 0.81,
+   "R4_high_share": 0.52,
+   "R4_any_alert_share": 0.55
+  },
+  "6": {
+   "median_heat_index_f": 103.8,
+   "R2_alert_share": 0.97,
+   "R4_high_share": 0.17,
+   "R4_any_alert_share": 0.2
+  },
+  "7": {
+   "median_heat_index_f": 113.8,
+   "R2_alert_share": 1.0,
+   "R4_high_share": 0.29,
+   "R4_any_alert_share": 0.32
+  },
+  "8": {
+   "median_heat_index_f": 120.2,
+   "R2_alert_share": 1.0,
+   "R4_high_share": 0.65,
+   "R4_any_alert_share": 0.65
+  },
+  "9": {
+   "median_heat_index_f": 115.6,
+   "R2_alert_share": 1.0,
+   "R4_high_share": 0.73,
+   "R4_any_alert_share": 0.73
+  },
+  "10": {
+   "median_heat_index_f": 97.4,
+   "R2_alert_share": 0.68,
+   "R4_high_share": 0.29,
+   "R4_any_alert_share": 0.29
+  },
+  "11": {
+   "median_heat_index_f": 84.7,
+   "R2_alert_share": 0.0,
+   "R4_high_share": 0.2,
+   "R4_any_alert_share": 0.2
+  },
+  "12": {
+   "median_heat_index_f": 81.0,
+   "R2_alert_share": 0.0,
+   "R4_high_share": 0.52,
+   "R4_any_alert_share": 0.52
+  }
+ },
+ "Al Ain": {
+  "1": {
+   "median_heat_index_f": 73.7,
+   "R2_alert_share": 0.0,
+   "R4_high_share": 0.0,
+   "R4_any_alert_share": 0.0
+  },
+  "2": {
+   "median_heat_index_f": 80.9,
+   "R2_alert_share": 0.0,
+   "R4_high_share": 0.5,
+   "R4_any_alert_share": 0.5
+  },
+  "3": {
+   "median_heat_index_f": 86.1,
+   "R2_alert_share": 0.03,
+   "R4_high_share": 0.45,
+   "R4_any_alert_share": 0.52
+  },
+  "4": {
+   "median_heat_index_f": 95.8,
+   "R2_alert_share": 0.53,
+   "R4_high_share": 0.73,
+   "R4_any_alert_share": 0.77
+  },
+  "5": {
+   "median_heat_index_f": 102.5,
+   "R2_alert_share": 0.94,
+   "R4_high_share": 0.77,
+   "R4_any_alert_share": 0.77
+  },
+  "6": {
+   "median_heat_index_f": 107.7,
+   "R2_alert_share": 1.0,
+   "R4_high_share": 0.43,
+   "R4_any_alert_share": 0.5
+  },
+  "7": {
+   "median_heat_index_f": 111.8,
+   "R2_alert_share": 1.0,
+   "R4_high_share": 0.58,
+   "R4_any_alert_share": 0.58
+  },
+  "8": {
+   "median_heat_index_f": 111.3,
+   "R2_alert_share": 1.0,
+   "R4_high_share": 0.84,
+   "R4_any_alert_share": 0.84
+  },
+  "9": {
+   "median_heat_index_f": 106.3,
+   "R2_alert_share": 1.0,
+   "R4_high_share": 0.93,
+   "R4_any_alert_share": 0.93
+  },
+  "10": {
+   "median_heat_index_f": 94.1,
+   "R2_alert_share": 0.39,
+   "R4_high_share": 0.52,
+   "R4_any_alert_share": 0.52
+  },
+  "11": {
+   "median_heat_index_f": 85.5,
+   "R2_alert_share": 0.0,
+   "R4_high_share": 0.3,
+   "R4_any_alert_share": 0.3
+  },
+  "12": {
+   "median_heat_index_f": 80.6,
+   "R2_alert_share": 0.0,
+   "R4_high_share": 0.52,
+   "R4_any_alert_share": 0.52
+  }
+ }
+}

@@ -16,6 +16,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from heatwarn.regions import REGIONS  # noqa: E402
+from heatwarn.data import holdout_regions  # noqa: E402
 
 URL = "https://archive-api.open-meteo.com/v1/archive"
 START, END = "2015-04-01", "2025-09-30"
@@ -37,9 +38,10 @@ def fetch(reg) -> dict:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--force", action="store_true")
+    ap.add_argument("--holdout", action="store_true", help="fetch the holdout regions instead")
     a = ap.parse_args()
     OUT.mkdir(parents=True, exist_ok=True)
-    for reg in REGIONS:
+    for reg in (holdout_regions() if a.holdout else REGIONS):
         path = OUT / f"weather_{reg.key}.csv"
         if path.exists() and not a.force:
             print(f"cached {path.name}")

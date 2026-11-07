@@ -31,38 +31,29 @@ async function load() {
 function currentDay() {
   if (!state.zone) return null;
   if (state.replayDate) return DATA.replay[state.zone].days.find(d => d.date === state.replayDate) || null;
-  return DATA.live.zones[state.zone] || null;
+  const day = DATA.live.zones[state.zone];
+  if (!day) return null;
+  if (HeatLogic.isStale(DATA.live.generated_utc, new Date())) return { ...day, tier: "Insufficient data", stale: true };
+  return day;
 }
 
 const TIERS = {
   "High": { cls: "high", word: "High", what: "Unusually hot for this place and time of year. Extra steps are in the plan." },
   "Elevated": { cls: "elevated", word: "Elevated", what: "Hotter than usual here, or a sudden jump. Extra checks are in the plan." },
   "No escalation": { cls: "none", word: "No extra steps", what: "The forecast adds no steps. The law and the always-on protections still apply." },
-  "Insufficient data": { cls: "none off", word: "Not enough data", what: "Treat tomorrow as Elevated until the forecast updates." },
+  "Insufficient data": { cls: "none off", word: "Not enough data", what: "The forecast is missing or out of date. Treat tomorrow as Elevated until it updates." },
   "Outside tested season": { cls: "none off", word: "Outside tested season", what: "Alerts were tested for May to September only. The law and the always-on protections still apply." },
 };
-const RAISE = { "No escalation": "Elevated", "Elevated": "High", "High": "High", "Insufficient data": "High" };
-
-function legalItems(day) {
-  const d = new Date(day.date + "T12:00:00"), md = (d.getMonth() + 1) * 100 + d.getDate();
-  const items = [];
-  items.push(md >= 615 && md <= 915
-    ? { t: "Midday break: no outdoor work in direct sun from 12:30 to 15:00.", s: "UAE Ministry of Human Resources and Emiratisation, 15 June to 15 September" }
-    : { t: "The midday break is not in force on this date. It runs 15 June to 15 September.", s: "UAE Ministry of Human Resources and Emiratisation" });
-  items.push(day.max_temp_c >= 35
-    ? { t: `${state.replayDate ? "Air temperature reached" : "Forecast air temperature reaches"} ${day.max_temp_c}\u00a0°C. At 35\u00a0°C or more, your site's heat stress programme applies.`, s: "ADPHC OSH Code of Practice 11.0, section 3.1.1(e)" }
-    : { t: `${state.replayDate ? "Air temperature peaked at" : "Forecast air temperature peaks at"} ${day.max_temp_c}\u00a0°C, below the 35\u00a0°C programme trigger. Check readings on site.`, s: "ADPHC OSH Code of Practice 11.0, section 3.1.1(e)" });
-  items.push({ t: "Abu Dhabi's heat stress index (Thermal Work Limit) needs on-site readings. This app does not calculate it.", s: "ADPHC Technical Guideline, Safety in the Heat" });
-  return items;
-}
+const legalItems = day => HeatLogic.legalItems(day, !!state.replayDate);
 
 function whySentence(day) {
-  if (day.tier === "Outside tested season" || day.percentile == null) {
-    return `Heat index peaks at ${day.heat_index_c}\u00a0°C (${day.heat_index_f}\u00a0°F)${day.peak_hour != null ? ` around ${day.peak_hour}:00` : ""}.`;
-  }
-  const dir = day.anomaly_f >= 0 ? "above" : "below";
-  return `Heat index peaks at ${day.heat_index_c}\u00a0°C (${day.heat_index_f}\u00a0°F) around ${day.peak_hour}:00. ` +
-    `${day.percentile >= 99 ? "That is as hot as the hottest days here at this time of year in 2015 to 2021" : `That is hotter than ${day.percentile}% of days here at this time of year`}, and ${Math.abs(day.anomaly_f)} °F ${dir} the last 14 days.`;
+  const peak = day.peak_hour != null ? ` Heat and humidity together peak around ${day.peak_hour}:00.` : "";
+  const air = `Air temperature up to ${day.max_temp_c}\u00a0°C.${peak}`;
+  if (day.tier === "Outside tested season" || day.percentile == null || day.anomaly_f == null) return air;
+  const rank = day.percentile >= 99 ? "as hot as the hottest days here at this time of year in 2015 to 2021"
+    : `hotter than ${day.percentile}% of days here at this time of year`;
+  const d = Math.round(Math.abs(day.anomaly_f) * 5 / 9 * 10) / 10;
+  return `${air} On that combined measure, it is ${rank}, and ${d}\u00a0°C ${day.anomaly_f >= 0 ? "above" : "below"} the previous 14 days.`;
 }
 
 // concrete grey -> warning yellow -> danger red (ISO 7010 colours), by position in the zone's summer
@@ -83,7 +74,7 @@ function strip(day) {
   return `<div class="strip" aria-label="Tomorrow's heat index compared with every day of summer 2025 in this zone">
     <svg viewBox="0 0 ${w} 46" preserveAspectRatio="none" role="img">${bars}
       <rect x="${(pos - 1.5).toFixed(1)}" y="0" width="3" height="46" fill="#1C2321"/></svg>
-    <div class="legend"><span>Coolest day, summer 2025 (${lo} °F)</span><span>Hottest (${hi} °F)</span></div></div>`;
+    <div class="legend"><span>Coolest day, summer 2025</span><span>Hottest</span></div></div>`;
 }
 
 function zoneBar() {
@@ -135,29 +126,19 @@ const VIEWS = {
     if (!state.zone) return VIEWS.site();
     const day = currentDay();
     if (!day) return VIEWS.home();
-    const yes = k => state.crew[k] !== "no";          // unanswered or unsure counts as yes
     const inSeason = day.tier !== "Outside tested season";
-    const raised = inSeason && yes("newWorkers") && RAISE[day.tier] !== day.tier;
-    const tier = inSeason ? (yes("newWorkers") ? RAISE[day.tier] || day.tier : day.tier) : day.tier;
-    const li = (text, owner) => `<li>${text}<span class="owner">${owner}</span></li>`;
-    const law = legalItems(day).map(i => li(esc(i.t), esc(i.s))).join("");
+    const { tier, raised } = HeatLogic.effectiveTier(day.tier, state.crew);
+    const li = (text, owner) => `<li>${esc(text)}<span class="owner">${esc(owner)}</span></li>`;
+    const law = legalItems(day).map(i => li(i.t, i.s)).join("");
     const always = [
       li("Drinking water at the work area: at least 2 litres every 2 to 3 hours for each worker.", "Employer · ADPHC OSH Code of Practice 11.0"),
-      li("A shaded place to rest within reach of every crew.", "Employer · ADPHC OSH Code of Practice 11.0"),
+      li("Shade and cooling shelters for everyone working outside in the summer months.", "Employer · ADPHC OSH Code of Practice 11.0, section 3.2(b)"),
       li("Nobody works alone in heat stress areas.", "Supervisor · ADPHC OSH Code of Practice 11.0, section 3.2(e)"),
-      li("Anyone with heat symptoms stops work now: shade, cooling, first aid. If confused, collapsed or not improving, call an ambulance (998).", "Everyone on site"),
+      li("Anyone with heat symptoms stops work now: rest in a cool, shaded place, drink water, cool down. If confused, collapsed or not improving, call an ambulance on 998.", "Everyone on site · ADPHC Technical Guideline; UAE emergency numbers (u.ae)"),
     ].join("");
-    const steps = [];
-    if (tier === "Elevated" || tier === "High") steps.push(li("Check every crew member before the shift: symptoms, sleep, fluids.", "Supervisor · before the shift starts"));
-    if (tier === "High") steps.push(li("Get a site heat assessment from your OSH practitioner before heavy outdoor work starts.", "OSH practitioner · before heavy work"));
-    if ((tier === "High" || tier === "Elevated") && yes("heavy")) steps.push(li(`Move heavy tasks away from the hottest hours (heat peaks around ${day.peak_hour}:00).`, "Supervisor · when setting the shift plan"));
-    if (yes("newWorkers")) {
-      steps.push(li("New or returning workers: no more than 20% of the usual heat exposure on day 1, adding 20% a day.", "Supervisor · NIOSH 2016 criteria document"));
-      steps.push(li("No unacclimatised worker in medium or high risk heat work.", "Supervisor · ADPHC Technical Guideline, Safety in the Heat"));
-    }
-    if (!steps.length) steps.push(li(inSeason ? "No extra steps from the forecast." : "No forecast-based steps outside May to September.", ""));
+    const steps = HeatLogic.planSteps(tier, state.crew, inSeason, day.peak_hour).map(x => li(x.text, x.owner));
     const t = TIERS[tier] || TIERS["Insufficient data"];
-    const note = raised ? `<p class="status">Raised one level from ${esc(day.tier)} because the crew may include new or returning workers. This is our rule, based on guidelines, not tested on outcomes.</p>` : "";
+    const note = raised ? `<p class="status">Raised one level from ${esc(day.tier === "Insufficient data" ? "Elevated" : day.tier)} because the crew may include new or returning workers. This is our rule, based on guidelines, not tested on outcomes.</p>` : "";
     const ack = state.ackAt
       ? `<div class="ack" role="status"><strong>Plan acknowledged at ${esc(state.ackAt)}.</strong><p>Plans not acknowledged by 06:30 go to the OSH practitioner. Next forecast: tomorrow at 18:00.</p></div>`
       : `<p class="small">Plans not acknowledged by 06:30 go to the OSH practitioner.</p>`;
@@ -182,7 +163,7 @@ const VIEWS = {
       <h2>What did not work</h2>
       <p>We expected recent incident reports nearby to improve the alert. Tested as a trigger, they caught ${Math.abs(Math.round(e.workplace_trigger.r3_minus_r2 * 100))} points fewer heat days (95% interval ${Math.round(e.workplace_trigger.ci[0] * 100)} to ${Math.round(e.workplace_trigger.ci[1] * 100)}). So here they are a prompt to check that workplace, not a reason to raise the alert.</p>
       <h2>Limits</h2>
-      <p>US data, reported cases only, and most cases go unreported. Not validated on Abu Dhabi outcomes. Tested for May to September only. It does not calculate the Thermal Work Limit. The crew rules come from guidelines and were not tested. It is decision support for supervisors, not a diagnosis, and never a clearance to work.</p>
+      <p>US data, reported cases only, and most cases go unreported. Not validated on Abu Dhabi outcomes. Tested for May to September only. It does not calculate the Thermal Work Limit. The heat index is used only to rank days: the US weather service says its formula "is not valid for extreme temperature and relative humidity conditions", which Abu Dhabi summers often reach. The crew rules come from guidelines and were not tested. It is decision support for supervisors, not a diagnosis, and never a clearance to work.</p>
       ${cta("#home", "Back to the plan")}`;
   },
   replay() {

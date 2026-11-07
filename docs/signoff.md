@@ -1,7 +1,7 @@
 # Clinical and safety criteria: sign-off sheet v2
 
 Proposed 7 Nov 2026 after the Astra stress test. Sources: `docs/evidence_pack.md` (Arbury 2014 PMID 25102413 and Tustin 2018
-PMID 29975679 spot-checked on PubMed). Signed by: _pending (Ahmed)_.
+PMID 29975679 spot-checked on PubMed). Signed by: **Ahmed Zayed, 7 Nov 2026** (in chat, "Yes, signed"). Changes after this date are logged in `docs/decisions.md`.
 
 | # | Criterion | Proposed | Source | Tested on real outcomes? |
 |---|---|---|---|---|

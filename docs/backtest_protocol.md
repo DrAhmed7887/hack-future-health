@@ -1,7 +1,7 @@
 # Back-test protocol v2 (pre-registered before any result is computed)
 
 Status: v2, 7 Nov 2026, after an independent stress test (GPT-6 Astra via Azure; findings checked against the data and the
-Open-Meteo docs before adoption, see "Changes from v1"). Items marked **[SIGN]** need Ahmed's sign-off against
+Open-Meteo docs before adoption, see "Changes from v1"). Items marked **[SIGN]** were signed off by Ahmed on 7 Nov 2026 (`docs/signoff.md`) against
 `docs/evidence_pack.md`. Once the test years are scored, any change is logged here with the reason, and the test years then
 count as a development set.
 

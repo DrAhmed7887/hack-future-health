@@ -5,3 +5,4 @@
 - **7 Nov 2026:** Abu Dhabi's official index is TWL; no verified algorithm and no globe temperature in weather data → shown as "not computed" until verified.
 - Working name "HeatShield"; final name: Ahmed's call.
 - **7 Nov 2026:** independent stress test by GPT-6 Astra (Azure for Students credit). Adopted after checking: lead-time claim withdrawn (Open-Meteo historical forecasts are stitched first hours), regions chosen from training years only, real lagged workplace signal added (multi-signal), rule and operating point frozen, actions split into legal / baseline / model layers. Protocol v2 and `docs/signoff.md`.
+- **7 Nov 2026:** Ahmed signed S1–S6 (v2) and the protocol v2 [SIGN] items.

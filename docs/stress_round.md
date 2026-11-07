@@ -28,5 +28,5 @@ Still to run on the live URL: 10 parallel sessions, cold load on a phone over 4G
 | Cost per visitor | none: visitors load static files; only the daily job calls the weather API |
 Not checked here: a real phone over 4G (the browser pane disconnected). Ahmed to open the link on his phone.
 
-| Second check (21:25, fresh browser) | judge path site → replay hottest day (High) → crew yes/yes → 5-step plan → acknowledge → evidence (79 %, 82 %, 25 vs 82, 84 %); 0 console errors; total payload about 134 kB |
-| Scheduled refresh | the 14:00 UTC job ran at 18:32 UTC (GitHub delays scheduled runs); the stale guard covers missed or late runs |
+- Second check (21:25, fresh browser): judge path site → replay hottest day (High) → crew yes/yes → 5-step plan → acknowledge → evidence (79 %, 82 %, 25 vs 82, 84 %); 0 console errors; total payload about 134 kB.
+- Scheduled refresh: the 14:00 UTC job ran at 18:32 UTC (GitHub delays scheduled runs); the stale guard covers missed or late runs.

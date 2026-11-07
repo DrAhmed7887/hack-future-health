@@ -20,7 +20,7 @@ async function load() {
   try {
     [DATA.live, DATA.replay, DATA.evidence] = await Promise.all([get("data/live.json"), get("data/replay.json"), get("data/evidence.json")]);
   } catch (e) {
-    document.getElementById("app").innerHTML = `<h1>The forecast data did not load</h1><p>Reload the page. If it keeps failing, the data files are missing from this deployment (${esc(e.message)}).</p>`;
+    document.getElementById("app").innerHTML = `<h1>The forecast data did not load</h1><p>Reload the page. If it keeps failing, the data files are missing from this deployment (${esc(e.message)}).</p>${legalBlock({ date: HeatLogic.dubaiDate(new Date(), 1) })}`;
     return;
   }
   state.zone = recall("zone");
@@ -29,18 +29,24 @@ async function load() {
   render();
 }
 
+function liveDay(zone) {
+  return HeatLogic.resolveDay(DATA.live.zones[zone], DATA.live.generated_utc, new Date());
+}
+
 function currentDay() {
   if (!state.zone) return null;
   if (state.replayDate) return DATA.replay[state.zone].days.find(d => d.date === state.replayDate) || null;
-  const day = DATA.live.zones[state.zone];
-  if (!day) return null;
-  if (HeatLogic.isStale(DATA.live.generated_utc, new Date())) return { ...day, tier: "Insufficient data", stale: true };
-  return day;
+  return liveDay(state.zone);
+}
+
+function legalBlock(day) {
+  const items = HeatLogic.legalItems(day, !!state.replayDate).map(i => `<li>${esc(i.t)}<span class="src">${esc(i.s)}</span></li>`).join("");
+  return `<section class="legal" aria-labelledby="law"><h2 id="law">Required by law, whatever the forecast</h2><ul>${items}</ul></section>`;
 }
 
 const TIERS = {
-  "High": { cls: "high", word: "High", what: "Unusually hot for this place and time of year. Extra steps are in the plan." },
-  "Elevated": { cls: "elevated", word: "Elevated", what: "Hotter than usual here, or a sudden jump. Extra checks are in the plan." },
+  "High": { cls: "high", word: "High", what: "Hotter than most days here at this time of year. Extra steps are in the plan." },
+  "Elevated": { cls: "elevated", word: "Elevated", what: "Warmer than usual here and rising. Extra checks are in the plan." },
   "No escalation": { cls: "none", word: "No extra steps", what: "The forecast adds no steps. The law and the always-on protections still apply." },
   "Insufficient data": { cls: "none off", word: "Not enough data", what: "The forecast is missing or out of date. Treat tomorrow as Elevated until it updates." },
   "Outside tested season": { cls: "none off", word: "Outside tested season", what: "Alerts were tested for May to September only. The law and the always-on protections still apply." },
@@ -48,6 +54,7 @@ const TIERS = {
 const legalItems = day => HeatLogic.legalItems(day, !!state.replayDate);
 
 function whySentence(day) {
+  if (!Number.isFinite(day.max_temp_c)) return day.stale ? "The forecast is missing or out of date, so no numbers are shown." : "No forecast numbers are available for this day.";
   const peak = day.peak_hour != null ? ` Heat and humidity together peak around ${day.peak_hour}:00.` : "";
   const air = `Air temperature up to ${day.max_temp_c}\u00a0°C.${peak}`;
   if (day.tier === "Outside tested season" || day.percentile == null || day.anomaly_f == null) return air;
@@ -90,23 +97,22 @@ function cta(primaryHref, primaryText, secondary) {
 
 const VIEWS = {
   site() {
-    const z = Object.entries(DATA.replay).map(([k, v]) => `<button data-zone="${k}">${esc(v.name)}<span>${esc(ZONE_NOTE[k] || "")}</span></button>`).join("");
-    return `<h1>Where does your crew work?</h1><p>Each zone gets its own heat thresholds, set from its own weather in 2015 to 2021.</p><div class="zones">${z}</div>`;
+    const z = Object.entries(DATA.replay).map(([k, v]) => `<button data-zone="${esc(k)}">${esc(v.name)}<span>${esc(ZONE_NOTE[k] || "")}</span></button>`).join("");
+    return `<h1>Where does your crew work?</h1><p>Each zone's days are ranked against its own weather in 2015 to 2021. The cut-offs were tested on US data.</p><div class="zones">${z}</div>`;
   },
   home() {
     if (!state.zone) return VIEWS.site();
     const day = currentDay();
-    if (!day) return `${zoneBar()}<h1>No forecast for this site yet</h1><p>The forecast updates every evening at 18:00. Use the law and the always-on protections until then.</p>`;
+    if (!day) return `${zoneBar()}<h1>No data for this day</h1><p>Use the law and the always-on protections.</p>${legalBlock({ date: state.replayDate || HeatLogic.dubaiDate(new Date(), 1) })}`;
     const t = TIERS[day.tier] || TIERS["Insufficient data"];
-    const legal = legalItems(day).map(i => `<li>${esc(i.t)}<span class="src">${esc(i.s)}</span></li>`).join("");
-    const when = state.replayDate ? "That day" : `Tomorrow, ${esc(fmtDate(day.date))}`;
+    const when = state.replayDate ? "That day" : `${day.when || "Tomorrow"}, ${esc(fmtDate(day.date))}`;
     const issued = state.replayDate ? "Real weather for that day (ERA5 reanalysis)." : `Forecast issued ${esc(DATA.live.generated_utc)} UTC. Updates daily at 18:00.`;
     const off = day.tier === "Outside tested season" && !state.replayDate ? `<p><a href="#replay">Replay a real summer day</a> to see how alerts work.</p>` : "";
     return `${zoneBar()}
       <section class="tier ${t.cls}" aria-live="polite"><p class="small">${when}</p><p class="word">${t.word}</p><p class="what">${t.what}</p></section>
-      <p class="why">${esc(whySentence(day))}</p>${strip(day)}
+      <p class="why">${esc(whySentence(day))}</p>${Number.isFinite(day.heat_index_f) ? strip(day) : ""}
       <p class="small">${issued} <a href="#trust">How was this tested?</a></p>${off}
-      <section class="legal" aria-labelledby="law"><h2 id="law">Required by law, whatever the forecast</h2><ul>${legal}</ul></section>
+      ${legalBlock(day)}
       ${cta("#crew", state.replayDate ? "Plan that day's crew" : "Plan tomorrow's crew")}`;
   },
   crew() {
@@ -127,7 +133,7 @@ const VIEWS = {
     if (!state.zone) return VIEWS.site();
     const day = currentDay();
     if (!day) return VIEWS.home();
-    const inSeason = day.tier !== "Outside tested season";
+    const inSeason = HeatLogic.inTestedSeason(day.date) && day.tier !== "Outside tested season";
     const { tier, raised } = HeatLogic.effectiveTier(day.tier, state.crew);
     const li = (text, owner) => `<li>${esc(text)}<span class="owner">${esc(owner)}</span></li>`;
     const law = legalItems(day).map(i => li(i.t, i.s)).join("");
@@ -157,12 +163,12 @@ const VIEWS = {
       <p>There is no public data on heat illness at work in Abu Dhabi. So the rule was tested on the closest real record we could find: every work-related heat hospitalisation reported to US federal OSHA from 2015 to 2025 (${e.reports_total.toLocaleString()} reports), matched with the weather on that day.</p>
       <div class="facts">
         <div><span class="big">${pct(h.r4_sensitivity)}</span><p>of days with a reported heat hospitalisation got an alert, in ${h.regions} US regions the rule had never seen (${h.event_days} such days; 95% interval ${pct(h.r4_ci[0])} to ${pct(h.r4_ci[1])}). It alerted on ${pct(h.r4_alert_share)} of days.</p></div>
-        <div><span class="big">${pct(e.fixed_80f_alert_share)}</span><p>of summer days would get an alert under the common fixed trigger (heat index 80 °F). An alert that never switches off gets ignored.</p></div>
+        <div><span class="big">${pct(e.fixed_80f_alert_share)}</span><p>of days in the same unseen regions would get an alert under the common fixed trigger (heat index 80 °F). An alert that rarely switches off gets ignored.</p></div>
         <div><span class="big">${Math.round(h.spread_r4 * 100)} vs ${Math.round(h.spread_r2 * 100)}</span><p>points of spread in alert load between cool and hot cities: thresholds set from each place's own climate, against fixed thresholds.</p></div>
         <div><span class="big">${pct(e.dayahead_same_decision)}</span><p>of days got the same decision from the forecast made the evening before as from the weather that actually happened (2024 to 2025).</p></div>
       </div>
       <h2>What did not work</h2>
-      <p>We expected recent incident reports nearby to improve the alert. Tested as a trigger, they caught ${Math.abs(Math.round(e.workplace_trigger.r3_minus_r2 * 100))} points fewer heat days (95% interval ${Math.round(e.workplace_trigger.ci[0] * 100)} to ${Math.round(e.workplace_trigger.ci[1] * 100)}). So here they are a prompt to check that workplace, not a reason to raise the alert.</p>
+      <p>We expected recent incident reports nearby to improve the alert. A rule that also used them as a trigger, tuned to the same alert budget, caught ${Math.abs(Math.round(e.workplace_trigger.r3_minus_r2 * 100))} percentage points ${e.workplace_trigger.r3_minus_r2 < 0 ? "fewer" : "more"} heat days than the weather-only rule (difference ${Math.round(e.workplace_trigger.r3_minus_r2 * 100)}, 95% interval ${Math.round(e.workplace_trigger.ci[0] * 100)} to ${Math.round(e.workplace_trigger.ci[1] * 100)}). So here they are a prompt to check that workplace, not a reason to raise the alert.</p>
       <h2>Limits</h2>
       <p>US data, reported cases only, and most cases go unreported. Not validated on Abu Dhabi outcomes. Tested for May to September only. It does not calculate the Thermal Work Limit. The heat index is used only to rank days: the US weather service says its formula "is not valid for extreme temperature and relative humidity conditions", which Abu Dhabi summers often reach. The crew rules come from guidelines and were not tested. It is decision support for supervisors, not a diagnosis, and never a clearance to work.</p>
       ${cta("#home", "Back to the plan")}`;
@@ -188,7 +194,7 @@ const VIEWS = {
   },
   regulator() {
     const rows = Object.entries(DATA.replay).map(([k, v]) => {
-      const day = state.replayDate ? v.days.find(d => d.date === state.replayDate) : DATA.live.zones[k];
+      const day = state.replayDate ? v.days.find(d => d.date === state.replayDate) : liveDay(k);
       const t = TIERS[day?.tier] || TIERS["Insufficient data"];
       const n = SIM_SITES[k];
       const head = `<div class="zrow"><strong>${esc(v.name)}</strong><span class="chip ${t.cls}">${t.word}</span></div>`;
@@ -222,7 +228,7 @@ function bind(route) {
   document.querySelectorAll("input[type=radio]").forEach(r => r.addEventListener("change", () => { state.crew[r.name] = r.value; state.ackAt = null; render(); }));
   if (route === "plan") {
     const btn = document.querySelector(".cta .btn:not(.secondary)");
-    btn.addEventListener("click", ev => { ev.preventDefault(); if (!state.ackAt) { state.ackAt = new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }); render(); } });
+    if (btn) btn.addEventListener("click", ev => { ev.preventDefault(); if (!state.ackAt) { state.ackAt = new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }); render(); } });
   }
   if (route === "replay") {
     const rz = document.getElementById("rz"), rd = document.getElementById("rd");

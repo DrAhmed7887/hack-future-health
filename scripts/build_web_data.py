@@ -67,7 +67,7 @@ def main() -> None:
                       "r4_alert_share": ho["rules"]["R4"]["alert_fraction"], "r2_sensitivity": ho["rules"]["R2"]["sensitivity"],
                       "spread_r2": ho["primary_B_alert_share_spread"]["R2"], "spread_r4": ho["primary_B_alert_share_spread"]["R4"]},
           "workplace_trigger": {"r3_minus_r2": te["primary_r3_minus_r2_sensitivity"]["point"], "ci": te["primary_r3_minus_r2_sensitivity"]["95ci"]},
-          "fixed_80f_alert_share": te["rules"]["R1 heat index >= 80 F"]["alert_fraction"],
+          "fixed_80f_alert_share": ho["rules"]["R1"]["alert_fraction"],  # same unseen regions as the R4 figures
           "dayahead_same_decision": da["same_decision_share"]}
     (WEB / "evidence.json").write_text(json.dumps(ev, indent=1))
     print({k: len(v["days"]) for k, v in replay.items()})

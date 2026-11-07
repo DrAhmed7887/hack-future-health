@@ -65,7 +65,7 @@ def main() -> None:
     out = {"generated_utc": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M"), "zones": {}}
     for key, (name, lat, lon) in ZONES.items():
         out["zones"][key] = zone_row(key, name, lat, lon, ref, rp)
-    (WEB / "live.json").write_text(json.dumps(out, indent=1))
+    (WEB / "live.json").write_text(json.dumps(out, indent=1, allow_nan=False))  # NaN would break JSON.parse in the app
     print(json.dumps(out, indent=1))
 
 

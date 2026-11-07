@@ -15,7 +15,7 @@ The regulator sees zones, never people. Nothing in the app clears anyone to work
 ## Why a new rule was needed
 
 A fixed heat trigger fails in both directions. The common US trigger (heat index ≥ 80 °F) alerted on **93 %** of summer days in
-the test regions, an alert that never switches off. A threshold tuned on Texas and Florida would put **every Abu Dhabi day from
+the original 8 test regions and **82 %** in 6 unseen ones: an alert that rarely switches off. A threshold tuned on Texas and Florida would put **every Abu Dhabi day from
 June to September** in its top tier (`docs/g1_results.md`, transfer check). Heat-health research sets thresholds relative to
 local climate because people adapt to their usual heat (Anderson & Bell 2009, PMID 19194300; Gasparrini et al. 2015,
 PMID 26003380). So each zone gets thresholds from its own weather history.
@@ -53,9 +53,11 @@ weather on **88 %** of region-days (`results/dayahead_results.json`).
 
 ## What did not work
 
-We expected recent incident reports nearby to improve the alert, and pre-registered that test. Used as a trigger, they
-**lowered** the share of heat days caught by 11.6 points (95 % CI −17.7 to −5.8) (`results/test_results.json`). In the app they
-appear only as a prompt to check that workplace, never as a reason to raise the level.
+We expected recent incident reports nearby to improve the alert, and pre-registered that test. A rule that also used them
+as a trigger, tuned to the same training alert budget, caught **11.6 points fewer** heat days than the weather-only rule
+(95 % CI −17.7 to −5.8) (`results/test_results.json`). This compares two separately tuned rules, not the reports' isolated
+value: spending part of the alert budget on "recent report" days left less for hot days. In the app the reports appear only
+as a prompt to check that workplace, never as a reason to raise the level.
 
 ## Combining signals (challenge requirement 1)
 

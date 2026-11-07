@@ -39,6 +39,28 @@
     return (now.getTime() - t) / 3.6e6 > (maxHours || STALE_HOURS);
   }
 
+  function dubaiDate(now, plusDays) {
+    const d = new Date(now.getTime() + (plusDays || 0) * 864e5);
+    return new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Dubai", year: "numeric", month: "2-digit", day: "2-digit" }).format(d);
+  }
+
+  function inTestedSeason(isoDate) {
+    const m = Number(String(isoDate).slice(5, 7));
+    return m >= 5 && m <= 9;
+  }
+
+  // Live forecast for one zone -> what the app may show. Out-of-season wins; stale or missing never shows old numbers.
+  function resolveDay(day, generatedUtc, now) {
+    const today = dubaiDate(now, 0), tomorrow = dubaiDate(now, 1);
+    const stale = !day || !day.date || day.date < today || isStale(generatedUtc, now);
+    if (stale) {
+      const tier = inTestedSeason(tomorrow) ? "Insufficient data" : "Outside tested season";
+      return { name: day && day.name, date: tomorrow, tier, stale: true, when: "Tomorrow" };
+    }
+    const tier = inTestedSeason(day.date) ? day.tier : "Outside tested season";
+    return Object.assign({}, day, { tier, stale: false, when: day.date === today ? "Today" : "Tomorrow" });
+  }
+
   function legalItems(day, isReplay) {
     const d = new Date(day.date + "T12:00:00Z"), md = (d.getUTCMonth() + 1) * 100 + d.getUTCDate();
     const t = day.max_temp_c;
@@ -46,14 +68,16 @@
       md >= 615 && md <= 915
         ? { t: "Midday break: no outdoor work in direct sun from 12:30 to 15:00.", s: "UAE Ministry of Human Resources and Emiratisation, 15 June to 15 September" }
         : { t: "The midday break is not in force on this date. It runs 15 June to 15 September.", s: "UAE Ministry of Human Resources and Emiratisation" },
-      t >= 35
+      !Number.isFinite(t)
+        ? { t: "Forecast temperature unavailable. Check readings on site, and assume the 35\u00a0°C heat stress programme applies.", s: "ADPHC OSH Code of Practice 11.0, section 3.1.1(e)" }
+        : t >= 35
         ? { t: `${isReplay ? "Air temperature reached" : "Forecast air temperature reaches"} ${t} °C. At 35 °C or more, your site's heat stress programme applies.`, s: "ADPHC OSH Code of Practice 11.0, section 3.1.1(e)" }
         : { t: `${isReplay ? "Air temperature peaked at" : "Forecast air temperature peaks at"} ${t} °C, below the 35 °C programme trigger. Check readings on site.`, s: "ADPHC OSH Code of Practice 11.0, section 3.1.1(e)" },
       { t: "Abu Dhabi's heat stress index (Thermal Work Limit) needs on-site readings. This app does not calculate it.", s: "ADPHC Technical Guideline, Safety in the Heat" },
     ];
   }
 
-  const api = { answeredYes, effectiveTier, planSteps, isStale, legalItems, STALE_HOURS };
+  const api = { answeredYes, effectiveTier, planSteps, isStale, legalItems, resolveDay, inTestedSeason, dubaiDate, STALE_HOURS };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   else root.HeatLogic = api;
 })(typeof window !== "undefined" ? window : globalThis);

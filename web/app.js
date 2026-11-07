@@ -14,6 +14,8 @@ function recall(key) { try { return JSON.parse(localStorage.getItem(key)); } cat
 function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
 function fmtDate(iso) { return new Date(iso + "T12:00:00").toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", year: "numeric" }); }
 function pct(x) { return Math.round(x * 100) + "%"; }
+function pct1(x) { return (Math.round(x * 1000) / 10).toFixed(1) + "%"; }   // one decimal, as in README
+function pts1(x) { return (Math.round(x * 1000) / 10).toFixed(1).replace("-", "\u2212"); }
 
 async function load() {
   const get = p => fetch(p, { cache: "no-store" }).then(r => { if (!r.ok) throw new Error(p + " " + r.status); return r.json(); });
@@ -162,13 +164,13 @@ const VIEWS = {
     return `<h1>How was this tested?</h1>
       <p>There is no public data on heat illness at work in Abu Dhabi. So the rule was tested on the closest real record we could find: the work-related heat hospitalisations reported to US federal OSHA from January 2015 to November 2025 (${e.reports_total.toLocaleString()} reports), matched with the weather on that day.</p>
       <div class="facts">
-        <div><span class="big">${pct(h.r4_sensitivity)}</span><p>of days with a reported heat hospitalisation got an alert, in ${h.regions} US regions the rule had never seen (${h.event_days} such days; 95% interval ${pct(h.r4_ci[0])} to ${pct(h.r4_ci[1])}). It alerted on ${pct(h.r4_alert_share)} of days.</p></div>
+        <div><span class="big">${pct1(h.r4_sensitivity)}</span><p>of days with a reported heat hospitalisation got an alert, in ${h.regions} US regions the rule had never seen (${h.event_days} such days; 95% interval ${pct1(h.r4_ci[0])} to ${pct1(h.r4_ci[1])}). It alerted on ${pct(h.r4_alert_share)} of days.</p></div>
         <div><span class="big">${pct(e.fixed_80f_alert_share)}</span><p>of days in the same unseen regions would get an alert under the common fixed trigger (heat index 80 °F). An alert that rarely switches off is easy to ignore.</p></div>
         <div><span class="big">${Math.round(h.spread_r4 * 100)} vs ${Math.round(h.spread_r2 * 100)}</span><p>points of spread in alert load between cool and hot cities: thresholds set from each place's own climate, against fixed thresholds.</p></div>
         <div><span class="big">${pct(e.dayahead_same_decision)}</span><p>of days got the same decision from the forecast made the evening before as from the weather that actually happened (8 US regions, 2024 to 2025). The forecast ran warm, so it alerted on more days (${pct(e.dayahead_alert_share)} against ${pct(e.observed_alert_share_same_days)}).</p></div>
       </div>
       <h2>What did not work</h2>
-      <p>We expected recent incident reports nearby to improve the alert. A rule that also used them as a trigger, tuned to the same training alert budget, caught ${Math.abs(Math.round(e.workplace_trigger.r3_minus_r2 * 100))} percentage points ${e.workplace_trigger.r3_minus_r2 < 0 ? "fewer" : "more"} heat days than the same rule without them (an earlier fixed-threshold rule, 8 US regions, 2022 to 2025; difference ${Math.round(e.workplace_trigger.r3_minus_r2 * 100)}, 95% interval ${Math.round(e.workplace_trigger.ci[0] * 100)} to ${Math.round(e.workplace_trigger.ci[1] * 100)}). So here they are a prompt to check that workplace, not a reason to raise the alert.</p>
+      <p>We expected recent incident reports nearby to improve the alert. A rule that also used them as a trigger, tuned to the same training alert budget, caught ${pts1(Math.abs(e.workplace_trigger.r3_minus_r2))} percentage points ${e.workplace_trigger.r3_minus_r2 < 0 ? "fewer" : "more"} heat days than the same rule without them (an earlier fixed-threshold rule, 8 US regions, 2022 to 2025; difference ${pts1(e.workplace_trigger.r3_minus_r2)}, 95% interval ${pts1(e.workplace_trigger.ci[0])} to ${pts1(e.workplace_trigger.ci[1])}). So here they are a prompt to check that workplace, not a reason to raise the alert.</p>
       <h2>Limits</h2>
       <p>US data, reported cases only, and most cases go unreported. Not validated on Abu Dhabi outcomes. Tested for May to September only. It does not calculate the Thermal Work Limit. The heat index is used only to rank days: the US weather service says its formula "is not valid for extreme temperature and relative humidity conditions", conditions Abu Dhabi summers can reach. The crew rules come from guidelines and were not tested. It is decision support for supervisors, not a diagnosis, and never a clearance to work.</p>
       ${cta("#home", "Back to the plan")}`;

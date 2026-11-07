@@ -30,6 +30,7 @@ clinical or product decision, or a source quote that is missing.
 | "every input available at 18:00 the day before" | README | `docs/g1b_relative_results.md` day-ahead section (Previous Runs 24 h forecast; ERA5 2015–2021 percentiles; Historical Forecast API baseline) | OK |
 | Workplace trigger −11.6 points (95 % CI −17.7 to −5.8) | README, app Evidence | `test_results.json` primary_r3_minus_r2_sensitivity; `evidence.json` workplace_trigger | OK numbers. Wording FIXED: it compares R3 with the earlier fixed-threshold rule R2 on the 8 original regions, not with the app's rule R4; the app now says so, and says "same training alert budget" (decisions log, 7 Nov) |
 | "79% of case days", "36 to 60%", "7 to 89%" | both diagrams | same as above | OK |
+| Evidence screen showed 79% (70% to 88%) and "12 … −18 to −6" where README says 79.1 % (69.6–87.9) and −11.6 (−17.7 to −5.8) | app Evidence | same `evidence.json` values, rounded to whole numbers in `app.js` (flagged by the video-director review) | FIXED: the sensitivity, its interval and the workplace result now show one decimal, matching README; no value changed |
 | Replay day Mussafah 1 Aug 2025: High, max 45 °C, percentile 100, +19.8 °F (11 °C) above 14 days, peak 14:00 | app replay (video shot) | `web/data/replay.json` | OK |
 
 ## Method and process claims

@@ -27,3 +27,10 @@ Still to run on the live URL: 10 parallel sessions, cold load on a phone over 4G
 | Live data through the app logic (node) | 4 zones: "Outside tested season" (November), legal layer correct |
 | Cost per visitor | none: visitors load static files; only the daily job calls the weather API |
 Not checked here: a real phone over 4G (the browser pane disconnected). Ahmed to open the link on his phone.
+
+## Live URL (7 Nov 2026, https://drahmed7887.github.io/hack-future-health/)
+- Deployed by `.github/workflows/deploy-pages.yml` (site files only: no tests, raw data or reference climatology). Code repo stays private.
+- No login: `curl` without credentials returns 200 for every file; tests path returns 404.
+- Total payload about 134 kB; each file 0.19–0.30 s from Valencia. 20 parallel cold loads of the largest file: 20 × 200, all under 0.2 s.
+- Judge path in a fresh browser: site → replay hottest day (High) → crew yes/yes → 5-step plan → acknowledge → evidence (79 %, 82 %, 25 vs 82, 84 %). 0 console errors.
+- Live day shows "Today" after midnight Abu Dhabi time until the 18:00 refresh (resolver behaviour, as designed).

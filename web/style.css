@@ -21,7 +21,7 @@ a { color: var(--mandatory); }
 .brand { font: 700 22px/1.1 var(--display); color: var(--ink); text-decoration: none; }
 nav { display: flex; gap: 14px; font-size: 15px; }
 .demo { font-size: 14px; color: var(--muted); margin-top: 6px; margin-bottom: 0; }
-main { padding-bottom: 120px; }
+main { padding-bottom: 24px; }
 h1 { font: 700 30px/1.1 var(--display); margin: 22px 0 6px; }
 h2 { font: 700 22px/1.15 var(--display); margin: 26px 0 8px; }
 p { margin: 6px 0; max-width: 62ch; }
@@ -110,3 +110,5 @@ select, input[type=date] { font: 400 17px var(--body); padding: 10px; border: 2p
 .zlist { list-style: none; padding: 0; margin: 10px 0 0; }
 .zlist li { padding: 12px 0; border-bottom: 1px solid var(--concrete); }
 .zrow { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 19px; }
+.foot { max-width: 520px; margin: 0 auto; padding: 0 16px 140px; font-size: 13px; color: var(--muted); }
+@media (min-width: 900px) { .foot { max-width: 640px; } }

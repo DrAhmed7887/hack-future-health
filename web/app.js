@@ -24,6 +24,7 @@ async function load() {
     return;
   }
   state.zone = recall("zone");
+  if (!DATA.replay || !Object.prototype.hasOwnProperty.call(DATA.replay, state.zone)) state.zone = null;   // corrupt or old saved value
   window.addEventListener("hashchange", render);
   render();
 }

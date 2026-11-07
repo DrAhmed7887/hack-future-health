@@ -1,0 +1,43 @@
+{
+  "region_days": 2448,
+  "event_days": 104,
+  "observed": {
+    "days": 2448,
+    "insufficient": 0,
+    "event_days": 104,
+    "alert_days": 1314,
+    "tp": 90,
+    "fp": 1224,
+    "fn": 14,
+    "tn": 1120,
+    "sensitivity": 0.8653846153846154,
+    "reported_event_ppv": 0.0684931506849315,
+    "alert_fraction": 0.5367647058823529,
+    "sensitivity_95ci": [
+      0.8023255813953488,
+      0.9223300970873787
+    ]
+  },
+  "day_ahead": {
+    "days": 2448,
+    "insufficient": 0,
+    "event_days": 104,
+    "alert_days": 1467,
+    "tp": 95,
+    "fp": 1372,
+    "fn": 9,
+    "tn": 972,
+    "sensitivity": 0.9134615384615384,
+    "reported_event_ppv": 0.06475800954328562,
+    "alert_fraction": 0.5992647058823529,
+    "sensitivity_95ci": [
+      0.8874148866710195,
+      0.9491579060287492
+    ]
+  },
+  "same_decision_share": 0.8811274509803921,
+  "heat_index_forecast_error_f": {
+    "mean": 1.284775035998825,
+    "mean_abs": 2.440914030393835
+  }
+}

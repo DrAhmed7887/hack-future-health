@@ -30,5 +30,14 @@ DFW 57/64 (59 %) · Houston 41/43 (71 %) · Jacksonville 9/14 (47 %) · Kansas C
 ## Subgroups (R2, days with a report from that industry)
 Construction 53/60 (88.3 %) · transport/warehousing 43/52 (82.7 %) · admin/waste services 37/41 (90.2 %). Small numbers; coverage only, not fairness.
 
-## Still to do in Phase 1
-- Day-ahead sub-study (forecasts made 24 h before; humidity archive coverage to audit).
+## Day-ahead sub-study (real forecasts made 24 h before; 2024–2025 only)
+Source: `results/dayahead_results.json` (`scripts/score_dayahead.py`), Open-Meteo Previous Runs API, default model. Humidity at a 24 h lead is archived from 2024 (audit 7 Nov: 2022–2023 temperature only), so this covers 2 of the 4 test seasons: 2,448 region-days, 104 event days. Frozen R2, no re-tuning.
+
+| Input | Sensitivity (95 % CI) | Reported-event PPV | Alert days |
+|---|---|---|---|
+| Observed weather (ERA5) | 86.5 % (80.2–92.2) | 6.8 % | 54 % |
+| Forecast made the day before | 91.3 % (88.7–94.9) | 6.5 % | 60 % |
+
+- Same alert decision on 88 % of region-days.
+- The forecast heat index ran warmer than ERA5 (mean +1.3 °F, mean absolute difference 2.4 °F). Part of that is grid difference (ERA5 ~25 km vs the forecast model), not only forecast error. The warm bias produced more alert days and higher sensitivity; it is not a better rule.
+- What this supports: an alert issued the evening before, from a real forecast, performs about as well as the same rule on observed weather. The 13 h evening-to-shift window is a design property; the 24 h forecast lead is measured for 2024–2025 only.

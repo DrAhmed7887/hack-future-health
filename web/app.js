@@ -141,9 +141,9 @@ const VIEWS = {
     const law = legalItems(day).map(i => li(i.t, i.s)).join("");
     const always = [
       li("Drinking water at the work area: at least 2 litres every 2 to 3 hours for each worker.", "Employer · ADPHC OSH Code of Practice 11.0"),
-      li("Shade and cooling shelters for everyone working outside in the summer months.", "Employer · ADPHC OSH Code of Practice 11.0, section 3.2(b)"),
+      li("Shade and cooling shelters for everyone working outside in the summer months.", "Employer · ADPHC OSH Code of Practice 11.0, section 3.2(b)(vii)"),
       li("Nobody works alone in heat stress areas.", "Supervisor · ADPHC OSH Code of Practice 11.0, section 3.2(e)"),
-      li("Anyone with heat symptoms stops work now: rest in a cool, shaded place, drink water, cool down. If confused, collapsed or not improving, call an ambulance on 998.", "Everyone on site · ADPHC Technical Guideline; UAE emergency numbers (u.ae)"),
+      li("Anyone with heat symptoms stops work now: rest in a cool, shaded place, drink water, cool down. If confused, collapsed or not improving, call an ambulance on 998.", "Everyone on site · ADPHC Technical Guideline, Safety in the Heat, sections 4.4(c) and 4.5(c); ambulance 998 (u.ae)"),
     ].join("");
     const steps = HeatLogic.planSteps(tier, state.crew, inSeason, day.peak_hour).map(x => li(x.text, x.owner));
     const t = TIERS[tier] || TIERS["Insufficient data"];

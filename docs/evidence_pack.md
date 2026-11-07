@@ -223,3 +223,9 @@ D. Back-test design (US data)
 10. What does `FederalState = 0` mean in the SIR CSV (2,492 rows)? Ask OSHA's data dictionary or check before excluding or including those rows in the backtest.
 11. Abu Dhabi reporting: which agency receives heat illness reports (Mechanism 11.0, ADPHC/DoH) and is a public incident dataset available? None was found; the UAE has no public equivalent of SIR in this pack.
 12. The two schedules (NIOSH 7–14 days, CoP "5-7 days", TG 5 days) differ. Which does the product adopt as the default for the 'unacclimatised' flag?
+
+## Added 7 Nov 2026 (closing claims-audit items; PDFs re-downloaded from the adphc.gov.ae URLs above, both "Version 4.0 – 15th July 2024")
+- Shade and cooling shelters — "provision for design and placement of shade and cooling shelters for employees working outside during summer months and appropriate cooled accommodation / shelter for the summer months during the midday break periods set by the Ministry of Labour" — CoP 11.0 v4.0, Sec. 3.2(b)(vii) — verified yes
+- First aid, heat exhaustion — "Have them rest in a cool, shaded or air-conditioned area; Have them drink plenty of water or other cool, nonalcoholic beverages" — TG Safety in the Heat v4.0, Sec. 4.4(c) — verified yes
+- First aid, heat stroke — "Call emergency contact number and notify supervisor; Move the sick employee to a cool shaded area; Cool the employee" — TG Safety in the Heat v4.0, Sec. 4.5(c); heat stroke symptoms listed there include "Confusion/dizziness" — verified yes
+- Ambulance number — "Call for the ambulance on 998 (from anywhere in the UAE)" — UAE Government portal, https://u.ae/en/information-and-services/justice-safety-and-the-law/safety/handling-emergencies (the older URL without /safety/ returns 404) — verified yes, read in browser 7 Nov 2026

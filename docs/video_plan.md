@@ -188,7 +188,7 @@ that only exists after the re-render (`:checked`, the h1 text), never on a fixed
    answering Yes adds the acclimatisation steps but shows no "Raised one level" line. S9 shows the raise on Mon 7 Jul 2025 instead
    (No escalation → Elevated, the app's own "not tested on outcomes" line). It doubles as the counter-case, the model not firing.
    Keep S9, or drop it and say the raise in narration only?
-3. **The Always-on block has two citations still marked NEEDS AHMED** in `claims_audit.md`: shade and cooling shelters ("section 3.2(b)",
+3. *(Resolved 7 Nov: both Always-on citations now have quotes in `docs/evidence_pack.md`; the block can be shown.)* 3. **The Always-on block has two citations still marked NEEDS AHMED** in `claims_audit.md`: shade and cooling shelters ("section 3.2(b)",
    no quote found) and the first-aid steps with 998 (no official source). The plan keeps that block out of frame. If you resolve
    them, S8 can show it.
 4. **Returning workers in the NIOSH schedule** (also NEEDS AHMED). The owner line in S8d reads "NIOSH 2016 schedule for new workers;

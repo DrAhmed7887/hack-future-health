@@ -62,7 +62,7 @@ def main() -> None:
     (WEB / "reference.json").write_text(json.dumps(ref))
     ho = json.loads((ROOT / "results" / "holdout_results.json").read_text())
     te = json.loads((ROOT / "results" / "test_results.json").read_text())
-    da = json.loads((ROOT / "results" / "dayahead_results.json").read_text())
+    da = json.loads((ROOT / "results" / "dayahead_r4_results.json").read_text())   # deployed rule, real-time inputs
     ev = {"reports_total": ho["data"]["heat_reports"],
           "holdout": {"regions": 6, "event_days": ho["data"]["event_days"],
                       "r4_sensitivity": ho["rules"]["R4"]["sensitivity"], "r4_ci": ho["rules"]["R4"]["sensitivity_95ci"],
@@ -70,7 +70,8 @@ def main() -> None:
                       "spread_r2": ho["primary_B_alert_share_spread"]["R2"], "spread_r4": ho["primary_B_alert_share_spread"]["R4"]},
           "workplace_trigger": {"r3_minus_r2": te["primary_r3_minus_r2_sensitivity"]["point"], "ci": te["primary_r3_minus_r2_sensitivity"]["95ci"]},
           "fixed_80f_alert_share": ho["rules"]["R1"]["alert_fraction"],  # same unseen regions as the R4 figures
-          "dayahead_same_decision": da["same_decision_share"]}
+          "dayahead_same_decision": da["same_decision_share"],
+          "dayahead_alert_share": da["day_ahead"]["alert_fraction"], "observed_alert_share_same_days": da["observed"]["alert_fraction"]}
     (WEB / "evidence.json").write_text(json.dumps(ev, indent=1))
     print({k: len(v["days"]) for k, v in replay.items()})
 

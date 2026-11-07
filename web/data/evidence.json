@@ -21,5 +21,7 @@
   ]
  },
  "fixed_80f_alert_share": 0.8199891067538126,
- "dayahead_same_decision": 0.8811274509803921
+ "dayahead_same_decision": 0.8398692810457516,
+ "dayahead_alert_share": 0.5919117647058824,
+ "observed_alert_share_same_days": 0.508578431372549
 }

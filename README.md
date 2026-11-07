@@ -48,8 +48,10 @@ that day's weather. Rules were tuned on 2015–2021, committed, and scored once 
 - The sensitivity gain over fixed thresholds (+8.1 points, 95 % CI −6.9 to +24.3) is **not statistically clear**.
 - Within the climates it was tuned on, fixed thresholds did better (training sensitivity 78.4 % vs 67.4 %).
 
-**Forecast the evening before** (2024–2025, the years with archived 24-hour humidity forecasts): the same decision as observed
-weather on **88 %** of region-days (`results/dayahead_results.json`).
+**Forecast the evening before** (8 original regions, 2024–2025, the years with archived 24-hour humidity forecasts; every input
+available at 18:00 the day before): the deployed rule gave the same decision as observed weather on **84 %** of region-days.
+The forecast ran warm, so it alerted on more days (59 % vs 51 %) and caught more reported-case days (81.7 % vs 73.1 %)
+(`results/dayahead_r4_results.json`; frozen rule, checked after the main tests).
 
 ## What did not work
 

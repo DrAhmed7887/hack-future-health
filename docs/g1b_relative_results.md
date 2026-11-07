@@ -38,6 +38,12 @@ Expected (written before running) vs actual: spread smaller — as expected. Sen
 temperate ones — as expected (McAllen 7 vs 8, Fort Lauderdale 19 vs 25; Philadelphia 21 vs 15, Pittsburgh 7 vs 1).
 Pooled difference within ±10 points — as expected (+8.1), CI wide.
 
+## Day-ahead check of the deployed rule (post hoc, frozen rule; `results/dayahead_r4_results.json`)
+8 original regions, May–Sep 2024–2025 (2,448 region-days, 104 event days). Inputs available the evening before only: 24-h
+forecast (Previous Runs API), percentiles vs ERA5 May–Sep 2015–2021, 14-day baseline from Open-Meteo's Historical Forecast
+API (first hours of each model run). Same decision on 84 % of days. Observed weather: sensitivity 73.1 % (65.2–79.8) at
+51 % alert days; day-ahead forecast: 81.7 % (73.3–88.4) at 59 %. The forecast's warm bias means more alerts, not a better rule.
+
 ## Abu Dhabi (descriptive; no outcome data exists; `results/abu_dhabi_tiers.json`)
 Share of 2025 days with any alert, R2 absolute → R4 relative (each zone's own May–Sep 2015–2021 climatology, the same
 in-season percentile definition as the back-test):

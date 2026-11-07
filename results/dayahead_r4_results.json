@@ -1,0 +1,40 @@
+{
+  "rule": "R4 (deployed)",
+  "region_days": 2448,
+  "event_days": 104,
+  "observed": {
+    "days": 2448,
+    "insufficient": 0,
+    "event_days": 104,
+    "alert_days": 1245,
+    "tp": 76,
+    "fp": 1169,
+    "fn": 28,
+    "tn": 1175,
+    "sensitivity": 0.7307692307692307,
+    "reported_event_ppv": 0.06104417670682731,
+    "alert_fraction": 0.508578431372549,
+    "sensitivity_95ci": [
+      0.6521739130434783,
+      0.7983613445378149
+    ]
+  },
+  "day_ahead": {
+    "days": 2448,
+    "insufficient": 0,
+    "event_days": 104,
+    "alert_days": 1449,
+    "tp": 85,
+    "fp": 1364,
+    "fn": 19,
+    "tn": 980,
+    "sensitivity": 0.8173076923076923,
+    "reported_event_ppv": 0.05866114561766736,
+    "alert_fraction": 0.5919117647058824,
+    "sensitivity_95ci": [
+      0.7326703891319364,
+      0.8837209302325582
+    ]
+  },
+  "same_decision_share": 0.8398692810457516
+}

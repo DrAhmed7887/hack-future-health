@@ -41,3 +41,14 @@ Source: `results/dayahead_results.json` (`scripts/score_dayahead.py`), Open-Mete
 - Same alert decision on 88 % of region-days.
 - The forecast heat index ran warmer than ERA5 (mean +1.3 °F, mean absolute difference 2.4 °F). Part of that is grid difference (ERA5 ~25 km vs the forecast model), not only forecast error. The warm bias produced more alert days and higher sensitivity; it is not a better rule.
 - What this supports: an alert issued the evening before, from a real forecast, performs about as well as the same rule on observed weather. The 13 h evening-to-shift window is a design property; the 24 h forecast lead is measured for 2024–2025 only.
+
+## Transfer check: the frozen rule on Abu Dhabi weather (7 Nov; ERA5, Mussafah 24.35 N 54.50 E, Apr–Oct 2025)
+| Month | Median daily max heat index | "High" (H ≥ 95 °F) share of days | Max temperature ≥ 35 °C share |
+|---|---|---|---|
+| Apr | 97 °F | 63 % | 80 % |
+| May | 106 °F | 94 % | 90 % |
+| Jun–Sep | 109–118 °F | 100 % | 100 % |
+| Oct | 99 °F | 97 % | 84 % |
+Live forecast 7–9 Nov 2026: heat index 94–95 °F, max 36–37 °C.
+
+The US-tuned absolute thresholds would put every Abu Dhabi summer day in the top tier, which is the same alert-fatigue failure as the 80 °F rule in the US. The anomaly term never fires because "High" already covers every day. Absolute thresholds do not travel between climates; this needs a decision before the app is built.

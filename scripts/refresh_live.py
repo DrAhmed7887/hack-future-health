@@ -1,6 +1,7 @@
 """Daily job: tomorrow's tier per Abu Dhabi zone -> web/data/live.json. Light: 4 forecast calls, no history download.
 
-Percentiles use web/data/reference.json (each zone's daily max heat index, 2015-2021, built by build_web_data.py).
+Percentiles use web/data/reference.json (each zone's daily max heat index, May-Sep 2015-2021, built by build_web_data.py),
+the same in-season reference the back-test used.
 The anomaly baseline uses the forecast API's past 15 days (model analysis), so it needs no archive call.
 On any failure the old live.json is kept; the app then shows "Not enough data" once it is older than 36 h.
 """

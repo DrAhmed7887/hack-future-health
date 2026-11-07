@@ -9,20 +9,20 @@
   "2": {
    "median_heat_index_f": 79.2,
    "R2_alert_share": 0.11,
-   "R4_high_share": 0.43,
-   "R4_any_alert_share": 0.43
+   "R4_high_share": 0.0,
+   "R4_any_alert_share": 0.0
   },
   "3": {
    "median_heat_index_f": 85.6,
    "R2_alert_share": 0.13,
-   "R4_high_share": 0.58,
-   "R4_any_alert_share": 0.61
+   "R4_high_share": 0.0,
+   "R4_any_alert_share": 0.0
   },
   "4": {
    "median_heat_index_f": 97.3,
    "R2_alert_share": 0.63,
-   "R4_high_share": 0.73,
-   "R4_any_alert_share": 0.73
+   "R4_high_share": 0.0,
+   "R4_any_alert_share": 0.0
   },
   "5": {
    "median_heat_index_f": 105.6,
@@ -51,26 +51,26 @@
   "9": {
    "median_heat_index_f": 113.9,
    "R2_alert_share": 1.0,
-   "R4_high_share": 0.7,
-   "R4_any_alert_share": 0.7
+   "R4_high_share": 0.67,
+   "R4_any_alert_share": 0.67
   },
   "10": {
    "median_heat_index_f": 98.9,
    "R2_alert_share": 0.97,
-   "R4_high_share": 0.35,
-   "R4_any_alert_share": 0.35
+   "R4_high_share": 0.0,
+   "R4_any_alert_share": 0.0
   },
   "11": {
    "median_heat_index_f": 87.4,
    "R2_alert_share": 0.0,
-   "R4_high_share": 0.33,
-   "R4_any_alert_share": 0.33
+   "R4_high_share": 0.0,
+   "R4_any_alert_share": 0.0
   },
   "12": {
    "median_heat_index_f": 82.8,
    "R2_alert_share": 0.0,
-   "R4_high_share": 0.55,
-   "R4_any_alert_share": 0.55
+   "R4_high_share": 0.0,
+   "R4_any_alert_share": 0.0
   }
  },
  "Abu Dhabi city": {
@@ -83,20 +83,20 @@
   "2": {
    "median_heat_index_f": 75.5,
    "R2_alert_share": 0.07,
-   "R4_high_share": 0.25,
-   "R4_any_alert_share": 0.25
+   "R4_high_share": 0.0,
+   "R4_any_alert_share": 0.0
   },
   "3": {
    "median_heat_index_f": 82.7,
    "R2_alert_share": 0.13,
-   "R4_high_share": 0.52,
-   "R4_any_alert_share": 0.55
+   "R4_high_share": 0.0,
+   "R4_any_alert_share": 0.0
   },
   "4": {
    "median_heat_index_f": 94.3,
    "R2_alert_share": 0.43,
-   "R4_high_share": 0.73,
-   "R4_any_alert_share": 0.73
+   "R4_high_share": 0.0,
+   "R4_any_alert_share": 0.0
   },
   "5": {
    "median_heat_index_f": 102.8,
@@ -125,26 +125,26 @@
   "9": {
    "median_heat_index_f": 116.8,
    "R2_alert_share": 1.0,
-   "R4_high_share": 0.83,
-   "R4_any_alert_share": 0.83
+   "R4_high_share": 0.8,
+   "R4_any_alert_share": 0.8
   },
   "10": {
    "median_heat_index_f": 98.1,
    "R2_alert_share": 0.74,
-   "R4_high_share": 0.29,
-   "R4_any_alert_share": 0.29
+   "R4_high_share": 0.0,
+   "R4_any_alert_share": 0.0
   },
   "11": {
    "median_heat_index_f": 86.1,
    "R2_alert_share": 0.0,
-   "R4_high_share": 0.23,
-   "R4_any_alert_share": 0.23
+   "R4_high_share": 0.0,
+   "R4_any_alert_share": 0.0
   },
   "12": {
    "median_heat_index_f": 82.0,
    "R2_alert_share": 0.0,
-   "R4_high_share": 0.52,
-   "R4_any_alert_share": 0.52
+   "R4_high_share": 0.0,
+   "R4_any_alert_share": 0.0
   }
  },
  "Ruwais": {
@@ -157,20 +157,20 @@
   "2": {
    "median_heat_index_f": 73.4,
    "R2_alert_share": 0.07,
-   "R4_high_share": 0.11,
-   "R4_any_alert_share": 0.11
+   "R4_high_share": 0.0,
+   "R4_any_alert_share": 0.0
   },
   "3": {
    "median_heat_index_f": 80.2,
    "R2_alert_share": 0.19,
-   "R4_high_share": 0.32,
-   "R4_any_alert_share": 0.35
+   "R4_high_share": 0.0,
+   "R4_any_alert_share": 0.0
   },
   "4": {
    "median_heat_index_f": 94.8,
    "R2_alert_share": 0.5,
-   "R4_high_share": 0.73,
-   "R4_any_alert_share": 0.73
+   "R4_high_share": 0.0,
+   "R4_any_alert_share": 0.0
   },
   "5": {
    "median_heat_index_f": 101.4,
@@ -199,26 +199,26 @@
   "9": {
    "median_heat_index_f": 115.6,
    "R2_alert_share": 1.0,
-   "R4_high_share": 0.73,
-   "R4_any_alert_share": 0.73
+   "R4_high_share": 0.67,
+   "R4_any_alert_share": 0.67
   },
   "10": {
    "median_heat_index_f": 97.4,
    "R2_alert_share": 0.68,
-   "R4_high_share": 0.29,
-   "R4_any_alert_share": 0.29
+   "R4_high_share": 0.0,
+   "R4_any_alert_share": 0.0
   },
   "11": {
    "median_heat_index_f": 84.7,
    "R2_alert_share": 0.0,
-   "R4_high_share": 0.2,
-   "R4_any_alert_share": 0.2
+   "R4_high_share": 0.0,
+   "R4_any_alert_share": 0.0
   },
   "12": {
    "median_heat_index_f": 81.0,
    "R2_alert_share": 0.0,
-   "R4_high_share": 0.52,
-   "R4_any_alert_share": 0.52
+   "R4_high_share": 0.0,
+   "R4_any_alert_share": 0.0
   }
  },
  "Al Ain": {
@@ -231,20 +231,20 @@
   "2": {
    "median_heat_index_f": 80.9,
    "R2_alert_share": 0.0,
-   "R4_high_share": 0.5,
-   "R4_any_alert_share": 0.5
+   "R4_high_share": 0.0,
+   "R4_any_alert_share": 0.0
   },
   "3": {
    "median_heat_index_f": 86.1,
    "R2_alert_share": 0.03,
-   "R4_high_share": 0.45,
-   "R4_any_alert_share": 0.52
+   "R4_high_share": 0.0,
+   "R4_any_alert_share": 0.0
   },
   "4": {
    "median_heat_index_f": 95.8,
    "R2_alert_share": 0.53,
-   "R4_high_share": 0.73,
-   "R4_any_alert_share": 0.77
+   "R4_high_share": 0.0,
+   "R4_any_alert_share": 0.0
   },
   "5": {
    "median_heat_index_f": 102.5,
@@ -273,26 +273,26 @@
   "9": {
    "median_heat_index_f": 106.3,
    "R2_alert_share": 1.0,
-   "R4_high_share": 0.93,
-   "R4_any_alert_share": 0.93
+   "R4_high_share": 0.9,
+   "R4_any_alert_share": 0.9
   },
   "10": {
    "median_heat_index_f": 94.1,
    "R2_alert_share": 0.39,
-   "R4_high_share": 0.52,
-   "R4_any_alert_share": 0.52
+   "R4_high_share": 0.0,
+   "R4_any_alert_share": 0.0
   },
   "11": {
    "median_heat_index_f": 85.5,
    "R2_alert_share": 0.0,
-   "R4_high_share": 0.3,
-   "R4_any_alert_share": 0.3
+   "R4_high_share": 0.0,
+   "R4_any_alert_share": 0.0
   },
   "12": {
    "median_heat_index_f": 80.6,
    "R2_alert_share": 0.0,
-   "R4_high_share": 0.52,
-   "R4_any_alert_share": 0.52
+   "R4_high_share": 0.0,
+   "R4_any_alert_share": 0.0
   }
  }
 }

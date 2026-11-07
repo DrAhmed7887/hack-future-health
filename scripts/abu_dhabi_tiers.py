@@ -43,7 +43,9 @@ def main() -> None:
     out = {}
     for key, (name, lat, lon) in ZONES.items():
         h = daily_max_heat_index(hourly(key, lat, lon))
-        a, p = anomaly(h), percentile_rank(h)
+        a = anomaly(h)
+        season = h[(h.index.month >= 5) & (h.index.month <= 9)]
+        p = percentile_rank(season).reindex(h.index)   # in-season percentiles, as tested (review MED 8)
         d = pd.DataFrame({"r2": r2_weather(h, a, p2), "r4": r4_tier(h, p, a, p4), "h": h})
         d = d[d.index.year == 2025]
         out[name] = {int(m): {"median_heat_index_f": round(float(g["h"].median()), 1),

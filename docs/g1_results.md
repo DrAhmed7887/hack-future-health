@@ -23,6 +23,7 @@ Of all 2,628 heat reports (2015–2025), 743 fall within 100 km of a region cent
 - 20 % of days missing at random: 983 days marked "insufficient data"; R2 sensitivity on the remaining days 86.5 %.
 - 3-day outage in each season's hottest week: 96 days "insufficient"; R2 sensitivity 85.3 %.
 - Workplace feed unavailable: R3 falls back to its weather terms, 69.3 %.
+- Caveat (code review, 7 Nov): the two missing-data reruns recomputed the anomaly within May–Sep, so early-May days lost their April baseline even when not missing. The reported change therefore mixes missing data with a shorter baseline.
 
 ## Per region (R2 event days caught / event days, alert share)
 DFW 57/64 (59 %) · Houston 41/43 (71 %) · Jacksonville 9/14 (47 %) · Kansas City 8/13 (26 %) · Oklahoma City 4/6 (41 %) · Orlando 28/32 (58 %) · San Antonio 10/10 (72 %) · Tampa 36/43 (60 %). Regions with < 10 event days are too small to estimate.

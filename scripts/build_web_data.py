@@ -30,7 +30,9 @@ def peak_hour(df: pd.DataFrame) -> pd.Series:
 
 def day_rows(df: pd.DataFrame, rp: RelParams, keep) -> list[dict]:
     h = daily_max_heat_index(df)
-    a, p = anomaly(h), percentile_rank(h)
+    a = anomaly(h)                                   # full-year series, as in the back-test
+    in_season = h[(h.index.month >= SEASON[0]) & (h.index.month <= SEASON[1])]
+    p = percentile_rank(in_season).reindex(h.index)  # percentiles over May-Sep only, as in the back-test (review MED 8)
     tier = r4_tier(h, p, a, rp)
     tmax = df["temp_c"].groupby(df.index.normalize()).max()
     ph = peak_hour(df)
@@ -55,7 +57,7 @@ def main() -> None:
     ref = {}
     for key, (name, lat, lon) in ZONES.items():
         h = daily_max_heat_index(hourly(key, lat, lon))
-        h = h[(h.index.year >= 2015) & (h.index.year <= 2021)].dropna()
+        h = h[(h.index.year >= 2015) & (h.index.year <= 2021) & (h.index.month >= SEASON[0]) & (h.index.month <= SEASON[1])].dropna()
         ref[key] = {d.strftime("%Y-%m-%d"): round(float(v), 2) for d, v in h.items()}
     (WEB / "reference.json").write_text(json.dumps(ref))
     ho = json.loads((ROOT / "results" / "holdout_results.json").read_text())

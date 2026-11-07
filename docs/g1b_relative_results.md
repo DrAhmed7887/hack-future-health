@@ -39,18 +39,20 @@ temperate ones — as expected (McAllen 7 vs 8, Fort Lauderdale 19 vs 25; Philad
 Pooled difference within ±10 points — as expected (+8.1), CI wide.
 
 ## Abu Dhabi (descriptive; no outcome data exists; `results/abu_dhabi_tiers.json`)
-Share of 2025 days with any alert, R2 absolute → R4 relative (each zone's own 2015–2021 climatology):
+Share of 2025 days with any alert, R2 absolute → R4 relative (each zone's own May–Sep 2015–2021 climatology, the same
+in-season percentile definition as the back-test):
 
-| Zone | May | Jun | Jul | Aug | Sep | Dec |
-|---|---|---|---|---|---|---|
-| Mussafah | 94 → 74 % | 100 → 30 % | 100 → 48 % | 100 → 26 % | 100 → 70 % | 0 → 55 % |
-| Abu Dhabi city | 87 → 68 % | 100 → 27 % | 100 → 55 % | 100 → 52 % | 100 → 83 % | 0 → 52 % |
-| Ruwais | 81 → 55 % | 97 → 20 % | 100 → 32 % | 100 → 65 % | 100 → 73 % | 0 → 52 % |
-| Al Ain | 94 → 77 % | 100 → 50 % | 100 → 58 % | 100 → 84 % | 100 → 93 % | 0 → 52 % |
+| Zone | May | Jun | Jul | Aug | Sep |
+|---|---|---|---|---|---|
+| Mussafah | 94 → 74 % | 100 → 30 % | 100 → 48 % | 100 → 26 % | 100 → 67 % |
+| Abu Dhabi city | 87 → 68 % | 100 → 27 % | 100 → 55 % | 100 → 52 % | 100 → 80 % |
+| Ruwais | 81 → 55 % | 97 → 20 % | 100 → 32 % | 100 → 65 % | 100 → 67 % |
+| Al Ain | 94 → 77 % | 100 → 50 % | 100 → 58 % | 100 → 84 % | 100 → 90 % |
 
-- In summer the relative rule separates days again (20–93 % instead of 100 %).
-- **Outside the tested season it misbehaves:** about half of December days alert, because the 80 °F floor is low and
-  percentiles are relative to winter. Both back-tests only covered May–September, so the validated season is May–September.
+- In summer the relative rule separates days again (20–90 % instead of 100 %).
+- Outside May–September the model issues no tiers (Ahmed's decision, 7 Nov). An earlier version of this table computed
+  percentiles over the whole year and showed about half of December days alerting; that definition was never tested and is
+  not deployed (code review, 7 Nov: deployment now uses the tested in-season definition).
 
 ## Evidence for location-relative thresholds (`docs/evidence_relative_thresholds.md`; three quotes re-checked on PubMed 7 Nov)
 - Anderson & Bell 2009 (PMID 19194300), 107 US communities: larger heterogeneity for absolute than for percentile-based

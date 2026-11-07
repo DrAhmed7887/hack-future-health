@@ -178,7 +178,7 @@ that only exists after the re-render (`:checked`, the h1 text), never on a fixed
 
 ## 5. Open questions for Ahmed
 
-1. **G1, rounding (blocking for S4, S6, S12).** The Evidence screen rounds what the README states to one decimal. The screen shows
+1. **RESOLVED 7 Nov (commit ce934ab): the Evidence screen now shows 79.1 % (69.6 % to 87.9 %) and −11.6 (−17.7 to −5.8), matching the README; overlays can copy the screen.** Original note: **G1, rounding (blocking for S4, S6, S12).** The Evidence screen rounds what the README states to one decimal. The screen shows
    79 % "(95% interval 70% to 88%)", where the README has 79.1 % (69.6–87.9). It shows "12 percentage points fewer … difference -12,
    95% interval -18 to -6", where the README has −11.6 (−17.7 to −5.8). With README overlays beside the app in the same frame, a
    viewer sees two different numbers. My recommendation is to show one decimal for these figures in the `trust()` view before

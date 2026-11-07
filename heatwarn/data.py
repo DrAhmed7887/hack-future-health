@@ -7,6 +7,7 @@ from __future__ import annotations
 import csv
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 
 from heatwarn.regions import REGIONS, assign_region
@@ -19,7 +20,7 @@ HEAT_EVENT_CODES = {"531", "5310", "5311", "5312"}  # OIICS: exposure to environ
 SEASON = (5, 9)  # May-September
 
 
-def load_osha_heat(last_year: int, path: Path = OSHA_CSV) -> tuple[pd.DataFrame, dict]:
+def load_osha_heat(last_year: int, path: Path = OSHA_CSV, regions=REGIONS) -> tuple[pd.DataFrame, dict]:
     csv.field_size_limit(10**9)
     rows, stats = [], {"heat_reports": 0, "no_latlon": 0, "outside_regions": 0}
     with path.open(encoding="latin-1", newline="") as f:
@@ -33,7 +34,7 @@ def load_osha_heat(last_year: int, path: Path = OSHA_CSV) -> tuple[pd.DataFrame,
             if not (r["Latitude"] and r["Longitude"]):
                 stats["no_latlon"] += 1
                 continue
-            region = assign_region(float(r["Latitude"]), float(r["Longitude"]))
+            region = assign_region(float(r["Latitude"]), float(r["Longitude"]), regions=regions)
             if region is None:
                 stats["outside_regions"] += 1
                 continue
@@ -62,10 +63,10 @@ def load_daily_heat(key: str, last_year: int) -> pd.Series:
     return daily_max_heat_index(w)
 
 
-def build_frame(last_year: int) -> tuple[pd.DataFrame, dict]:
-    reports, stats = load_osha_heat(last_year)
+def build_frame(last_year: int, regions=REGIONS) -> tuple[pd.DataFrame, dict]:
+    reports, stats = load_osha_heat(last_year, regions=regions)
     parts = []
-    for reg in REGIONS:
+    for reg in regions:
         h = load_daily_heat(reg.key, last_year)
         idx = pd.date_range(h.index.min(), h.index.max(), freq="D")
         h = h.reindex(idx)
@@ -78,5 +79,19 @@ def build_frame(last_year: int) -> tuple[pd.DataFrame, dict]:
         parts.append(df[(df.index.month >= SEASON[0]) & (df.index.month <= SEASON[1])])
     frame = pd.concat(parts)
     frame.index.name = "date"
+    from heatwarn.relative import percentile_rank  # local import avoids a cycle
+    frame["p"] = np.nan
+    for pos in frame.groupby("region", sort=False).indices.values():
+        frame.iloc[pos, frame.columns.get_loc("p")] = percentile_rank(frame["h"].iloc[pos]).to_numpy()
     stats["assigned_reports"] = int(frame["reports"].sum())
     return frame, stats
+
+
+def holdout_regions():
+    """Holdout regions selected by scripts/select_new_regions.py (results/holdout_regions.json)."""
+    import json
+    from heatwarn.regions import Region
+    rows = json.loads((ROOT / "results" / "holdout_regions.json").read_text())
+    tz = {"Louisiana": "America/Chicago", "Texas": "America/Chicago"}
+    return tuple(Region(r["key"], r["name"], r["lat"], r["lon"], tz.get(r["name"].split(", ")[-1], "America/New_York"))
+                 for r in rows)

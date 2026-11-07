@@ -51,3 +51,9 @@ total. Confidence intervals will be wide; a null difference is likely uninformat
 - A day hotter than every reference value gets P = 100; colder than all gets P = 0.
 - H below 80 °F never alerts, whatever P is.
 - Tuning still refuses rows with year ≥ 2022.
+
+## Amendment 1 (7 Nov 2026, after training-only tuning, before any holdout weather was fetched)
+The pre-registered grid's loosest point (p_high 80, p_low 60, a 3) alerted on 2,508 training days, 65 % of the 3,856-day
+budget, so R4 could not be compared with R2 at a similar alert load (training sensitivity 50.4 %). Grid widened to
+p_high ∈ {50, 60, 70, 80, 85, 90, 95}, p_low ∈ {30, 40, 50, 60, 70, 80} (p_low < p_high), a unchanged. Selection rule,
+budget, endpoints and success criterion unchanged. Only 2015–2021 data of the original 8 regions informed this change.

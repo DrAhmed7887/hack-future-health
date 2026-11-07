@@ -1,0 +1,28 @@
+{
+  "params": {
+    "p_high": 60,
+    "p_low": 50,
+    "a": 3
+  },
+  "train": {
+    "days": 8568,
+    "insufficient": 0,
+    "event_days": 454,
+    "alert_days": 3672,
+    "tp": 306,
+    "fp": 3366,
+    "fn": 148,
+    "tn": 4748,
+    "sensitivity": 0.6740088105726872,
+    "reported_event_ppv": 0.08333333333333333,
+    "alert_fraction": 0.42857142857142855
+  },
+  "budget_alert_days": 3856.0,
+  "data": {
+    "heat_reports": 1747,
+    "no_latlon": 0,
+    "outside_regions": 1228,
+    "assigned_reports": 493
+  },
+  "r1_train_alert_days": 7712
+}

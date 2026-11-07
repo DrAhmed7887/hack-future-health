@@ -20,7 +20,7 @@ The regulator sees zones, never people. Nothing in the app clears anyone to work
 ## Why a new rule was needed
 
 A fixed heat trigger fails in both directions. The common US trigger (heat index ≥ 80 °F) alerted on **93 %** of summer days in
-the original 8 test regions and **82 %** in 6 unseen ones: an alert that rarely switches off. A threshold tuned on Texas and Florida would put **every Abu Dhabi day from
+the original 8 test regions and **82 %** in 6 unseen ones: an alert that rarely switches off. A threshold tuned on the 8 original US regions (Texas, Florida, Oklahoma, Missouri) would put **every Abu Dhabi day from
 June to September** in its top tier (`docs/g1_results.md`, transfer check). Heat-health research sets thresholds relative to
 local climate because people adapt to their usual heat (Anderson & Bell 2009, PMID 19194300; Gasparrini et al. 2015,
 PMID 26003380). So each zone gets thresholds from its own weather history.
@@ -37,7 +37,8 @@ Code: `heatwarn/relative.py`; frozen parameters `results/frozen_params_r4.json`.
 No public data on work-related heat illness exists for Abu Dhabi. The closest real record is **US federal OSHA's Severe Injury
 Reports**: 2,628 work-related heat hospitalisations, January 2015 to November 2025, with date and location. Each was matched to
 that day's weather. Rules were tuned on 2015–2021, committed, and scored once on later data. Every step was pre-registered
-(`docs/backtest_protocol.md`, `docs/protocol_v3_relative.md`), including expected results and one logged amendment.
+(`docs/backtest_protocol.md`, `docs/protocol_v3_relative.md`), including expected results and one logged amendment. One logged
+bug fix in the confidence-interval code led to a re-run with rules and point estimates unchanged (`docs/decisions.md`).
 
 **Transfer test: 6 US regions never used in tuning, 2022–2025** (86 days with a reported heat hospitalisation; `results/holdout_results.json`)
 
@@ -45,11 +46,11 @@ that day's weather. Rules were tuned on 2015–2021, committed, and scored once 
 |---|---|---|
 | Fixed heat index ≥ 80 °F | 98.8 % (95.8–100) | 82 % |
 | Calendar (15 Jun–15 Sep) | 76.7 % (65.8–86.0) | 61 % |
-| Fixed thresholds tuned in TX/FL | 70.9 % (57.1–82.1) | 40 % |
+| Fixed thresholds tuned on the 8 original regions | 70.9 % (57.1–82.1) | 40 % |
 | **Relative rule (this app)** | **79.1 % (69.6–87.9)** | **49 %** |
 
 - Alert load stayed in a **25-point band** across cool and hot cities (36–60 % of days) with the relative rule, against
-  **82 points** (7 % in Pittsburgh to 89 % in McAllen) with fixed thresholds. The pre-registered success criterion was met.
+  **82 points** (7 % in the Pittsburgh area to 89 % in McAllen) with fixed thresholds. The pre-registered success criterion was met.
 - The sensitivity gain over fixed thresholds (+8.1 points, 95 % CI −6.9 to +24.3) is **not statistically clear**.
 - Within the climates it was tuned on, fixed thresholds did better (training sensitivity 78.4 % vs 67.4 %).
 
@@ -61,8 +62,8 @@ The forecast ran warm, so it alerted on more days (59 % vs 51 %) and caught more
 ## What did not work
 
 We expected recent incident reports nearby to improve the alert, and pre-registered that test. A rule that also used them
-as a trigger, tuned to the same training alert budget, caught **11.6 points fewer** heat days than the weather-only rule
-(95 % CI −17.7 to −5.8) (`results/test_results.json`). This compares two separately tuned rules, not the reports' isolated
+as a trigger, tuned to the same training alert budget, caught **11.6 points fewer** heat days than the same rule without them
+(95 % CI −17.7 to −5.8) (`results/test_results.json`; the earlier fixed-threshold rule, 8 original regions, 2022–2025). This compares two separately tuned rules, not the reports' isolated
 value: spending part of the alert budget on "recent report" days left less for hot days. In the app the reports appear only
 as a prompt to check that workplace, never as a reason to raise the level.
 
@@ -83,8 +84,8 @@ ADPHC Code of Practice 11.0 and Technical Guideline "Safety in the Heat", v4.0, 
 
 ## Privacy and governance
 
-No worker names, health data or job histories are collected. Crew questions are yes / no / not sure ("not sure" counts as yes).
-The regulator view aggregates by zone and hides zones with fewer than 5 sites. Not for employment or disciplinary use.
+No worker names, health data or job histories are collected. Crew questions are yes / no / not sure ("not sure", or no answer, counts as yes).
+The regulator view aggregates by zone and hides site counts and incident notices for zones with fewer than 5 sites. Not for employment or disciplinary use.
 Sites, acknowledgements and incident notices in the demo are simulated and labelled.
 
 ## Data sources and licences
@@ -101,7 +102,7 @@ uv run pytest -q && node --test web/tests/logic.test.js
 uv run python scripts/fetch_weather.py && uv run python scripts/fetch_weather.py --holdout
 uv run python scripts/tune.py && uv run python scripts/score_test.py        # original regions
 uv run python scripts/tune_relative.py && uv run python scripts/score_holdout.py
-uv run python scripts/fetch_dayahead.py && uv run python scripts/score_dayahead.py
+uv run python scripts/fetch_dayahead.py && uv run python scripts/score_dayahead.py && uv run python scripts/score_dayahead_r4.py
 uv run python scripts/abu_dhabi_tiers.py && uv run python scripts/build_web_data.py
 python3 -m http.server 8765 --directory web
 ```

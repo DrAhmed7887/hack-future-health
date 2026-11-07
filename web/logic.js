@@ -26,7 +26,7 @@
       steps.push({ text: `Move heavy tasks away from the hottest hours${when}.`, owner: "Supervisor · when setting the shift plan" });
     }
     if (answeredYes(crew.newWorkers)) {
-      steps.push({ text: "New or returning workers: no more than 20% of the usual heat exposure on day 1, adding 20% a day.", owner: "Supervisor · NIOSH 2016 criteria document" });
+      steps.push({ text: "New or returning workers: no more than 20% of the usual heat exposure on day 1, adding 20% a day.", owner: "Supervisor · NIOSH 2016 schedule for new workers; using it for returning workers too is stricter than NIOSH" });
       steps.push({ text: "No unacclimatised worker in medium or high risk heat work.", owner: "Supervisor · ADPHC Technical Guideline, Safety in the Heat" });
     }
     if (!steps.length) steps.push({ text: inSeason ? "No extra steps from the forecast." : "No forecast-based steps outside May to September.", owner: "" });

@@ -11,7 +11,7 @@
   </defs>
   <rect width="1080" height="1350" fill="#fff"/>
   <text x="40" y="92" class="t" font-size="64">How Heat Shift Planner works</text>
-  <text x="40" y="148" class="b m" font-size="36">Every evening at 18:00, for each Abu Dhabi zone</text>
+  <text x="40" y="148" class="b m" font-size="36">Scheduled each evening at 18:00, per Abu Dhabi zone</text>
 
   <rect x="40" y="190" width="1000" height="140" class="box"/>
   <text x="70" y="250" class="t" font-size="46">Tomorrow's forecast</text>

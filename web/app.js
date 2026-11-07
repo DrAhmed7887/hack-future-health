@@ -106,7 +106,7 @@ const VIEWS = {
     if (!day) return `${zoneBar()}<h1>No data for this day</h1><p>Use the law and the always-on protections.</p>${legalBlock({ date: state.replayDate || HeatLogic.dubaiDate(new Date(), 1) })}`;
     const t = TIERS[day.tier] || TIERS["Insufficient data"];
     const when = state.replayDate ? "That day" : `${day.when || "Tomorrow"}, ${esc(fmtDate(day.date))}`;
-    const issued = state.replayDate ? "Real weather for that day (ERA5 reanalysis)." : `Forecast issued ${esc(DATA.live.generated_utc)} UTC. Updates daily at 18:00.`;
+    const issued = state.replayDate ? "Real weather for that day (ERA5 reanalysis)." : `Forecast issued ${esc(DATA.live.generated_utc)} UTC. Next update scheduled for 18:00 Abu Dhabi time.`;
     const off = day.tier === "Outside tested season" && !state.replayDate ? `<p><a href="#replay">Replay a real summer day</a> to see how alerts work.</p>` : "";
     return `${zoneBar()}
       <section class="tier ${t.cls}" aria-live="polite"><p class="small">${when}</p><p class="word">${t.word}</p><p class="what">${t.what}</p></section>
@@ -126,7 +126,7 @@ const VIEWS = {
       <p>Two answers. No names are collected.</p>
       ${q("newWorkers", "Does the crew include new or returning workers?", "New: in their first 5 days. Returning: back after more than 14 days away.")}
       ${q("heavy", "Is heavy outdoor work planned?", "For example a concrete pour, manual lifting or digging.")}
-      <p class="small">"Not sure" is treated as yes.</p>
+      <p class="small">"Not sure", or no answer, is treated as yes.</p>
       ${cta("#plan", "See the plan", `<a class="btn secondary" href="#home">Back</a>`)}`;
   },
   plan() {
@@ -147,8 +147,8 @@ const VIEWS = {
     const t = TIERS[tier] || TIERS["Insufficient data"];
     const note = raised ? `<p class="status">Raised one level from ${esc(day.tier === "Insufficient data" ? "Elevated" : day.tier)} because the crew may include new or returning workers. This is our rule, based on guidelines, not tested on outcomes.</p>` : "";
     const ack = state.ackAt
-      ? `<div class="ack" role="status"><strong>Plan acknowledged at ${esc(state.ackAt)}.</strong><p>Plans not acknowledged by 06:30 go to the OSH practitioner. Next forecast: tomorrow at 18:00.</p></div>`
-      : `<p class="small">Plans not acknowledged by 06:30 go to the OSH practitioner.</p>`;
+      ? `<div class="ack" role="status"><strong>Plan acknowledged at ${esc(state.ackAt)}.</strong><p>Plans not acknowledged by 06:30 would go to the OSH practitioner (this demo sends nothing). Next forecast scheduled for 18:00 Abu Dhabi time.</p></div>`
+      : `<p class="small">Plans not acknowledged by 06:30 would go to the OSH practitioner (this demo sends nothing).</p>`;
     return `${zoneBar()}<h1>${state.replayDate ? "The plan for that day" : "Tomorrow's plan"}</h1>
       <section class="tier ${t.cls}"><p class="word">${t.word}</p></section>${note}
       <section class="layer law"><h2>Required by law</h2><ul class="actions">${law}</ul></section>
@@ -160,17 +160,17 @@ const VIEWS = {
   trust() {
     const e = DATA.evidence, h = e.holdout;
     return `<h1>How was this tested?</h1>
-      <p>There is no public data on heat illness at work in Abu Dhabi. So the rule was tested on the closest real record we could find: every work-related heat hospitalisation reported to US federal OSHA from 2015 to 2025 (${e.reports_total.toLocaleString()} reports), matched with the weather on that day.</p>
+      <p>There is no public data on heat illness at work in Abu Dhabi. So the rule was tested on the closest real record we could find: the work-related heat hospitalisations reported to US federal OSHA from January 2015 to November 2025 (${e.reports_total.toLocaleString()} reports), matched with the weather on that day.</p>
       <div class="facts">
         <div><span class="big">${pct(h.r4_sensitivity)}</span><p>of days with a reported heat hospitalisation got an alert, in ${h.regions} US regions the rule had never seen (${h.event_days} such days; 95% interval ${pct(h.r4_ci[0])} to ${pct(h.r4_ci[1])}). It alerted on ${pct(h.r4_alert_share)} of days.</p></div>
-        <div><span class="big">${pct(e.fixed_80f_alert_share)}</span><p>of days in the same unseen regions would get an alert under the common fixed trigger (heat index 80 °F). An alert that rarely switches off gets ignored.</p></div>
+        <div><span class="big">${pct(e.fixed_80f_alert_share)}</span><p>of days in the same unseen regions would get an alert under the common fixed trigger (heat index 80 °F). An alert that rarely switches off is easy to ignore.</p></div>
         <div><span class="big">${Math.round(h.spread_r4 * 100)} vs ${Math.round(h.spread_r2 * 100)}</span><p>points of spread in alert load between cool and hot cities: thresholds set from each place's own climate, against fixed thresholds.</p></div>
         <div><span class="big">${pct(e.dayahead_same_decision)}</span><p>of days got the same decision from the forecast made the evening before as from the weather that actually happened (8 US regions, 2024 to 2025). The forecast ran warm, so it alerted on more days (${pct(e.dayahead_alert_share)} against ${pct(e.observed_alert_share_same_days)}).</p></div>
       </div>
       <h2>What did not work</h2>
-      <p>We expected recent incident reports nearby to improve the alert. A rule that also used them as a trigger, tuned to the same alert budget, caught ${Math.abs(Math.round(e.workplace_trigger.r3_minus_r2 * 100))} percentage points ${e.workplace_trigger.r3_minus_r2 < 0 ? "fewer" : "more"} heat days than the weather-only rule (difference ${Math.round(e.workplace_trigger.r3_minus_r2 * 100)}, 95% interval ${Math.round(e.workplace_trigger.ci[0] * 100)} to ${Math.round(e.workplace_trigger.ci[1] * 100)}). So here they are a prompt to check that workplace, not a reason to raise the alert.</p>
+      <p>We expected recent incident reports nearby to improve the alert. A rule that also used them as a trigger, tuned to the same training alert budget, caught ${Math.abs(Math.round(e.workplace_trigger.r3_minus_r2 * 100))} percentage points ${e.workplace_trigger.r3_minus_r2 < 0 ? "fewer" : "more"} heat days than the same rule without them (an earlier fixed-threshold rule, 8 US regions, 2022 to 2025; difference ${Math.round(e.workplace_trigger.r3_minus_r2 * 100)}, 95% interval ${Math.round(e.workplace_trigger.ci[0] * 100)} to ${Math.round(e.workplace_trigger.ci[1] * 100)}). So here they are a prompt to check that workplace, not a reason to raise the alert.</p>
       <h2>Limits</h2>
-      <p>US data, reported cases only, and most cases go unreported. Not validated on Abu Dhabi outcomes. Tested for May to September only. It does not calculate the Thermal Work Limit. The heat index is used only to rank days: the US weather service says its formula "is not valid for extreme temperature and relative humidity conditions", which Abu Dhabi summers often reach. The crew rules come from guidelines and were not tested. It is decision support for supervisors, not a diagnosis, and never a clearance to work.</p>
+      <p>US data, reported cases only, and most cases go unreported. Not validated on Abu Dhabi outcomes. Tested for May to September only. It does not calculate the Thermal Work Limit. The heat index is used only to rank days: the US weather service says its formula "is not valid for extreme temperature and relative humidity conditions", conditions Abu Dhabi summers can reach. The crew rules come from guidelines and were not tested. It is decision support for supervisors, not a diagnosis, and never a clearance to work.</p>
       ${cta("#home", "Back to the plan")}`;
   },
   replay() {

@@ -61,8 +61,8 @@
 
   <rect x="1200" y="480" width="360" height="150" class="box"/>
   <text x="1222" y="530" class="t" font-size="34">Regulator view</text>
-  <text x="1222" y="570" class="b m" font-size="24">Zones only, small</text>
-  <text x="1222" y="598" class="b m" font-size="24">zones hidden</text>
+  <text x="1222" y="570" class="b m" font-size="24">Zones only; site counts</text>
+  <text x="1222" y="598" class="b m" font-size="24">hidden below 5 sites</text>
 
   <!-- arrows -->
   <path d="M440,245 L516,228" class="ln"/>

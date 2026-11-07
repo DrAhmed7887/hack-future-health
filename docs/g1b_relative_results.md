@@ -30,7 +30,7 @@ R4 67.4 % sensitivity at 43 % alert days vs R2 78.4 % at 45 %. **Within the clim
 | Pittsburgh area | 1/8 (7 %) | 7/8 (36 %) |
 | Atlanta area | 7/13 (18 %) | 9/13 (45 %) |
 
-What it means: absolute thresholds tuned in Texas/Florida go almost silent in cooler cities (Pittsburgh 1 of 8 event days)
+What it means: absolute thresholds tuned on the 8 original regions (Texas, Florida, Oklahoma, Missouri) go almost silent in cooler cities (Pittsburgh 1 of 8 event days)
 and fire almost daily in the hottest (McAllen 89 %). The relative rule keeps alert load in a similar band in every climate
 and still caught 79 % of reported event days. Small numbers: 86 event days in total.
 

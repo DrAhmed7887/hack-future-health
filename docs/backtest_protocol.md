@@ -12,7 +12,7 @@ better than the fixed rules used today, and with how many false alarms?
 |---|---|---|---|
 | Outcome: work-related heat hospitalisations | OSHA Severe Injury Reports, 1 Jan 2015 – 30 Nov 2025 (`January2015toNovember2025.zip`, sha256 a3f7f434…bb0, downloaded 7 Nov 2026) | Workplace incident | OIICS event codes 531/5310/5311/5312 "Exposure to environmental heat": 2,628 reports, 2,627 with lat/lon (2 decimals). Federal-OSHA states only (state-plan states such as CA, AZ, WA are missing). Only severe cases (hospitalisation), under-reported. Employer names are public; no worker names. We use date + location + code only and publish aggregates. |
 | Environment (observed) | Open-Meteo Historical Weather API (ERA5 reanalysis) | Environmental | Daily max temperature, apparent temperature, wet-bulb max, humidity, shortwave radiation. Checked 7 Nov: Houston 2015-05-01→2025-09-30 returns 3,806 days. |
-| Environment (as forecast at the time) | Open-Meteo Historical Forecast API | Environmental | Archived forecasts: used for the honest lead-time test (what the system would have known the evening before). Start date of the archive: **to confirm**. |
+| Environment (as forecast at the time) | Open-Meteo Historical Forecast API | Environmental | Archived forecasts: used for the honest lead-time test (what the system would have known the evening before). Checked 7 Nov (Houston): values returned for 1 Jul 2021, 2022 and 2023, null for 1 Jul 2016, so the archive covers the test years 2022–2025. |
 
 What this back-test cannot show: individual days-since-arrival (2 of 2,628 narratives mention it), Abu Dhabi performance (US data;
 recalibration needed), effect of the alert on behaviour.
@@ -32,8 +32,7 @@ recalibration needed), effect of the alert on behaviour.
 
 ## Split (fixed before scoring)
 - Tune any threshold or weight on **2015–2021** only.
-- Score once on **2022–2025** (locked). Archived forecasts are used on the test years if the archive covers them; otherwise ERA5
-  observed (and the lead time is then reported as "same-day, observed weather", not as a forecast lead time).
+- Score once on **2022–2025** (locked). Archived forecasts (covered, checked 7 Nov) are used on the test years; ERA5 observed weather is used for tuning on 2015–2021.
 
 ## Metrics (all from `scripts/backtest.py`, re-run after any change)
 - Sensitivity = event days alerted / event days.

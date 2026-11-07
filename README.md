@@ -2,9 +2,14 @@
 
 Future Health Digital Innovation Challenge (Abu Dhabi) · Challenge 06: Population and Workforce Health Early Warning.
 
+**Try it (no login): https://drahmed7887.github.io/hack-future-health/** · In November, tap "Replay a day" to see a real summer day:
+alerts run May to September only.
+
+![How Heat Shift Planner works](docs/workflow.png)
+
 The evening before a shift, a site supervisor in Abu Dhabi sees three things for tomorrow:
 1. **What the law already requires** (UAE midday break; the ADPHC rule that a heat stress programme applies at 35 °C or more).
-2. **Whether tomorrow is unusually hot for that place and time of year**, using a rule tested on real heat hospitalisations.
+2. **Whether tomorrow is hotter than most days for that place and time of year**, using a rule tested on real heat hospitalisations.
 3. **A plan for their crew**: new or returning workers and heavy work change the steps, each with an owner and a source.
 
 The regulator sees zones, never people. Nothing in the app clears anyone to work.

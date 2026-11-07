@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1350" viewBox="0 0 1080 1350">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="22" markerHeight="22" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1C2321"/></marker>
+    <style>
+      .t{font-family:'Barlow Condensed','Arial Narrow',Arial,sans-serif;font-weight:700;fill:#1C2321}
+      .b{font-family:'Atkinson Hyperlegible',Arial,sans-serif;fill:#1C2321}
+      .m{fill:#4E5A57} .w{fill:#fff}
+      .box{fill:#fff;stroke:#1C2321;stroke-width:4}
+      .ln{stroke:#1C2321;stroke-width:4;fill:none;marker-end:url(#ar)}
+    </style>
+  </defs>
+  <rect width="1080" height="1350" fill="#fff"/>
+  <text x="40" y="92" class="t" font-size="64">How Heat Shift Planner works</text>
+  <text x="40" y="148" class="b m" font-size="36">Every evening at 18:00, for each Abu Dhabi zone</text>
+
+  <rect x="40" y="190" width="1000" height="140" class="box"/>
+  <text x="70" y="250" class="t" font-size="46">Tomorrow's forecast</text>
+  <text x="70" y="302" class="b m" font-size="36">and this zone's own 2015 to 2021 weather</text>
+  <path d="M540,332 L540,368" class="ln"/>
+
+  <rect x="40" y="376" width="1000" height="140" class="box"/>
+  <text x="70" y="436" class="t" font-size="46">Rank tomorrow against local climate</text>
+  <text x="70" y="488" class="b m" font-size="36">How unusual for this place and date?</text>
+  <path d="M540,518 L540,554" class="ln"/>
+
+  <rect x="40" y="562" width="1000" height="140" fill="#fff" stroke="#B3261E" stroke-width="7"/>
+  <text x="70" y="622" class="t" font-size="46">Frozen rule, signed by a physician</text>
+  <text x="70" y="674" class="b" font-size="36">High, Elevated or no extra steps · May to Sep</text>
+  <path d="M540,704 L540,740" class="ln"/>
+
+  <rect x="40" y="748" width="1000" height="140" class="box"/>
+  <text x="70" y="808" class="t" font-size="46">Add the crew</text>
+  <text x="70" y="860" class="b m" font-size="36">New or returning workers? Heavy work?</text>
+  <path d="M540,890 L540,926" class="ln"/>
+
+  <rect x="40" y="934" width="1000" height="140" fill="#1D4E89"/>
+  <text x="70" y="994" class="t w" font-size="46">The supervisor's plan</text>
+  <text x="70" y="1046" class="b w" font-size="36">Law, always-on steps, crew steps, owners</text>
+
+  <rect x="40" y="1110" width="1000" height="200" fill="#E9ECEA"/>
+  <rect x="40" y="1110" width="16" height="200" fill="#F2B705"/>
+  <text x="84" y="1168" class="t" font-size="44">Tested on real outcomes</text>
+  <text x="84" y="1220" class="b" font-size="34">2,628 US work heat hospitalisations. In 6</text>
+  <text x="84" y="1266" class="b" font-size="34">unseen regions it caught 79% of case days.</text>
+</svg>

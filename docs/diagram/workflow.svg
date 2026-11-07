@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1C2321"/></marker>
+    <style>
+      .t{font-family:'Barlow Condensed','Arial Narrow',Arial,sans-serif;font-weight:700;fill:#1C2321}
+      .b{font-family:'Atkinson Hyperlegible',Arial,sans-serif;fill:#1C2321}
+      .m{fill:#4E5A57}
+      .w{fill:#fff}
+      .box{fill:#fff;stroke:#1C2321;stroke-width:3}
+      .ln{stroke:#1C2321;stroke-width:3;fill:none;marker-end:url(#ar)}
+    </style>
+  </defs>
+  <rect width="1600" height="900" fill="#FFFFFF"/>
+  <text x="40" y="66" class="t" font-size="46">How Heat Shift Planner works</text>
+  <text x="40" y="104" class="b m" font-size="25">Every evening at 18:00 Abu Dhabi time, for each work zone</text>
+
+  <!-- column labels -->
+  <text x="40" y="160" class="t m" font-size="28">In</text>
+  <text x="520" y="160" class="t m" font-size="28">Steps</text>
+  <text x="1200" y="160" class="t m" font-size="28">Out</text>
+
+  <!-- inputs -->
+  <rect x="40" y="180" width="400" height="130" class="box"/>
+  <text x="62" y="226" class="t" font-size="32">Tomorrow's forecast</text>
+  <text x="62" y="262" class="b m" font-size="24">Open-Meteo, run by</text>
+  <text x="62" y="290" class="b m" font-size="24">GitHub Actions daily</text>
+
+  <rect x="40" y="335" width="400" height="130" class="box"/>
+  <text x="62" y="381" class="t" font-size="32">This zone's own climate</text>
+  <text x="62" y="417" class="b m" font-size="24">ERA5, May to September</text>
+  <text x="62" y="445" class="b m" font-size="24">2015 to 2021</text>
+
+  <rect x="40" y="490" width="400" height="130" class="box"/>
+  <text x="62" y="536" class="t" font-size="32">Supervisor's answers</text>
+  <text x="62" y="572" class="b m" font-size="24">New or returning workers?</text>
+  <text x="62" y="600" class="b m" font-size="24">Heavy work planned?</text>
+
+  <!-- steps -->
+  <rect x="520" y="180" width="600" height="92" class="box"/>
+  <text x="542" y="222" class="t" font-size="32">1  Heat index for each hour</text>
+  <text x="542" y="258" class="b m" font-size="24">US weather service formula, daily peak</text>
+
+  <rect x="520" y="304" width="600" height="92" class="box"/>
+  <text x="542" y="344" class="t" font-size="32">2  Rank against local climate</text>
+  <text x="542" y="380" class="b m" font-size="24">Percentile for the date, plus change on 14 days</text>
+
+  <rect x="520" y="428" width="600" height="118" fill="#fff" stroke="#B3261E" stroke-width="5"/>
+  <text x="542" y="468" class="t" font-size="32">3  Frozen rule, signed by a physician</text>
+  <text x="542" y="503" class="b" font-size="24">High: hotter than 60% of local days</text>
+  <text x="542" y="531" class="b" font-size="24">Elevated: above 50% and rising · May to Sep only</text>
+
+  <rect x="520" y="578" width="600" height="92" class="box"/>
+  <text x="542" y="618" class="t" font-size="32">4  Build the plan</text>
+  <text x="542" y="654" class="b m" font-size="24">Law, always-on steps, crew steps (NIOSH, ADPHC)</text>
+
+  <!-- outputs -->
+  <rect x="1200" y="300" width="360" height="150" fill="#1D4E89"/>
+  <text x="1222" y="350" class="t w" font-size="34">Supervisor's plan</text>
+  <text x="1222" y="390" class="b w" font-size="24">Phone, owner per step,</text>
+  <text x="1222" y="418" class="b w" font-size="24">acknowledge by 06:30</text>
+
+  <rect x="1200" y="480" width="360" height="150" class="box"/>
+  <text x="1222" y="530" class="t" font-size="34">Regulator view</text>
+  <text x="1222" y="570" class="b m" font-size="24">Zones only, small</text>
+  <text x="1222" y="598" class="b m" font-size="24">zones hidden</text>
+
+  <!-- arrows -->
+  <path d="M440,245 L516,228" class="ln"/>
+  <path d="M440,400 L516,352" class="ln"/>
+  <path d="M440,555 L516,618" class="ln"/>
+  <path d="M820,274 L820,301" class="ln"/>
+  <path d="M820,398 L820,425" class="ln"/>
+  <path d="M820,548 L820,575" class="ln"/>
+  <path d="M1120,610 L1196,400" class="ln"/>
+  <path d="M1120,625 L1196,570" class="ln"/>
+
+  <!-- validation band -->
+  <rect x="40" y="700" width="1520" height="170" fill="#E9ECEA"/>
+  <rect x="40" y="700" width="14" height="170" fill="#F2B705"/>
+  <text x="76" y="746" class="t" font-size="32">How the rule was tested</text>
+  <text x="76" y="786" class="b" font-size="25">2,628 real work heat hospitalisations (US OSHA, 2015 to 2025) matched to that day's weather.</text>
+  <text x="76" y="820" class="b" font-size="25">Tuned on 2015 to 2021, scored once on 6 regions it had never seen: it caught 79% of case days</text>
+  <text x="76" y="854" class="b" font-size="25">while alerting on 36 to 60% of days in each region (fixed thresholds: 7 to 89%).</text>
+</svg>

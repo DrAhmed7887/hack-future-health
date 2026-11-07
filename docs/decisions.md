@@ -13,3 +13,4 @@
 - **7 Nov 2026:** Ahmed chose to test a relative rule. Pre-registered in `docs/protocol_v3_relative.md`; holdout regions selected by fixed rule (`results/holdout_regions.json`) before fetching their weather.
 - **7 Nov 2026:** protocol v3 amendment 1: R4 grid widened (pre-registered grid could not reach the alert budget on training data). Logged before holdout weather was fetched.
 - **7 Nov 2026:** Ahmed: model tiers only May–September (the tested season). Outside it, the app shows legal and baseline layers and 'outside tested season'; judges get a replay mode on real 2025 days.
+- **7 Nov 2026, G2:** Ahmed approved the user flow and screens (phone + laptop screenshots of the local build, commit 4238c28).

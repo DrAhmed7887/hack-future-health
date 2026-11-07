@@ -37,7 +37,7 @@ Rules for every screen: no green "safe to work"; no score without its reason; ev
   2. **Always on**: water (2 L every 2–3 h, ADPHC), shade, buddy system, symptoms → stop work, first aid, call emergency.
   3. **Because of tomorrow's tier and your crew** (guideline-based, not tested on outcomes): e.g. High + new workers →
      "New workers: 20 % of usual heat exposure on day 1, +20 % a day (NIOSH); no unacclimatised worker in high-risk work
-     (ADPHC TG)"; High + heavy work → "OSH practitioner site assessment before heavy work; move heavy tasks out of 11:00–16:00".
+     (ADPHC TG)"; High + heavy work → "OSH practitioner site assessment before heavy work; re-time heavy tasks away from the forecast's hottest hours (shown on the card)". No fixed clock window is claimed: none is sourced beyond the legal midday break.
   - Owner and deadline per action ("Supervisor, before 06:30").
 - Does: taps **"Acknowledge plan"**. Next: confirmation with "Unacknowledged plans escalate to the OSH practitioner at 06:30"
   and next review time (tomorrow 18:00).

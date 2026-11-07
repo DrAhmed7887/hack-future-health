@@ -1,0 +1,13 @@
+[project]
+name = "heatwarn"
+version = "0.1.0"
+description = "Regional early warning for work-related heat illness, back-tested on public US outcomes"
+requires-python = ">=3.11"
+dependencies = ["numpy>=2.0", "pandas>=2.2"]
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

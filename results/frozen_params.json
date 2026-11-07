@@ -1,0 +1,54 @@
+{
+  "r2": {
+    "params": {
+      "t_low": 85,
+      "t_high": 95,
+      "a": 9
+    },
+    "train": {
+      "days": 8568,
+      "insufficient": 0,
+      "event_days": 454,
+      "alert_days": 3853,
+      "tp": 356,
+      "fp": 3497,
+      "fn": 98,
+      "tn": 4617,
+      "sensitivity": 0.7841409691629956,
+      "reported_event_ppv": 0.09239553594601609,
+      "alert_fraction": 0.4496965452847806
+    }
+  },
+  "r3": {
+    "params": {
+      "t_low": 80,
+      "t_high": 100,
+      "a": 3
+    },
+    "train": {
+      "days": 8568,
+      "insufficient": 0,
+      "event_days": 454,
+      "alert_days": 3779,
+      "tp": 307,
+      "fp": 3472,
+      "fn": 147,
+      "tn": 4642,
+      "sensitivity": 0.6762114537444934,
+      "reported_event_ppv": 0.08123842286319131,
+      "alert_fraction": 0.4410597572362278
+    }
+  },
+  "budget_alert_days": 3856.0,
+  "data": {
+    "heat_reports": 1747,
+    "no_latlon": 0,
+    "outside_regions": 1228,
+    "assigned_reports": 493,
+    "region_days": 8568,
+    "years": [
+      2015,
+      2021
+    ]
+  }
+}

@@ -62,8 +62,8 @@ The forecast ran warm, so it alerted on more days (59 % vs 51 %) and caught more
 ## What did not work
 
 We expected recent incident reports nearby to improve the alert, and pre-registered that test. A rule that also used them
-as a trigger, tuned to the same training alert budget, caught **11.6 points fewer** heat days than the same rule without them
-(95 % CI −17.7 to −5.8) (`results/test_results.json`; the earlier fixed-threshold rule, 8 original regions, 2022–2025). This compares two separately tuned rules, not the reports' isolated
+as a trigger, tuned to the same training alert budget, caught **11.6 points fewer** heat days than a weather-only rule tuned separately
+(95 % CI −17.7 to −5.8) (`results/test_results.json`; earlier fixed-threshold rules, 8 original regions, 2022–2025). This compares two separately tuned rules, not the reports' isolated
 value: spending part of the alert budget on "recent report" days left less for hot days. In the app the reports appear only
 as a prompt to check that workplace, never as a reason to raise the level.
 

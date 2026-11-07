@@ -42,6 +42,20 @@ def load_osha_heat(last_year: int, path: Path = OSHA_CSV) -> tuple[pd.DataFrame,
     return pd.DataFrame(rows), stats
 
 
+def load_osha_heat_points(last_year: int, path: Path = OSHA_CSV) -> list[tuple[float, float, str, str]]:
+    """(lat, lon, city, state) of every located environmental-heat report up to last_year, any region."""
+    csv.field_size_limit(10**9)
+    out = []
+    with path.open(encoding="latin-1", newline="") as f:
+        for r in csv.DictReader(f):
+            if r["Event"].strip() not in HEAT_EVENT_CODES or not (r["Latitude"] and r["Longitude"]):
+                continue
+            if pd.to_datetime(r["EventDate"], format="%m/%d/%Y").year > last_year:
+                continue
+            out.append((float(r["Latitude"]), float(r["Longitude"]), r["City"], r["State"]))
+    return out
+
+
 def load_daily_heat(key: str, last_year: int) -> pd.Series:
     w = pd.read_csv(WEATHER_DIR / f"weather_{key}.csv", parse_dates=["time"], index_col="time")
     w = w[w.index.year <= last_year]

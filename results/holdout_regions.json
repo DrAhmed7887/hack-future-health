@@ -1,0 +1,44 @@
+[
+  {
+    "key": "h1",
+    "name": "New Orleans, Louisiana",
+    "lat": 29.96,
+    "lon": -90.08,
+    "train_reports": 17
+  },
+  {
+    "key": "h2",
+    "name": "Philadelphia, Pennsylvania",
+    "lat": 39.98,
+    "lon": -75.07,
+    "train_reports": 17
+  },
+  {
+    "key": "h3",
+    "name": "Mcallen, Texas",
+    "lat": 26.19,
+    "lon": -98.13,
+    "train_reports": 11
+  },
+  {
+    "key": "h4",
+    "name": "Fort Lauderdale, Florida",
+    "lat": 26.04,
+    "lon": -80.17,
+    "train_reports": 11
+  },
+  {
+    "key": "h5",
+    "name": "Braddock, Pennsylvania",
+    "lat": 40.44,
+    "lon": -79.92,
+    "train_reports": 11
+  },
+  {
+    "key": "h6",
+    "name": "Kennesaw, Georgia",
+    "lat": 33.94,
+    "lon": -84.48,
+    "train_reports": 10
+  }
+]

@@ -1,0 +1,637 @@
+{
+  "frozen_params": {
+    "r2": {
+      "t_low": 85,
+      "t_high": 95,
+      "a": 9
+    },
+    "r3": {
+      "t_low": 80,
+      "t_high": 100,
+      "a": 3
+    }
+  },
+  "data": {
+    "heat_reports": 2628,
+    "no_latlon": 1,
+    "outside_regions": 1846,
+    "assigned_reports": 743,
+    "test_region_days": 4896,
+    "test_event_days": 225,
+    "test_reports": 250,
+    "test_workers": 251.0
+  },
+  "rules": {
+    "R0 calendar": {
+      "days": 4896,
+      "insufficient": 0,
+      "event_days": 225,
+      "alert_days": 2976,
+      "tp": 186,
+      "fp": 2790,
+      "fn": 39,
+      "tn": 1881,
+      "sensitivity": 0.8266666666666667,
+      "reported_event_ppv": 0.0625,
+      "alert_fraction": 0.6078431372549019,
+      "sensitivity_95ci": [
+        0.7721463468798578,
+        0.8732438937421999
+      ],
+      "episodes": 32,
+      "longest_run_days": 93
+    },
+    "R1 heat index >= 80 F": {
+      "days": 4896,
+      "insufficient": 0,
+      "event_days": 225,
+      "alert_days": 4529,
+      "tp": 223,
+      "fp": 4306,
+      "fn": 2,
+      "tn": 365,
+      "sensitivity": 0.9911111111111112,
+      "reported_event_ppv": 0.0492382424376242,
+      "alert_fraction": 0.9250408496732027,
+      "sensitivity_95ci": [
+        0.977266196447231,
+        1.0
+      ],
+      "episodes": 165,
+      "longest_run_days": 153
+    },
+    "R2 weather": {
+      "days": 4896,
+      "insufficient": 0,
+      "event_days": 225,
+      "alert_days": 2657,
+      "tp": 193,
+      "fp": 2464,
+      "fn": 32,
+      "tn": 2207,
+      "sensitivity": 0.8577777777777778,
+      "reported_event_ppv": 0.07263831388784343,
+      "alert_fraction": 0.542687908496732,
+      "sensitivity_95ci": [
+        0.8009027777777777,
+        0.9029204509865331
+      ],
+      "episodes": 419,
+      "longest_run_days": 93
+    },
+    "R3 weather + workplace": {
+      "days": 4896,
+      "insufficient": 0,
+      "event_days": 225,
+      "alert_days": 2320,
+      "tp": 167,
+      "fp": 2153,
+      "fn": 58,
+      "tn": 2518,
+      "sensitivity": 0.7422222222222222,
+      "reported_event_ppv": 0.07198275862068966,
+      "alert_fraction": 0.4738562091503268,
+      "sensitivity_95ci": [
+        0.6758235485975213,
+        0.7992750929368029
+      ],
+      "episodes": 544,
+      "longest_run_days": 56
+    }
+  },
+  "primary_r3_minus_r2_sensitivity": {
+    "point": -0.11555555555555552,
+    "95ci": [
+      -0.17675141871592304,
+      -0.057795163112085594
+    ]
+  },
+  "per_region": {
+    "dfw": {
+      "R1 heat index >= 80 F": {
+        "days": 612,
+        "insufficient": 0,
+        "event_days": 64,
+        "alert_days": 577,
+        "tp": 63,
+        "fp": 514,
+        "fn": 1,
+        "tn": 34,
+        "sensitivity": 0.984375,
+        "reported_event_ppv": 0.10918544194107452,
+        "alert_fraction": 0.9428104575163399
+      },
+      "R2 weather": {
+        "days": 612,
+        "insufficient": 0,
+        "event_days": 64,
+        "alert_days": 364,
+        "tp": 57,
+        "fp": 307,
+        "fn": 7,
+        "tn": 241,
+        "sensitivity": 0.890625,
+        "reported_event_ppv": 0.1565934065934066,
+        "alert_fraction": 0.5947712418300654
+      },
+      "R3 weather + workplace": {
+        "days": 612,
+        "insufficient": 0,
+        "event_days": 64,
+        "alert_days": 384,
+        "tp": 52,
+        "fp": 332,
+        "fn": 12,
+        "tn": 216,
+        "sensitivity": 0.8125,
+        "reported_event_ppv": 0.13541666666666666,
+        "alert_fraction": 0.6274509803921569
+      }
+    },
+    "hou": {
+      "R1 heat index >= 80 F": {
+        "days": 612,
+        "insufficient": 0,
+        "event_days": 43,
+        "alert_days": 599,
+        "tp": 43,
+        "fp": 556,
+        "fn": 0,
+        "tn": 13,
+        "sensitivity": 1.0,
+        "reported_event_ppv": 0.07178631051752922,
+        "alert_fraction": 0.9787581699346405
+      },
+      "R2 weather": {
+        "days": 612,
+        "insufficient": 0,
+        "event_days": 43,
+        "alert_days": 437,
+        "tp": 41,
+        "fp": 396,
+        "fn": 2,
+        "tn": 173,
+        "sensitivity": 0.9534883720930233,
+        "reported_event_ppv": 0.09382151029748284,
+        "alert_fraction": 0.7140522875816994
+      },
+      "R3 weather + workplace": {
+        "days": 612,
+        "insufficient": 0,
+        "event_days": 43,
+        "alert_days": 348,
+        "tp": 36,
+        "fp": 312,
+        "fn": 7,
+        "tn": 257,
+        "sensitivity": 0.8372093023255814,
+        "reported_event_ppv": 0.10344827586206896,
+        "alert_fraction": 0.5686274509803921
+      }
+    },
+    "jax": {
+      "R1 heat index >= 80 F": {
+        "days": 612,
+        "insufficient": 0,
+        "event_days": 14,
+        "alert_days": 583,
+        "tp": 14,
+        "fp": 569,
+        "fn": 0,
+        "tn": 29,
+        "sensitivity": 1.0,
+        "reported_event_ppv": 0.024013722126929673,
+        "alert_fraction": 0.9526143790849673
+      },
+      "R2 weather": {
+        "days": 612,
+        "insufficient": 0,
+        "event_days": 14,
+        "alert_days": 290,
+        "tp": 9,
+        "fp": 281,
+        "fn": 5,
+        "tn": 317,
+        "sensitivity": 0.6428571428571429,
+        "reported_event_ppv": 0.03103448275862069,
+        "alert_fraction": 0.4738562091503268
+      },
+      "R3 weather + workplace": {
+        "days": 612,
+        "insufficient": 0,
+        "event_days": 14,
+        "alert_days": 249,
+        "tp": 8,
+        "fp": 241,
+        "fn": 6,
+        "tn": 357,
+        "sensitivity": 0.5714285714285714,
+        "reported_event_ppv": 0.0321285140562249,
+        "alert_fraction": 0.4068627450980392
+      }
+    },
+    "mkc": {
+      "R1 heat index >= 80 F": {
+        "days": 612,
+        "insufficient": 0,
+        "event_days": 13,
+        "alert_days": 437,
+        "tp": 12,
+        "fp": 425,
+        "fn": 1,
+        "tn": 174,
+        "sensitivity": 0.9230769230769231,
+        "reported_event_ppv": 0.02745995423340961,
+        "alert_fraction": 0.7140522875816994
+      },
+      "R2 weather": {
+        "days": 612,
+        "insufficient": 0,
+        "event_days": 13,
+        "alert_days": 157,
+        "tp": 8,
+        "fp": 149,
+        "fn": 5,
+        "tn": 450,
+        "sensitivity": 0.6153846153846154,
+        "reported_event_ppv": 0.050955414012738856,
+        "alert_fraction": 0.2565359477124183
+      },
+      "R3 weather + workplace": {
+        "days": 612,
+        "insufficient": 0,
+        "event_days": 13,
+        "alert_days": 230,
+        "tp": 10,
+        "fp": 220,
+        "fn": 3,
+        "tn": 379,
+        "sensitivity": 0.7692307692307693,
+        "reported_event_ppv": 0.043478260869565216,
+        "alert_fraction": 0.3758169934640523
+      }
+    },
+    "okc": {
+      "R1 heat index >= 80 F": {
+        "days": 612,
+        "insufficient": 0,
+        "event_days": 6,
+        "alert_days": 517,
+        "tp": 6,
+        "fp": 511,
+        "fn": 0,
+        "tn": 95,
+        "sensitivity": 1.0,
+        "reported_event_ppv": 0.01160541586073501,
+        "alert_fraction": 0.8447712418300654
+      },
+      "R2 weather": {
+        "days": 612,
+        "insufficient": 0,
+        "event_days": 6,
+        "alert_days": 248,
+        "tp": 4,
+        "fp": 244,
+        "fn": 2,
+        "tn": 362,
+        "sensitivity": 0.6666666666666666,
+        "reported_event_ppv": 0.016129032258064516,
+        "alert_fraction": 0.40522875816993464
+      },
+      "R3 weather + workplace": {
+        "days": 612,
+        "insufficient": 0,
+        "event_days": 6,
+        "alert_days": 283,
+        "tp": 5,
+        "fp": 278,
+        "fn": 1,
+        "tn": 328,
+        "sensitivity": 0.8333333333333334,
+        "reported_event_ppv": 0.0176678445229682,
+        "alert_fraction": 0.4624183006535948
+      }
+    },
+    "orl": {
+      "R1 heat index >= 80 F": {
+        "days": 612,
+        "insufficient": 0,
+        "event_days": 32,
+        "alert_days": 604,
+        "tp": 32,
+        "fp": 572,
+        "fn": 0,
+        "tn": 8,
+        "sensitivity": 1.0,
+        "reported_event_ppv": 0.052980132450331126,
+        "alert_fraction": 0.9869281045751634
+      },
+      "R2 weather": {
+        "days": 612,
+        "insufficient": 0,
+        "event_days": 32,
+        "alert_days": 358,
+        "tp": 28,
+        "fp": 330,
+        "fn": 4,
+        "tn": 250,
+        "sensitivity": 0.875,
+        "reported_event_ppv": 0.0782122905027933,
+        "alert_fraction": 0.5849673202614379
+      },
+      "R3 weather + workplace": {
+        "days": 612,
+        "insufficient": 0,
+        "event_days": 32,
+        "alert_days": 256,
+        "tp": 22,
+        "fp": 234,
+        "fn": 10,
+        "tn": 346,
+        "sensitivity": 0.6875,
+        "reported_event_ppv": 0.0859375,
+        "alert_fraction": 0.41830065359477125
+      }
+    },
+    "sat": {
+      "R1 heat index >= 80 F": {
+        "days": 612,
+        "insufficient": 0,
+        "event_days": 10,
+        "alert_days": 604,
+        "tp": 10,
+        "fp": 594,
+        "fn": 0,
+        "tn": 8,
+        "sensitivity": 1.0,
+        "reported_event_ppv": 0.016556291390728478,
+        "alert_fraction": 0.9869281045751634
+      },
+      "R2 weather": {
+        "days": 612,
+        "insufficient": 0,
+        "event_days": 10,
+        "alert_days": 438,
+        "tp": 10,
+        "fp": 428,
+        "fn": 0,
+        "tn": 174,
+        "sensitivity": 1.0,
+        "reported_event_ppv": 0.0228310502283105,
+        "alert_fraction": 0.7156862745098039
+      },
+      "R3 weather + workplace": {
+        "days": 612,
+        "insufficient": 0,
+        "event_days": 10,
+        "alert_days": 295,
+        "tp": 9,
+        "fp": 286,
+        "fn": 1,
+        "tn": 316,
+        "sensitivity": 0.9,
+        "reported_event_ppv": 0.030508474576271188,
+        "alert_fraction": 0.4820261437908497
+      }
+    },
+    "tpa": {
+      "R1 heat index >= 80 F": {
+        "days": 612,
+        "insufficient": 0,
+        "event_days": 43,
+        "alert_days": 608,
+        "tp": 43,
+        "fp": 565,
+        "fn": 0,
+        "tn": 4,
+        "sensitivity": 1.0,
+        "reported_event_ppv": 0.07072368421052631,
+        "alert_fraction": 0.9934640522875817
+      },
+      "R2 weather": {
+        "days": 612,
+        "insufficient": 0,
+        "event_days": 43,
+        "alert_days": 365,
+        "tp": 36,
+        "fp": 329,
+        "fn": 7,
+        "tn": 240,
+        "sensitivity": 0.8372093023255814,
+        "reported_event_ppv": 0.09863013698630137,
+        "alert_fraction": 0.5964052287581699
+      },
+      "R3 weather + workplace": {
+        "days": 612,
+        "insufficient": 0,
+        "event_days": 43,
+        "alert_days": 275,
+        "tp": 25,
+        "fp": 250,
+        "fn": 18,
+        "tn": 319,
+        "sensitivity": 0.5813953488372093,
+        "reported_event_ppv": 0.09090909090909091,
+        "alert_fraction": 0.4493464052287582
+      }
+    }
+  },
+  "subgroups": {
+    "construction (23)": {
+      "R1 heat index >= 80 F": {
+        "days": 4896,
+        "insufficient": 0,
+        "event_days": 60,
+        "alert_days": 4529,
+        "tp": 60,
+        "fp": 4469,
+        "fn": 0,
+        "tn": 367,
+        "sensitivity": 1.0,
+        "reported_event_ppv": 0.01324795760653566,
+        "alert_fraction": 0.9250408496732027
+      },
+      "R2 weather": {
+        "days": 4896,
+        "insufficient": 0,
+        "event_days": 60,
+        "alert_days": 2657,
+        "tp": 53,
+        "fp": 2604,
+        "fn": 7,
+        "tn": 2232,
+        "sensitivity": 0.8833333333333333,
+        "reported_event_ppv": 0.019947308995107264,
+        "alert_fraction": 0.542687908496732
+      },
+      "R3 weather + workplace": {
+        "days": 4896,
+        "insufficient": 0,
+        "event_days": 60,
+        "alert_days": 2320,
+        "tp": 50,
+        "fp": 2270,
+        "fn": 10,
+        "tn": 2566,
+        "sensitivity": 0.8333333333333334,
+        "reported_event_ppv": 0.021551724137931036,
+        "alert_fraction": 0.4738562091503268
+      }
+    },
+    "transport/warehousing (48-49)": {
+      "R1 heat index >= 80 F": {
+        "days": 4896,
+        "insufficient": 0,
+        "event_days": 52,
+        "alert_days": 4529,
+        "tp": 52,
+        "fp": 4477,
+        "fn": 0,
+        "tn": 367,
+        "sensitivity": 1.0,
+        "reported_event_ppv": 0.011481563258997572,
+        "alert_fraction": 0.9250408496732027
+      },
+      "R2 weather": {
+        "days": 4896,
+        "insufficient": 0,
+        "event_days": 52,
+        "alert_days": 2657,
+        "tp": 43,
+        "fp": 2614,
+        "fn": 9,
+        "tn": 2230,
+        "sensitivity": 0.8269230769230769,
+        "reported_event_ppv": 0.01618366578848325,
+        "alert_fraction": 0.542687908496732
+      },
+      "R3 weather + workplace": {
+        "days": 4896,
+        "insufficient": 0,
+        "event_days": 52,
+        "alert_days": 2320,
+        "tp": 35,
+        "fp": 2285,
+        "fn": 17,
+        "tn": 2559,
+        "sensitivity": 0.6730769230769231,
+        "reported_event_ppv": 0.015086206896551725,
+        "alert_fraction": 0.4738562091503268
+      }
+    },
+    "admin/waste services (56)": {
+      "R1 heat index >= 80 F": {
+        "days": 4896,
+        "insufficient": 0,
+        "event_days": 41,
+        "alert_days": 4529,
+        "tp": 40,
+        "fp": 4489,
+        "fn": 1,
+        "tn": 366,
+        "sensitivity": 0.975609756097561,
+        "reported_event_ppv": 0.00883197173769044,
+        "alert_fraction": 0.9250408496732027
+      },
+      "R2 weather": {
+        "days": 4896,
+        "insufficient": 0,
+        "event_days": 41,
+        "alert_days": 2657,
+        "tp": 37,
+        "fp": 2620,
+        "fn": 4,
+        "tn": 2235,
+        "sensitivity": 0.9024390243902439,
+        "reported_event_ppv": 0.013925479864508844,
+        "alert_fraction": 0.542687908496732
+      },
+      "R3 weather + workplace": {
+        "days": 4896,
+        "insufficient": 0,
+        "event_days": 41,
+        "alert_days": 2320,
+        "tp": 32,
+        "fp": 2288,
+        "fn": 9,
+        "tn": 2567,
+        "sensitivity": 0.7804878048780488,
+        "reported_event_ppv": 0.013793103448275862,
+        "alert_fraction": 0.4738562091503268
+      }
+    }
+  },
+  "missing_inputs": {
+    "20 % of days missing at random": {
+      "R2 weather": {
+        "days": 3913,
+        "insufficient": 983,
+        "event_days": 185,
+        "alert_days": 2107,
+        "tp": 159,
+        "fp": 1948,
+        "fn": 26,
+        "tn": 1780,
+        "sensitivity": 0.8594594594594595,
+        "reported_event_ppv": 0.07546274323682961,
+        "alert_fraction": 0.5384615384615384
+      },
+      "R3 weather + workplace": {
+        "days": 3913,
+        "insufficient": 983,
+        "event_days": 185,
+        "alert_days": 1658,
+        "tp": 132,
+        "fp": 1526,
+        "fn": 53,
+        "tn": 2202,
+        "sensitivity": 0.7135135135135136,
+        "reported_event_ppv": 0.07961399276236429,
+        "alert_fraction": 0.4237158190646563
+      }
+    },
+    "3-day outage in each season's hottest week": {
+      "R2 weather": {
+        "days": 4800,
+        "insufficient": 96,
+        "event_days": 211,
+        "alert_days": 2537,
+        "tp": 179,
+        "fp": 2358,
+        "fn": 32,
+        "tn": 2231,
+        "sensitivity": 0.8483412322274881,
+        "reported_event_ppv": 0.07055577453685455,
+        "alert_fraction": 0.5285416666666667
+      },
+      "R3 weather + workplace": {
+        "days": 4800,
+        "insufficient": 96,
+        "event_days": 211,
+        "alert_days": 2109,
+        "tp": 149,
+        "fp": 1960,
+        "fn": 62,
+        "tn": 2629,
+        "sensitivity": 0.7061611374407583,
+        "reported_event_ppv": 0.07064959696538643,
+        "alert_fraction": 0.439375
+      }
+    },
+    "workplace feed unavailable (R3 falls back)": {
+      "R3 weather + workplace": {
+        "days": 4896,
+        "insufficient": 0,
+        "event_days": 225,
+        "alert_days": 2089,
+        "tp": 156,
+        "fp": 1933,
+        "fn": 69,
+        "tn": 2738,
+        "sensitivity": 0.6933333333333334,
+        "reported_event_ppv": 0.07467687888942078,
+        "alert_fraction": 0.4266748366013072
+      }
+    }
+  }
+}

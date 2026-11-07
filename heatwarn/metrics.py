@@ -36,11 +36,12 @@ def episodes(alert: pd.Series) -> tuple[int, int]:
 def block_bootstrap(frame: pd.DataFrame, stat, reps: int = 2000, seed: int = 20261107) -> tuple[float, float]:
     """95 % percentile interval of stat(frame) resampling whole (region, season) blocks with replacement."""
     rng = np.random.default_rng(seed)
-    keys = list(frame.groupby(["region", frame.index.year]).groups.items())
+    # positional indices: dates repeat across regions, so label lookups would mix regions
+    blocks = list(frame.groupby(["region", frame.index.year]).indices.values())
     vals = []
     for _ in range(reps):
-        pick = rng.integers(0, len(keys), len(keys))
-        sample = pd.concat([frame.loc[keys[i][1]] for i in pick])
+        pick = rng.integers(0, len(blocks), len(blocks))
+        sample = frame.iloc[np.concatenate([blocks[i] for i in pick])]
         v = stat(sample)
         if not np.isnan(v):
             vals.append(v)

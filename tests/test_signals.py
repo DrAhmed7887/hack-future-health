@@ -91,3 +91,23 @@ def test_episodes():
     s = pd.Series([True, True, False, True, False, False, True, True, True])
     n, longest = episodes(s)
     assert (n, longest) == (3, 3)
+
+
+def test_block_bootstrap_resamples_whole_region_seasons_not_dates():
+    from heatwarn.metrics import block_bootstrap
+    idx = pd.date_range("2022-06-01", periods=10, freq="D")
+    frame = pd.concat([pd.DataFrame({"region": r, "x": 1.0}, index=idx) for r in ("a", "b", "c")])
+    lo, hi = block_bootstrap(frame, lambda s: float(len(s)), reps=50)
+    assert lo == hi == 30.0      # 3 blocks of 10 rows each, always 30 rows (dates are shared across regions)
+
+
+def test_recompute_anomaly_keeps_rows_aligned_per_region():
+    from heatwarn.signals import anomaly_by_block
+    idx = pd.date_range("2022-05-01", periods=20, freq="D")
+    a = pd.DataFrame({"region": "zz", "h": 80.0}, index=idx)
+    b = pd.DataFrame({"region": "aa", "h": 100.0}, index=idx)
+    frame = pd.concat([a, b])                 # region order not alphabetical, dates duplicated
+    frame.iloc[15, frame.columns.get_loc("h")] = 90.0
+    out = anomaly_by_block(frame)
+    assert out.iloc[15] == pytest.approx(10.0)   # region zz day 16: 90 - 80
+    assert out.iloc[35] == pytest.approx(0.0)    # region aa day 16: 100 - 100

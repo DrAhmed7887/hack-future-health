@@ -56,3 +56,15 @@ recalibration needed), effect of the alert on behaviour.
 - Humidity missing → falls back to dry-bulb tier with a "reduced confidence" label, never silently "low risk".
 - A report with lat/lon outside every region → not counted, and the excluded count is reported.
 - A region with fewer than **[SIGN] 5** events in the test years → shown, but with "too few events to estimate" instead of a percentage.
+
+## Sign-off sheet (proposed 7 Nov; sources in `docs/evidence_pack.md`, spot-checked: Arbury 2014 PMID 25102413 and Tustin 2018 PMID 29975679 match)
+| # | Criterion | Proposed | Source | Tested on real outcomes? |
+|---|---|---|---|---|
+| S1 | Back-test tiers (forecast daily max heat index) | Tier 1 "warning" ≥ 80 °F (26.7 °C); Tier 2 "danger" ≥ 95 °F (35 °C). Sensitivity check at 85 °F | OSHA NEP CPL 03-00-024 (2026) heat priority day; OSHA Heat Safety Tool bands; Tustin MMWR 2018 screen | Yes (2022–2025) |
+| S2 | Relative-heat (acclimatisation-loss) term | Day max minus mean of previous 14 days; cut-off **tuned on 2015–2021 only** and declared as tuned | Tustin 2018 ("early-season heat waves"); no sourced cut-off exists | Yes |
+| S3 | Abu Dhabi face of the app | Shows the heat-index tier **and** the ADPHC rule "any shift ≥ 35 °C → employer heat stress programme". TWL (Abu Dhabi's official index) shown as "not computed: needs globe temperature and a verified TWL algorithm" | ADOSH-SF CoP 11.0 v4.0 Sec 3.1.1(e); TG Safety in the Heat v4.0 | No (no Abu Dhabi outcomes) |
+| S4 | New / returning workers (days 1–5, or back after > 14 days away) | Raise the alert one tier; show the 20/40/60/80/100 % exposure schedule; "no unacclimatised person in TWL medium/high zones" | NIOSH 2016; Arbury 2014 (9/13 deaths in first 3 days); Tustin JOEM 2018 (73 % of fatal cases in week 1); ADPHC TG v4.0 | **No**: guideline rule, labelled so |
+| S5 | Actions and roles | Tier 1: water, shade, buddy system, supervisor checks (employer/supervisor). Tier 2: 15 min rest every 2 h minimum, heavy work moved out of 12:30–15:00, new workers off heavy outdoor tasks (employer + site OSH practitioner). Aggregate view for the regulator (ADPHC OSH) | OSHA NPRM 89 FR 70698; ADPHC CoP/TG; UAE midday break (15 Jun–15 Sep, 12:30–15:00) | No |
+| S6 | Regions and small numbers | 100 km circles; "too few events" below 5 events | — (design choice) | — |
+
+Honesty notes for every output: OSHA reports cover federal-OSHA states only and are heavily under-reported (Illinois linkage: 25.1 % of non-fatal illnesses reported), so **PPV is a lower bound and the false-alarm count an upper bound**. US data; Abu Dhabi needs recalibration.

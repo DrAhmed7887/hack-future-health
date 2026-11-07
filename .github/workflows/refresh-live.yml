@@ -1,0 +1,26 @@
+name: refresh-live-forecast
+on:
+  schedule:
+    - cron: "0 14 * * *"   # 18:00 Asia/Dubai, the evening-before alert time
+  workflow_dispatch: {}
+permissions:
+  contents: write
+concurrency:
+  group: refresh-live
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --frozen
+      - name: Build tomorrow's tiers (keeps the old file on failure)
+        run: uv run python scripts/refresh_live.py
+      - name: Commit live.json if it changed
+        run: |
+          git config user.name "heat-bot"
+          git config user.email "heat-bot@users.noreply.github.com"
+          git add web/data/live.json
+          git diff --cached --quiet || git commit -m "data: refresh live forecast" && git push

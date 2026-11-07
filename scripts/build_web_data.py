@@ -1,16 +1,13 @@
 """Build the JSON the web app reads (every number comes from a script; nothing typed into the UI by hand).
 
 web/data/replay.json  : Abu Dhabi zones, every day May-Sep 2025: heat index peak + hour, local percentile, anomaly, max temp, tier.
-web/data/live.json    : tomorrow per zone from the Open-Meteo forecast (past 14 days observed-model for the anomaly).
+web/data/reference.json: each zone's daily max heat index 2015-2021 (percentile reference for scripts/refresh_live.py).
 web/data/evidence.json: headline back-test numbers copied from results/*.json.
 """
 from __future__ import annotations
 
 import json
 import sys
-import urllib.parse
-import urllib.request
-from datetime import datetime, timezone
 from pathlib import Path
 
 import pandas as pd
@@ -49,28 +46,18 @@ def day_rows(df: pd.DataFrame, rp: RelParams, keep) -> list[dict]:
     return rows
 
 
-def live(rp: RelParams) -> dict:
-    out = {"generated_utc": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M"), "zones": {}}
-    for key, (name, lat, lon) in ZONES.items():
-        q = urllib.parse.urlencode({"latitude": lat, "longitude": lon, "hourly": "temperature_2m,relative_humidity_2m",
-                                    "past_days": 15, "forecast_days": 3, "timezone": "Asia/Dubai"})
-        h = json.load(urllib.request.urlopen(f"https://api.open-meteo.com/v1/forecast?{q}", timeout=60))["hourly"]
-        fc = pd.DataFrame({"temp_c": h["temperature_2m"], "rh": h["relative_humidity_2m"]}, index=pd.to_datetime(h["time"]))
-        hist = hourly(key, lat, lon)                       # 2015-2025 reference for percentiles
-        both = pd.concat([hist[hist.index < fc.index.min()], fc])
-        tomorrow = (pd.Timestamp.now(tz="Asia/Dubai").normalize() + pd.Timedelta(days=1)).tz_localize(None)
-        rows = day_rows(both, rp, keep=lambda d, t=tomorrow: d == t)
-        out["zones"][key] = {"name": name, **(rows[0] if rows else {"tier": "Insufficient data"})}
-    return out
-
-
 def main() -> None:
     rp = RelParams(**json.loads((ROOT / "results" / "frozen_params_r4.json").read_text())["params"])
     WEB.mkdir(parents=True, exist_ok=True)
     replay = {key: {"name": name, "days": day_rows(hourly(key, lat, lon), rp, keep=lambda d: d.year == 2025 and SEASON[0] <= d.month <= SEASON[1])}
               for key, (name, lat, lon) in ZONES.items()}
     (WEB / "replay.json").write_text(json.dumps(replay))
-    (WEB / "live.json").write_text(json.dumps(live(rp), indent=1))
+    ref = {}
+    for key, (name, lat, lon) in ZONES.items():
+        h = daily_max_heat_index(hourly(key, lat, lon))
+        h = h[(h.index.year >= 2015) & (h.index.year <= 2021)].dropna()
+        ref[key] = {d.strftime("%Y-%m-%d"): round(float(v), 2) for d, v in h.items()}
+    (WEB / "reference.json").write_text(json.dumps(ref))
     ho = json.loads((ROOT / "results" / "holdout_results.json").read_text())
     te = json.loads((ROOT / "results" / "test_results.json").read_text())
     da = json.loads((ROOT / "results" / "dayahead_results.json").read_text())
@@ -83,7 +70,6 @@ def main() -> None:
           "fixed_80f_alert_share": te["rules"]["R1 heat index >= 80 F"]["alert_fraction"],
           "dayahead_same_decision": da["same_decision_share"]}
     (WEB / "evidence.json").write_text(json.dumps(ev, indent=1))
-    print(json.dumps(json.loads((WEB / "live.json").read_text()), indent=1)[:900])
     print({k: len(v["days"]) for k, v in replay.items()})
 
 

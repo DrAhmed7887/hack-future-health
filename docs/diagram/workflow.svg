@@ -12,7 +12,7 @@
   </defs>
   <rect width="1600" height="900" fill="#FFFFFF"/>
   <text x="40" y="66" class="t" font-size="46">How Heat Shift Planner works</text>
-  <text x="40" y="104" class="b m" font-size="25">Every evening at 18:00 Abu Dhabi time, for each work zone</text>
+  <text x="40" y="104" class="b m" font-size="25">Every evening (scheduled 18:00 Abu Dhabi time), for each work zone</text>
 
   <!-- column labels -->
   <text x="40" y="160" class="t m" font-size="28">In</text>
@@ -45,7 +45,7 @@
   <text x="542" y="380" class="b m" font-size="24">Percentile for the date, plus change on 14 days</text>
 
   <rect x="520" y="428" width="600" height="118" fill="#fff" stroke="#B3261E" stroke-width="5"/>
-  <text x="542" y="468" class="t" font-size="32">3  Frozen rule, signed by a physician</text>
+  <text x="542" y="468" class="t" font-size="32">3  Frozen rule, tuned on 2015 to 2021</text>
   <text x="542" y="503" class="b" font-size="24">High: hotter than 60% of local days</text>
   <text x="542" y="531" class="b" font-size="24">Elevated: above 50% and rising · May to Sep only</text>
 

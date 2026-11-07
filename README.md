@@ -106,8 +106,9 @@ uv run python scripts/abu_dhabi_tiers.py && uv run python scripts/build_web_data
 python3 -m http.server 8765 --directory web
 ```
 
-The OSHA file goes in `data/raw/osha_sir/` (download from osha.gov/severe-injury-reports). The live forecast refreshes daily at
-18:00 Abu Dhabi time (`.github/workflows/refresh-live.yml`).
+The OSHA file goes in `data/raw/osha_sir/` (download from osha.gov/severe-injury-reports). The live forecast refresh is scheduled
+daily at 18:00 Abu Dhabi time (`.github/workflows/refresh-live.yml`); GitHub can delay scheduled runs by hours, and the app
+shows "Not enough data" if the forecast is out of date.
 
 ## Repository map
 

@@ -24,7 +24,7 @@
   <path d="M540,518 L540,554" class="ln"/>
 
   <rect x="40" y="562" width="1000" height="140" fill="#fff" stroke="#B3261E" stroke-width="7"/>
-  <text x="70" y="622" class="t" font-size="46">Frozen rule, signed by a physician</text>
+  <text x="70" y="622" class="t" font-size="46">Frozen rule, tuned on 2015 to 2021</text>
   <text x="70" y="674" class="b" font-size="36">High, Elevated or no extra steps · May to Sep</text>
   <path d="M540,704 L540,740" class="ln"/>
 

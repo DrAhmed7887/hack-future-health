@@ -23,4 +23,8 @@ jobs:
           git config user.name "heat-bot"
           git config user.email "heat-bot@users.noreply.github.com"
           git add web/data/live.json
-          git diff --cached --quiet || git commit -m "data: refresh live forecast" && git push
+          if ! git diff --cached --quiet; then
+            git commit -m "data: refresh live forecast"
+            git pull --rebase origin main
+            git push
+          fi

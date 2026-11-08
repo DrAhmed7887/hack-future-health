@@ -55,5 +55,5 @@ def add_model_features(frame: pd.DataFrame, extras: dict[str, pd.DataFrame]) -> 
         fr.iloc[pos, fr.columns.get_loc("spell")] = spell_days(fr["p"].iloc[pos]).to_numpy()
     doy = fr.index.day_of_year.to_numpy()
     fr["season_sin"], fr["season_cos"] = np.sin(2 * np.pi * doy / 365.25), np.cos(2 * np.pi * doy / 365.25)
-    fr["weekend"] = (fr.index.dayofweek >= 5).astype(float)
+    fr["weekend"] = (fr.index.day_of_week >= 5).astype(float)
     return fr

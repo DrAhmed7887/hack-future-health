@@ -1,0 +1,403 @@
+{
+  "protocol": "docs/protocol_v4_trained_model.md",
+  "frozen": {
+    "primary": {
+      "family": "logistic",
+      "cfg": {
+        "C": 0.1
+      }
+    },
+    "secondary": {
+      "family": "boosting",
+      "cfg": {
+        "max_depth": 2,
+        "learning_rate": 0.03,
+        "max_iter": 300,
+        "min_samples_leaf": 50
+      }
+    }
+  },
+  "holdout": {
+    "rows": 3672,
+    "event_days": 86,
+    "M": {
+      "days": 3672,
+      "insufficient": 0,
+      "event_days": 86,
+      "alert_days": 1485,
+      "tp": 67,
+      "fp": 1418,
+      "fn": 19,
+      "tn": 2168,
+      "sensitivity": 0.7790697674418605,
+      "reported_event_ppv": 0.04511784511784512,
+      "alert_fraction": 0.40441176470588236,
+      "sensitivity_95ci": [
+        0.6581900623464954,
+        0.8762886597938144
+      ]
+    },
+    "M2": {
+      "days": 3672,
+      "insufficient": 0,
+      "event_days": 86,
+      "alert_days": 1467,
+      "tp": 66,
+      "fp": 1401,
+      "fn": 20,
+      "tn": 2185,
+      "sensitivity": 0.7674418604651163,
+      "reported_event_ppv": 0.044989775051124746,
+      "alert_fraction": 0.39950980392156865,
+      "sensitivity_95ci": [
+        0.6624959415584415,
+        0.8526393188854489
+      ]
+    },
+    "R4": {
+      "days": 3672,
+      "insufficient": 0,
+      "event_days": 86,
+      "alert_days": 1797,
+      "tp": 68,
+      "fp": 1729,
+      "fn": 18,
+      "tn": 1857,
+      "sensitivity": 0.7906976744186046,
+      "reported_event_ppv": 0.037840845854201444,
+      "alert_fraction": 0.48937908496732024,
+      "sensitivity_95ci": [
+        0.6960375816993464,
+        0.879130808950086
+      ]
+    },
+    "primary_A_M_minus_R4_sensitivity": {
+      "point": -0.011627906976744096,
+      "95ci": [
+        -0.13927511867088616,
+        0.10784976152623203
+      ]
+    },
+    "primary_B_auc": {
+      "M": 0.7273181234516661,
+      "R4_tiers": 0.6568713601992244,
+      "M2": 0.7256400861230367,
+      "difference_M_minus_R4": 0.0704467632524417,
+      "difference_95ci": [
+        0.013406084379244496,
+        0.1290989513163183
+      ]
+    },
+    "per_region": {
+      "New Orleans, Louisiana": {
+        "M": {
+          "alert_share": 0.6062091503267973,
+          "caught": 5,
+          "event_days": 6
+        },
+        "R4": {
+          "alert_share": 0.5718954248366013,
+          "caught": 5,
+          "event_days": 6
+        }
+      },
+      "Philadelphia, Pennsylvania": {
+        "M": {
+          "alert_share": 0.1454248366013072,
+          "caught": 18,
+          "event_days": 24
+        },
+        "R4": {
+          "alert_share": 0.38562091503267976,
+          "caught": 21,
+          "event_days": 24
+        }
+      },
+      "Mcallen, Texas": {
+        "M": {
+          "alert_share": 0.8104575163398693,
+          "caught": 8,
+          "event_days": 8
+        },
+        "R4": {
+          "alert_share": 0.6013071895424836,
+          "caught": 7,
+          "event_days": 8
+        }
+      },
+      "Fort Lauderdale, Florida": {
+        "M": {
+          "alert_share": 0.6062091503267973,
+          "caught": 25,
+          "event_days": 27
+        },
+        "R4": {
+          "alert_share": 0.5702614379084967,
+          "caught": 19,
+          "event_days": 27
+        }
+      },
+      "Braddock, Pennsylvania": {
+        "M": {
+          "alert_share": 0.04738562091503268,
+          "caught": 3,
+          "event_days": 8
+        },
+        "R4": {
+          "alert_share": 0.3562091503267974,
+          "caught": 7,
+          "event_days": 8
+        }
+      },
+      "Kennesaw, Georgia": {
+        "M": {
+          "alert_share": 0.2107843137254902,
+          "caught": 8,
+          "event_days": 13
+        },
+        "R4": {
+          "alert_share": 0.45098039215686275,
+          "caught": 9,
+          "event_days": 13
+        }
+      }
+    },
+    "alert_share_spread": {
+      "M": 0.7630718954248366,
+      "R4": 0.24509803921568624
+    },
+    "calibration_M": [
+      {
+        "fifth": 1,
+        "days": 735,
+        "mean_predicted": 0.002019205402107888,
+        "observed_event_rate": 0.004081632653061225
+      },
+      {
+        "fifth": 2,
+        "days": 734,
+        "mean_predicted": 0.009982022617231459,
+        "observed_event_rate": 0.008174386920980926
+      },
+      {
+        "fifth": 3,
+        "days": 734,
+        "mean_predicted": 0.027397178929968142,
+        "observed_event_rate": 0.014986376021798364
+      },
+      {
+        "fifth": 4,
+        "days": 734,
+        "mean_predicted": 0.06554007784631158,
+        "observed_event_rate": 0.03678474114441417
+      },
+      {
+        "fifth": 5,
+        "days": 735,
+        "mean_predicted": 0.18155830792186514,
+        "observed_event_rate": 0.053061224489795916
+      }
+    ]
+  },
+  "deployment_criterion_met": false,
+  "original_regions_2022_2025": {
+    "rows": 4896,
+    "event_days": 225,
+    "M": {
+      "days": 4896,
+      "insufficient": 0,
+      "event_days": 225,
+      "alert_days": 2547,
+      "tp": 200,
+      "fp": 2347,
+      "fn": 25,
+      "tn": 2324,
+      "sensitivity": 0.8888888888888888,
+      "reported_event_ppv": 0.0785237534354142,
+      "alert_fraction": 0.5202205882352942,
+      "sensitivity_95ci": [
+        0.8454093829373973,
+        0.9262376122997129
+      ]
+    },
+    "M2": {
+      "days": 4896,
+      "insufficient": 0,
+      "event_days": 225,
+      "alert_days": 2527,
+      "tp": 200,
+      "fp": 2327,
+      "fn": 25,
+      "tn": 2344,
+      "sensitivity": 0.8888888888888888,
+      "reported_event_ppv": 0.07914523149980214,
+      "alert_fraction": 0.5161356209150327,
+      "sensitivity_95ci": [
+        0.8435961856906299,
+        0.9264739611440906
+      ]
+    },
+    "R4": {
+      "days": 4896,
+      "insufficient": 0,
+      "event_days": 225,
+      "alert_days": 2608,
+      "tp": 172,
+      "fp": 2436,
+      "fn": 53,
+      "tn": 2235,
+      "sensitivity": 0.7644444444444445,
+      "reported_event_ppv": 0.06595092024539877,
+      "alert_fraction": 0.5326797385620915,
+      "sensitivity_95ci": [
+        0.6986677623686357,
+        0.817210701484895
+      ]
+    },
+    "primary_A_M_minus_R4_sensitivity": {
+      "point": 0.12444444444444436,
+      "95ci": [
+        0.06059364133134631,
+        0.1961940509581161
+      ]
+    },
+    "primary_B_auc": {
+      "M": 0.795112157758272,
+      "R4_tiers": 0.6228839886771806,
+      "M2": 0.781804039106544,
+      "difference_M_minus_R4": 0.1722281690810914,
+      "difference_95ci": [
+        0.1412680235154757,
+        0.19859296390754458
+      ]
+    },
+    "per_region": {
+      "Dallas-Fort Worth, TX": {
+        "M": {
+          "alert_share": 0.553921568627451,
+          "caught": 57,
+          "event_days": 64
+        },
+        "R4": {
+          "alert_share": 0.5490196078431373,
+          "caught": 49,
+          "event_days": 64
+        }
+      },
+      "Houston, TX": {
+        "M": {
+          "alert_share": 0.6617647058823529,
+          "caught": 40,
+          "event_days": 43
+        },
+        "R4": {
+          "alert_share": 0.5751633986928104,
+          "caught": 33,
+          "event_days": 43
+        }
+      },
+      "Jacksonville, FL": {
+        "M": {
+          "alert_share": 0.49836601307189543,
+          "caught": 13,
+          "event_days": 14
+        },
+        "R4": {
+          "alert_share": 0.5,
+          "caught": 7,
+          "event_days": 14
+        }
+      },
+      "Kansas City, MO": {
+        "M": {
+          "alert_share": 0.21895424836601307,
+          "caught": 9,
+          "event_days": 13
+        },
+        "R4": {
+          "alert_share": 0.4068627450980392,
+          "caught": 11,
+          "event_days": 13
+        }
+      },
+      "Oklahoma City, OK": {
+        "M": {
+          "alert_share": 0.369281045751634,
+          "caught": 4,
+          "event_days": 6
+        },
+        "R4": {
+          "alert_share": 0.48366013071895425,
+          "caught": 5,
+          "event_days": 6
+        }
+      },
+      "Orlando, FL": {
+        "M": {
+          "alert_share": 0.5571895424836601,
+          "caught": 29,
+          "event_days": 32
+        },
+        "R4": {
+          "alert_share": 0.5604575163398693,
+          "caught": 26,
+          "event_days": 32
+        }
+      },
+      "San Antonio, TX": {
+        "M": {
+          "alert_share": 0.6895424836601307,
+          "caught": 10,
+          "event_days": 10
+        },
+        "R4": {
+          "alert_share": 0.6045751633986928,
+          "caught": 9,
+          "event_days": 10
+        }
+      },
+      "Tampa, FL": {
+        "M": {
+          "alert_share": 0.6127450980392157,
+          "caught": 38,
+          "event_days": 43
+        },
+        "R4": {
+          "alert_share": 0.5816993464052288,
+          "caught": 32,
+          "event_days": 43
+        }
+      }
+    },
+    "alert_share_spread": {
+      "M": 0.47058823529411764,
+      "R4": 0.19771241830065356
+    }
+  },
+  "abu_dhabi_descriptive": {
+    "mussafah": {
+      "alert_share_2025": 1.0,
+      "high_share_2025": 0.9934640522875817,
+      "relative_risk_2025_median": 1.1461567592207123,
+      "relative_risk_2025_max": 2.3417157292104145
+    },
+    "adcity": {
+      "alert_share_2025": 0.9869281045751634,
+      "high_share_2025": 0.9869281045751634,
+      "relative_risk_2025_median": 1.1697062166855154,
+      "relative_risk_2025_max": 2.038713013138321
+    },
+    "ruwais": {
+      "alert_share_2025": 0.934640522875817,
+      "high_share_2025": 0.934640522875817,
+      "relative_risk_2025_median": 0.9807732688264074,
+      "relative_risk_2025_max": 3.1044735635828062
+    },
+    "alain": {
+      "alert_share_2025": 0.9803921568627451,
+      "high_share_2025": 0.9738562091503268,
+      "relative_risk_2025_median": 1.4443697784161458,
+      "relative_risk_2025_max": 3.862149931132756
+    }
+  }
+}

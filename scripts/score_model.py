@@ -93,7 +93,7 @@ def abu_dhabi(frozen, model) -> dict:
             d.iloc[pos, d.columns.get_loc("spell")] = spell_days(d["p"].iloc[pos]).to_numpy()
         doy = d.index.day_of_year.to_numpy()
         d["season_sin"], d["season_cos"] = np.sin(2 * np.pi * doy / 365.25), np.cos(2 * np.pi * doy / 365.25)
-        d["weekend"] = (d.index.dayofweek >= 5).astype(float)
+        d["weekend"] = (d.index.day_of_week >= 5).astype(float)
         risk = model.predict_proba(usable(d)[FEATURES])[:, 1]
         r = pd.Series(risk, index=usable(d).index)
         ref = r[(r.index.year >= 2015) & (r.index.year <= 2021)].median()

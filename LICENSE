@@ -1,0 +1,21 @@
+Heat Shift Planner
+Copyright (c) 2026 Ahmed Zayed. All rights reserved.
+
+Permission is granted to view, download, run and evaluate this repository (code, documents
+and results), including for judging the Future Health Digital Innovation Challenge, and for
+personal, research and educational use.
+
+Without the author's written permission, you may not redistribute, sublicense or sell this
+work, or use it in a commercial product or service.
+
+Third-party materials keep their own terms:
+- Weather data from Open-Meteo, including ERA5 reanalysis from the Copernicus Climate Change
+  Service: CC BY 4.0.
+- US OSHA Severe Injury Reports: US government public data (the raw file is not redistributed
+  here).
+- Fonts Atkinson Hyperlegible and Barlow Condensed: SIL Open Font License.
+- Python libraries (numpy, pandas, scikit-learn and others listed in pyproject.toml): their own
+  licences.
+
+THE WORK IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND. It is decision support for site
+supervisors, not a medical device, and never a clearance to work.

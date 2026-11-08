@@ -153,6 +153,10 @@ Sites, acknowledgements and incident notices in the demo are simulated and label
 
 ## Data sources and licences
 
+**This repository:** all rights reserved; free to view, run and evaluate (including for judging), and for personal,
+research and educational use. See `LICENSE`. Third-party data and libraries keep their own licences, listed below.
+
+
 - US OSHA Severe Injury Reports, Jan 2015 – Nov 2025 (US government public data). Raw file not committed; `docs/backtest_protocol.md` records its SHA-256.
 - Weather: Open-Meteo (CC BY 4.0): Historical Weather API (ERA5 reanalysis, Copernicus Climate Change Service), Previous Runs API, Forecast API.
 - Guidance quoted: NIOSH 2016; OSHA CPL 03-00-024 (2026); ADPHC CoP 11.0 and TG Safety in the Heat (v4.0); UAE MoHRE midday break. Evidence with quotes: `docs/evidence_pack.md`, `docs/evidence_relative_thresholds.md`.

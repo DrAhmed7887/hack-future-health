@@ -1,6 +1,6 @@
 # Protocol v4: trained risk model (pre-registration)
 
-**DRAFT for Ahmed's signature, 8 Nov 2026.** Nothing below has been fitted or scored. No sun or wind weather has been fetched
+**Signed by Ahmed, 8 Nov 2026.** Nothing below has been fitted or scored. No sun or wind weather has been fetched
 for any region. Once signed, this file, the feature code and the unit tests are committed before any model is fitted. The
 fitted model is then frozen and committed before it is scored.
 
@@ -83,4 +83,4 @@ will be wide.
 ## Sign-off
 I approve this protocol, the feature list and the deployment criterion before any model is fitted.
 
-Signed: ____________ (Ahmed Zayed)   Date: ____________
+Signed: Ahmed Zayed (in chat: "Yes, signed")   Date: 8 Nov 2026

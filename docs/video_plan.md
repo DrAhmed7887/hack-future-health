@@ -254,7 +254,7 @@ monthly 131,000 (21,113 used on 8 Nov before the samples).
 - Ahmed chose the final name **Heat Shift Planner**; the S2 title card drops "(working name)". Narration, stills and timing
   unchanged from v4. Output: Drive `video/heat_shift_planner_demo_v5.mp4`, 1:59.3, −16.7 LUFS, peak −1.5 dBFS.
 - Stills predate commit 2cc0caa (red bar made sticky), so scrolled screens in the film don't show the bar; the live app does.
-- **G4 open:** Ahmed watches v5 with sound (it replaces v4).
+- **G4 passed (8 Nov):** Ahmed approved v5 ("Yes, v5 is good"). v5 is the submission film.
 
 ## Original open questions (7 Nov, kept for the record)
 

@@ -201,6 +201,18 @@ monthly 131,000 (21,113 used on 8 Nov before the samples).
 
 ---
 
+## 7. Progress (8 Nov)
+
+- **Model chosen by Ahmed: `eleven_v4`** (voice George). Narration generated per shot with neighbouring-shot context
+  (Drive `video/narration/S1.mp3` … `S12.mp3`). Spoken forms: "two thousand, six hundred and twenty-eight", "eleven point six",
+  "U.S.", "Osha". Clip lengths (s): S1 12.4 · S2 5.5 · S3 8.2 · S4 22.7 · S5 6.7 · S6 13.1 · S7 10.8 · S8 17.3 · S9 9.4 ·
+  S10 10.0 · S11 8.2 · S12 6.6 = **130.9 s of speech**, about 2:12 with pauses. Over the 2:05 target: if the portal caps at
+  2:00, apply the cut list and regenerate S3/S10.
+- **Stills captured** from the live site with `scripts/capture_video_stills.py` (every text assertion passed): Drive
+  `video/stills/`, contact sheet `video/contact_sheet_stills.png`. Re-shot S8d, S9a/b (law block with the 35 °C line now in
+  frame) and added S10b (Ruwais row) after the first sheet review.
+- Next: the edit (1920×1080, phone frame left third, overlays and captions right), after Ahmed reports the portal's format rules.
+
 ## Original open questions (7 Nov, kept for the record)
 
 

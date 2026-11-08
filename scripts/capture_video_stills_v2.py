@@ -1,4 +1,4 @@
-"""v2 stills (v3 adds the trained-model still for S6) after the video-director review: masked evidence crops (S4-S6) and outlined plan lines (S8).
+"""v2 stills (v3 adds the trained-model still for S6; v4 the emergency card, S9c) after the video-director review: masked evidence crops (S4-S6) and outlined plan lines (S8).
 Writes <out>/masks.json: {still: css_y} — the build paints the phone blank below that y."""
 import json, sys, pathlib
 from playwright.sync_api import sync_playwright
@@ -57,5 +57,8 @@ with sync_playwright() as p:
     outline(pg, "Move heavy tasks"); to_top(pg, "document.querySelector('#app .layer.model')"); shot(pg, "v2_S8b_plan_heavy")
     go(pg, "#crew"); answer(pg, "newWorkers", "yes"); go(pg, "#plan")
     outline(pg, "no more than 20%"); outline(pg, "No unacclimatised"); to_top(pg, li("Move heavy tasks")); shot(pg, "v2_S8c_plan_new")
+    go(pg, "#help"); pg.evaluate("scrollTo(0,0)"); pg.wait_for_timeout(100)
+    assert "cool first" in pg.inner_text("#app h1") and pg.locator(".sos-steps li").count() == 5; shot(pg, "v4_S9c_help")
+    to_top(pg, "document.querySelector('#app .sos-steps')"); shot(pg, "v4_S9c_steps")
     ctx.close(); b.close()
 (OUT / "masks.json").write_text(json.dumps(masks, indent=1)); print(json.dumps(masks))

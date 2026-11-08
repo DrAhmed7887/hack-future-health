@@ -47,14 +47,20 @@
  },
  "S9": {
   "time": "1:35–1:44",
-  "narr": "On the seventh of July, the forecast adds no steps. A yes to new workers raises the tier one level, labelled as our rule.",
-  "dur": 9.36
+  "narr": "On the seventh of July, the forecast adds no steps. New workers raise the tier one level, labelled as our rule.",
+  "old": "On the seventh of July, the forecast adds no steps. A yes to new workers raises the tier one level, labelled as our rule.",
+  "dur": 8.32
+ },
+ "S9c": {
+  "time": "new",
+  "narr": "Someone collapses? Cool first: cold water or ice-soaked sheets, while the ambulance is on its way.",
+  "dur": 7.36
  },
  "S10": {
   "time": "1:44–1:52",
-  "narr": "The regulator sees zones, not people. Sites and notices here are simulated.",
-  "old": "The regulator sees zones, not people. Below five sites, site counts are hidden. Sites and notices here are simulated.",
-  "dur": 6.56
+  "narr": "The regulator sees zones, not people. These sites are simulated.",
+  "old": "The regulator sees zones, not people. Sites and notices here are simulated.",
+  "dur": 5.44
  },
  "S11": {
   "time": "1:52–1:59",

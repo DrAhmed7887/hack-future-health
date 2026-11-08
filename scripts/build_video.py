@@ -10,7 +10,7 @@ INK, MUTED, CONCRETE, PAPER, BLUE = "#1C2321", "#4E5A57", "#E9ECEA", "#FFFFFF", 
 W, H = 1920, 1080
 F = lambda name, size: ImageFont.truetype(str(FD / name), size)
 DISP, BODY, BODYB = "BarlowCondensed-SemiBold.ttf", "AtkinsonHyperlegible-Regular.ttf", "AtkinsonHyperlegible-Bold.ttf"
-LEAD, GAP, END_HOLD = 0.4, 0.25, 1.6
+LEAD, GAP, END_HOLD = 0.4, 0.25, 1.1
 MASKS = json.loads((ST / "masks.json").read_text()) if (ST / "masks.json").exists() else {}
 narr = json.loads(NJ.read_text())
 
@@ -52,6 +52,10 @@ SHOTS = {
             beats=[(0.0, "big", "Forecast: no extra steps. The law still applies."),
                    (0.45, "big", "New or returning workers raise the tier one level"),
                    (0.45, "src", "Our rule, based on guidelines, not tested on outcomes.")]),
+ "S9c": dict(stills=[(0, "v4_S9c_help"), (0.38, "v4_S9c_steps")], label="If someone collapses · red card on every screen",
+             beats=[(0.05, "big", "Cool first: call 998 and start cooling at the same time"),
+                    (0.38, "big", "Cold water to the neck, or whole-body sheets soaked in ice water"),
+                    (0.38, "src", "Labourers were 3.0–3.7× less likely to die of heat stroke in US states whose ambulance guidelines include cold-water immersion and cooling first (Tishukaj 2024). Wording signed by a physician; not tested by this app.")]),
  "S10": dict(stills=[(0, "S10_regulator"), (0.50, "S10b_regulator_ruwais")], label="SIMULATED: sites, acknowledgements, incident notices",
              beats=[(0.0, "big", "Zones, not people"),
                     (0.50, "small", "Below 5 sites, site counts are hidden. Incident notices never change the tier.")]),

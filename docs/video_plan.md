@@ -239,6 +239,16 @@ monthly 131,000 (21,113 used on 8 Nov before the samples).
 - Output: Drive `video/heat_shift_planner_demo_v3.mp4`, 1:54.6, 1920×1080, −16.7 LUFS, peak −1.5 dBFS, 5.6 MB.
 - **G4 passed (8 Nov):** Ahmed watched v3 and approved it for submission ("Yes, v3 is good"). v3 is the submission film.
 
+## 10. Cut v4 (8 Nov): the emergency card (S7) gets a scene
+
+- Ahmed asked for a scene showing the new "cool first, call 998" card. New S9c (7.4 s) after S9, with two stills of the live
+  card; overlay cites Tishukaj 2024 and says the wording is signed by a physician and not tested by this app.
+- To stay under 2:00: S9 and S10 lines shortened (8.3 s and 5.4 s), end hold 1.6 → 1.1 s. Old clips in Drive `video/narration_v4_prev/`.
+- All stills recaptured from the live site (commit 14509dd), so the red emergency bar appears in every scene shot at the top
+  of the page, and the plan stills include the cooling-station step. Previous stills in `video/stills_v3_prev/`.
+- Output: Drive `video/heat_shift_planner_demo_v4.mp4`, 1:59.3, −16.7 LUFS, peak −1.5 dBFS; contact sheet `video/contact_sheet_v4.png`.
+- **G4 reopened:** v3 was approved; v4 changes S9, S9c, S10 and the end hold. Ahmed watches v4 with sound.
+
 ## Original open questions (7 Nov, kept for the record)
 
 

@@ -23,5 +23,17 @@
  "fixed_80f_alert_share": 0.8199891067538126,
  "dayahead_same_decision": 0.8398692810457516,
  "dayahead_alert_share": 0.5919117647058824,
- "observed_alert_share_same_days": 0.508578431372549
+ "observed_alert_share_same_days": 0.508578431372549,
+ "trained_model": {
+  "sensitivity": 0.7790697674418605,
+  "alert_share": 0.40441176470588236,
+  "auc": 0.7273181234516661,
+  "auc_rule": 0.6568713601992244,
+  "spread": 0.7630718954248366,
+  "abu_dhabi_alert_share": [
+   0.934640522875817,
+   1.0
+  ],
+  "deployed": false
+ }
 }

@@ -72,6 +72,14 @@ def main() -> None:
           "fixed_80f_alert_share": ho["rules"]["R1"]["alert_fraction"],  # same unseen regions as the R4 figures
           "dayahead_same_decision": da["same_decision_share"],
           "dayahead_alert_share": da["day_ahead"]["alert_fraction"], "observed_alert_share_same_days": da["observed"]["alert_fraction"]}
+    mv = json.loads((ROOT / "results" / "model_v4_results.json").read_text())   # trained model, scored once, not deployed
+    mh = mv["holdout"]
+    ev["trained_model"] = {"sensitivity": mh["M"]["sensitivity"], "alert_share": mh["M"]["alert_fraction"],
+                           "auc": mh["primary_B_auc"]["M"], "auc_rule": mh["primary_B_auc"]["R4_tiers"],
+                           "spread": mh["alert_share_spread"]["M"],
+                           "abu_dhabi_alert_share": [min(z["alert_share_2025"] for z in mv["abu_dhabi_descriptive"].values()),
+                                                     max(z["alert_share_2025"] for z in mv["abu_dhabi_descriptive"].values())],
+                           "deployed": mv["deployment_criterion_met"]}
     (WEB / "evidence.json").write_text(json.dumps(ev, indent=1))
     print({k: len(v["days"]) for k, v in replay.items()})
 

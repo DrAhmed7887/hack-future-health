@@ -37,7 +37,7 @@ Code: `heatwarn/relative.py`; frozen parameters `results/frozen_params_r4.json`.
 No public data on work-related heat illness exists for Abu Dhabi. The closest real record is **US federal OSHA's Severe Injury
 Reports**: 2,628 work-related heat hospitalisations, January 2015 to November 2025, with date and location. Each was matched to
 that day's weather. Rules were tuned on 2015–2021, committed, and scored once on later data. Every step was pre-registered
-(`docs/backtest_protocol.md`, `docs/protocol_v3_relative.md`), including expected results and one logged amendment. One logged
+(`docs/backtest_protocol.md`, `docs/protocol_v3_relative.md`, `docs/protocol_v4_trained_model.md`), including expected results and one logged amendment. One logged
 bug fix in the confidence-interval code led to a re-run with rules and point estimates unchanged (`docs/decisions.md`).
 
 **Transfer test: 6 US regions never used in tuning, 2022–2025** (86 days with a reported heat hospitalisation; `results/holdout_results.json`)
@@ -66,6 +66,26 @@ as a trigger, tuned to the same training alert budget, caught **11.6 points fewe
 (95 % CI −17.7 to −5.8) (`results/test_results.json`; earlier fixed-threshold rules, 8 original regions, 2022–2025). This compares two separately tuned rules, not the reports' isolated
 value: spending part of the alert budget on "recent report" days left less for hot days. In the app the reports appear only
 as a prompt to check that workplace, never as a reason to raise the level.
+
+## We also trained a model. It did not transfer, so the app keeps the rule
+
+We trained a risk model (logistic regression, chosen over gradient boosting by leave-one-year-out cross-validation) on the
+same 2015–2021 data with more inputs: night-time heat, days in a row of unusual heat, sunshine, wind, season and weekend.
+It was frozen, set to the rule's training alert count, and scored once on the same 6 unseen regions
+(`docs/protocol_v4_trained_model.md`, `results/model_v4_results.json`). The deployment criterion was fixed in advance: catch at
+least as many case days as the rule, with alert-load spread no more than 5 points wider.
+
+| | Days with a reported case that got an alert (95 % CI) | Share of days alerted | Spread in alert load across regions |
+|---|---|---|---|
+| Trained model | 77.9 % (65.8–87.6) | 40 % | 76 points (5 % in the Pittsburgh area to 81 % in McAllen) |
+| **Relative rule (this app)** | **79.1 % (69.6–87.9)** | **49 %** | **25 points** |
+
+- The model **ranks days better** (AUC 0.73 against 0.66 for the rule's tiers; difference +0.07, 95 % CI +0.01 to +0.13).
+- It caught about the same share of case days (difference −1.2 points, 95 % CI −13.9 to +10.8), but its alert load swung
+  with local climate, so the criterion was **not met**.
+- The reason is in its weights: it learned **absolute heat** (standardised coefficient 0.86), not how unusual the day is for that
+  place (0.01). Run on Abu Dhabi's four zones, it would alert on **93–100 % of May–September 2025 days**: the same failure as the
+  fixed thresholds. A ranking against each zone's own climate is what transferred.
 
 ## Combining signals (challenge requirement 1)
 
@@ -103,6 +123,7 @@ uv run python scripts/fetch_weather.py && uv run python scripts/fetch_weather.py
 uv run python scripts/tune.py && uv run python scripts/score_test.py        # original regions
 uv run python scripts/tune_relative.py && uv run python scripts/score_holdout.py
 uv run python scripts/fetch_dayahead.py && uv run python scripts/score_dayahead.py && uv run python scripts/score_dayahead_r4.py
+uv run python scripts/fetch_sunwind.py && uv run python scripts/train_model.py && uv run python scripts/score_model.py   # trained model (not deployed)
 uv run python scripts/abu_dhabi_tiers.py && uv run python scripts/build_web_data.py
 python3 -m http.server 8765 --directory web
 ```

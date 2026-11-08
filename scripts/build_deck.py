@@ -23,6 +23,7 @@ X0, Y0, W, H = 0.4, 1.5, 9.2, 3.95          # body area under each template prom
 ho = json.loads((ROOT / "results" / "holdout_results.json").read_text())
 mv = json.loads((ROOT / "results" / "model_v4_results.json").read_text())
 ev = json.loads((ROOT / "web" / "data" / "evidence.json").read_text())
+DA = json.loads((ROOT / "results" / "dayahead_r4_results.json").read_text())
 R4 = ho["rules"]["R4"]
 SENS, CI, SHARE = R4["sensitivity"], R4["sensitivity_95ci"], R4["alert_fraction"]
 EVENT_DAYS, REPORTS = ho["data"]["event_days"], ho["data"]["heat_reports"]
@@ -80,9 +81,9 @@ S = list(p.slides)
 # 1 Team name, size, problem
 tb = next(sh for sh in S[0].shapes if sh.has_text_frame)
 vals = ["Heat Shift Planner (working name), Ahmed Zayed", "1 (solo)",
-        "[Population Health] Population and Workforce Health Early Warning. Abu Dhabi already has heat rules and an "
-        "awareness programme, but nothing tells a site supervisor the evening before whether tomorrow is unusually "
-        "dangerous for that place and that crew, and what to change."]
+        "[Population Health] Population and Workforce Health Early Warning. Abu Dhabi has heat rules, weather warnings "
+        "and an awareness programme, but no free tool ranks tomorrow's forecast against that zone's own climate and "
+        "turns it, with the crew, into a pre-shift plan the evening before."]
 for para, v in zip(tb.text_frame.paragraphs, vals):
     ref = para.runs[0].font
     r = para.add_run(); r.text = v
@@ -107,7 +108,7 @@ CAP = ("Ahmed Zayed, MB BCh (Alexandria University, 2010), is a physician with m
        "for an M.Sc. in Applied Health Informatics and Digital Medicine at RWTH Aachen (2026 to 2028). He built "
        "SAFE-Triage, an emergency triage safety check (35 of 36 correct, no critical under-triage, on the MIETIC English "
        "set). For this entry he did everything himself: the clinical criteria and their sign-off, a pre-registered "
-       "back-test on 2,628 US work heat hospitalisations, the web app, and the emergency first-aid wording. His method: "
+       "back-test on 2,628 US work heat hospitalisations (scored on 86 case days in 6 regions never used in tuning), the web app, and the emergency first-aid wording. His method: "
        "evidence first (every rule has a source), tests written before code (42 automated tests), and independent model "
        "reviews at each stage.")
 assert len(CAP) <= 1000, len(CAP)
@@ -115,13 +116,17 @@ text(S[2], X0, Y0 + 0.1, W, 3.0, [(CAP, 13, False, INK)])
 text(S[2], X0, 4.9, W, 0.4, [(f"{len(CAP)} of 1,000 characters", 9, False, MUTED)])
 
 # 4 Architecture
-S[3].shapes.add_picture(str(ROOT / "docs" / "workflow.png"), Inches(X0), Inches(Y0), height=Inches(H))
-nx = X0 + H * 16 / 9 + 0.15
+IMG_H = 3.25
+S[3].shapes.add_picture(str(ROOT / "docs" / "workflow.png"), Inches(X0), Inches(Y0), height=Inches(IMG_H))
+nx = X0 + IMG_H * 16 / 9 + 0.15
+text(S[3], X0, Y0 + IMG_H + 0.05, nx - X0 - 0.1, 0.7, [[("The rule: ", 8.5, True, INK), ("alert if the day's peak heat index is at least 80 °F and it is above the zone's 60th percentile for the date (High), or above the 50th and at least 3 °F above the previous 14 days (Elevated). Percentiles from each zone's own 2015–2021 May–September days. Crew: new or returning workers raise the tier one level and add acclimatisation steps; heavy work moves heavy tasks off the peak hours.", 8.5, False, INK)]])
 text(S[3], nx, Y0, 9.6 - nx, H, [
     ("Also on every screen", 11, True, RED),
     ("A red emergency card: suspected heat stroke, cool first and call 998 at the same time (wording signed by the physician).", 9, False, INK),
     ("Stack", 11, True, INK),
-    ("Static web app (HTML, JavaScript); Python back-test (pandas, scikit-learn); GitHub Actions fetches the forecast daily; GitHub Pages hosts it. No server, no accounts, no personal data.", 9, False, INK),
+    ("Prototype: static web app (HTML, JavaScript); GitHub Actions fetches the forecast daily; GitHub Pages hosts it. No server, no accounts, no personal data. Python back-test (pandas; scikit-learn for the offline model benchmark only).", 9, False, INK),
+    ("Pilot adds", 11, True, INK),
+    ("A small UAE-hosted store for plan acknowledgements (site, zone, date, tier; no worker data). The regulator and HSE views use simulated data until then.", 9, False, INK),
     ("Deterministic", 11, True, INK),
     ("Thresholds are versioned code, frozen before scoring. No language model sets a score or a threshold.", 9, False, INK),
 ])
@@ -131,8 +136,8 @@ cw, gap = 2.15, 0.2
 users = [
     ("Site supervisor (main user)", ["Gets tomorrow's plan the evening before: which tasks to move, which workers need a lighter day, who owns each step."]),
     ("Worker", ["Protected on unusually dangerous days and on the first days on the job. No personal data collected."]),
-    ("Employer HSE manager", ["A daily record that the heat programme was applied, as ADPHC Code of Practice 11.0 already requires."]),
-    ("Regulator (ADPHC)", ["Sees risk and acknowledged plans by zone, never people, so inspections go where they matter."]),
+    ("Employer HSE manager", ["A daily record that the heat programme was applied, as ADPHC Code of Practice 11.0 already requires (pilot feature)."]),
+    ("Regulator (ADPHC)", ["Sees risk and acknowledged plans by zone, never people, so inspections go where they matter (simulated in the demo)."]),
 ]
 for i, (hd, body) in enumerate(users):
     card(S[4], X0 + i * (cw + gap), Y0, cw, 1.6, hd, body, color=BLUE if i == 0 else INK)
@@ -146,15 +151,16 @@ text(S[5], X0, Y0, W, 0.3, [("Measured on the prototype (US data, back-test)", 1
 table(S[5], X0, Y0 + 0.3, W, [
     ["Measure", "Result", "Why it matters"],
     [f"Case days with an alert, 6 unseen US regions, 2022–2025 ({EVENT_DAYS} days)", f"{pc(SENS)} (95 % CI {pc(CI[0])}–{pc(CI[1])})", "Sensitivity on real outcomes"],
-    ["Share of days alerted", f"{pc(SHARE, 0)}", "Alert fatigue"],
+    ["Share of days alerted (the common fixed trigger: 82 %)", f"{pc(SHARE, 0)}", "Fewer alerts for the same protection"],
     ["Spread of alert load across regions", f"{round(ho['primary_B_alert_share_spread']['R4'] * 100)} points (fixed thresholds: {round(ho['primary_B_alert_share_spread']['R2'] * 100)})", "Does it transfer to a new climate?"],
-    ["Same decision from the evening-before forecast as from actual weather (8 regions, 2024–25)", f"{pc(ev['dayahead_same_decision'], 0)}", "Works as a forecast, not only in hindsight"],
+    ["Case days caught using the evening-before forecast (8 tuning regions, 2024–25: the archived forecasts start in 2024)", f"{pc(DA['day_ahead']['sensitivity'])} (actual weather: {pc(DA['observed']['sensitivity'])})", "Works as a forecast, not only in hindsight"],
+    ["Same decision from the evening-before forecast as from actual weather (same regions and years)", f"{pc(ev['dayahead_same_decision'], 0)}", "Forecast error changes few decisions"],
 ], [4.6, 2.0, 2.6], size=9)
-text(S[5], X0, Y0 + 1.85, W, 0.3, [("Proposed for the Abu Dhabi pilot (to agree with ADPHC before the season; targets are not results)", 11, True, INK)])
-table(S[5], X0, Y0 + 2.15, W, [
+text(S[5], X0, Y0 + 2.1, W, 0.3, [("Proposed for the Abu Dhabi pilot (to agree with ADPHC before the season; targets are not results)", 11, True, INK)])
+table(S[5], X0, Y0 + 2.4, W, [
     ["Measure", "Proposed target"],
     ["Share of days with an alert, per zone", "30–60 % in every zone"],
-    ["Reported heat cases on alert days / all cases (Abu Dhabi outcomes)", "Not worse than 79 %, with a 95 % CI"],
+    ["Heat cases on alert days / all cases, all Abu Dhabi zones (zone-day incident or ED counts; sites alone are too few)", "Not worse than 79 %, with a 95 % CI"],
     ["Plans acknowledged before the shift / cooling station ready on alert days", "≥ 80 % of site-evenings / baseline in 2027"],
     ["Heat cases per 1,000 workers, pilot sites vs others", "Measured, not promised (one season is too short)"],
 ], [5.6, 3.6], size=9)
@@ -187,7 +193,7 @@ text(S[6], X0 + 4.5, Y0, W - 4.5, H, [
     ("Why it can work in Abu Dhabi", 10, True, BLUE),
     ("Abu Dhabi's heat programme cut cases at one company from 15.3 to 1.16 per 1,000 workers (Joubert, AJPH 2011, PMID 21307373).", 9, False, INK),
     ("Prior testing, all pre-registered", 10, True, BLUE),
-    (f"Tuned on 2015–2021, frozen, scored once. {REPORTS:,} reports matched to each day's actual weather; {EVENT_DAYS} case days in the unseen regions. Two ideas failed and are reported: incident reports as a trigger (−11.6 points) and a trained model (slide 15).", 9, False, INK),
+    (f"Tuned on 2015–2021, frozen, scored once. {REPORTS:,} reports matched to each day's actual weather; {EVENT_DAYS} case days in the unseen regions. Two ideas failed and are reported: incident reports as a trigger (−11.6 points) and a trained model (slide 15). No US test region is hyper-arid like Al Ain or Al Dhafra: local recalibration is part of the pilot.", 9, False, INK),
 ])
 
 # 8 Data sources and rights
@@ -195,7 +201,7 @@ table(S[7], X0, Y0, W, [
     ["Source", "Type", "Owner", "Sensitivity", "Permission", "Personal data?"],
     ["OSHA Severe Injury Reports, Jan 2015–Nov 2025", "Work injury records (back-test outcomes)", "US Dept of Labor, OSHA", "Public; has employer names and narratives (not shown or published by the app)", "US government public data", "No worker names; app shows region totals only"],
     ["Open-Meteo Historical Weather (ERA5)", "Weather reanalysis", "Open-Meteo; Copernicus C3S", "Public", "CC BY 4.0, attributed", "No"],
-    ["Open-Meteo Forecast and Previous Runs APIs", "Weather forecasts", "Open-Meteo", "Public", "CC BY 4.0, attributed", "No"],
+    ["Open-Meteo Forecast and Previous Runs APIs", "Weather forecasts", "Open-Meteo", "Public", "CC BY 4.0 data; API terms for pilot use to check (or use NCM data)", "No"],
     ["ADPHC CoP 11.0 and TG Safety in the Heat v4.0; MoHRE midday break; NIOSH 2016", "Guidance, quoted with citation", "ADPHC; MoHRE; CDC/NIOSH", "Public", "Quoted with source", "No"],
     ["Crew answers in the app", "Yes / no / not sure", "Supervisor; stays on the device", "Low", "Entered by the user", "No: no names or health data"],
     ["Sites, acknowledgements, notices, cooling stations", "Demo data", "Author", "Simulated, labelled", "—", "No"],
@@ -205,7 +211,7 @@ table(S[7], X0, Y0, W, [
 table(S[8], X0, Y0, W, [
     ["Risk", "Safeguard"],
     ["Privacy", "No worker names, health data or job histories collected. Regulator view by zone; counts hidden below 5 sites."],
-    ["Security", "Static site: no server, no accounts, no database. Nothing to breach beyond public files."],
+    ["Security", "Prototype: static site, no server, accounts or database. Pilot: a small UAE-hosted, access-controlled store for plan acknowledgements only (site, zone, date, tier; no worker data)."],
     ["Bias", "Outcomes are US reported cases (under-reported). Transfer tested in 6 unseen regions; not validated in Abu Dhabi, so the pilot runs in shadow mode first."],
     ["Explainability", "Each tier shows why (how unusual the day is locally, change over 14 days). Each step shows an owner and a source."],
     ["Misuse", "Written ban on employment or disciplinary use. Never a clearance to work. Incident notices never raise a tier."],
@@ -218,25 +224,36 @@ table(S[8], X0, Y0, W, [
 text(S[9], X0, Y0, W, 1.0, [("Not applicable. Software only: no wearable, sensor or device. Runs in any phone or laptop browser.", 13, False, INK)])
 
 # 11 Access
-text(S[10], X0, Y0, W, H, [
-    ("No login needed. Every feature is open to guests.", 14, True, INK),
-    ("https://drahmed7887.github.io/hack-future-health/", 14, True, BLUE),
-    ("Pick a zone, see tomorrow's tier and the legal layer, answer two crew questions, get the plan, open the red emergency card. Also: Replay a day (real summer 2025 weather), Regulator view, Evidence.", 11, False, INK),
-    ("Alerts are tested for May to September only. Outside the season, use Replay a day to see alerts at work.", 11, False, MUTED),
+text(S[10], X0, Y0, W, 1.3, [
+    [("No login needed. Every feature is open to guests:  ", 12, True, INK), ("https://drahmed7887.github.io/hack-future-health/", 12, True, BLUE)],
+    ("Pick a zone, see tomorrow's tier and the legal layer, answer two crew questions, get the plan, open the red emergency card. Also: Replay a day (real summer 2025 weather), Regulator view, Evidence.", 10, False, INK),
+    ("Alerts are tested for May to September only. Outside the season, use Replay a day to see alerts at work (screens below: Mussafah, 1 Aug 2025).", 10, False, MUTED),
 ])
+
+STILLS = Path(sys.argv[3]) if len(sys.argv) > 3 else None
+if STILLS:
+    from PIL import Image
+    shots = [("S1_home.png", "Tomorrow at a glance"), ("v2_S8c_plan_new.png", "The crew plan"), ("v4_S9c_help.png", "Emergency card")]
+    for i, (f, cap) in enumerate(shots):
+        jpg = Path(OUT).with_name(f"shot_{i}.jpg")
+        Image.open(STILLS / f).convert("RGB").resize((540, 960)).save(jpg, quality=80)
+        x = X0 + i * 1.75
+        pic = S[10].shapes.add_picture(str(jpg), Inches(x), Inches(2.85), height=Inches(2.35))
+        pic.line.color.rgb = INK; pic.line.width = Pt(0.75)
+        text(S[10], x, 5.2, 1.4, 0.3, [(cap, 8, False, MUTED)])
 
 # 12 Path to pilot and scale
 stages = [("0 Prototype", "Done, Nov 2026", "Live app; US back-test; pre-registered protocols"),
-          ("1 Pilot agreement", "Dec 2026–Apr 2027", "ADPHC + 3–5 volunteer sites in 4 zones; outcome definition fixed in advance"),
+          ("1 Pilot agreement", "Dec 2026–Apr 2027", "ADPHC + 3–5 volunteer sites; outcome definition fixed in advance; plans in Arabic, Urdu, Hindi, Bengali, Tagalog"),
           ("2 Shadow mode", "May–Sep 2027", "Runs every evening; nothing enforced; log alerts, steps, cases, site TWL"),
-          ("3 Recalibrate", "Oct–Dec 2027", "First score on Abu Dhabi outcomes; ADPHC decides: scale or stop"),
+          ("3 Recalibrate", "Oct–Dec 2027", "First score on Abu Dhabi outcomes across all zones; ADPHC decides: scale or stop"),
           ("4 Scale", "2028 onwards", "Free for all employers via Safety in Heat; other emirates and Gulf states")]
 sw = (W - 4 * 0.12) / 5
 for i, (a, b, c) in enumerate(stages):
     text(S[11], X0 + i * (sw + 0.12), Y0, sw, 1.6, [(a, 11, True, WHITE if i == 0 else INK), (b, 9, True, WHITE if i == 0 else BLUE), (c, 9, False, WHITE if i == 0 else INK)],
          fill=INK if i == 0 else TINT, margin=0.08)
 cols = [("Stakeholders", "ADPHC (target pilot partner, no agreement yet); employer HSE teams; site supervisors; National Ambulance / SEHA for the emergency card."),
-        ("Integration", "Static web app, no install. Pilot data by zone and day: ADOSH-SF Mechanism 11.0 incident notifications; optionally ED heat-illness visits (ICD-10 T67)."),
+        ("Integration", "Web app, no install, plus a small store for acknowledgements. Outcomes by zone and day: ADOSH-SF Mechanism 11.0 notifications or ED heat-illness visits (ICD-10 T67). Sites give process measures."),
         ("Regulatory", "ADOSH-SF CoP 11.0 and MoHRE midday break shown as is. Ethics review if outcome data are used. Decision support, not a medical device."),
         ("Sustainability", "Runs on free hosting today. Regulator-led free tier; paid integrations for large employers later. Thresholds per zone, so it transfers.")]
 cw2 = (W - 3 * 0.15) / 4
@@ -267,7 +284,7 @@ P = mv["holdout"]
 prompt = next(sh for sh in S[14].shapes if sh.has_text_frame and "Additional" in sh.text_frame.text)
 prompt.top = Inches(0.94)   # the template puts this prompt at the bottom; align it with the other slides
 card(S[14], X0, Y0, 4.45, 3.0, "From warning to survival", [
-    "Heat stroke kills when cooling is late. A red card on every screen: move to shade, call 998, start cooling at once without waiting for the ambulance (cold water to the neck, or whole-body sheets soaked in ice water), keep cooling until medics take over.",
+    "Heat stroke kills when cooling is late. A red card on every screen: move to shade, call 998, start cooling at once without waiting for the ambulance (immersion in cold water up to the neck, or whole-body sheets soaked in ice water), keep cooling until medics take over.",
     "On Elevated and High days the plan adds a cooling station before the shift, with a named person in charge.",
     "Evidence: labourers 3.0–3.7 times less likely to die of heat stroke in US states whose ambulance guidelines include cold-water immersion and cooling first (Tishukaj 2024, PMID 39183116; state-level). Rapid total-body cooling is 'essential for survival' (ACSM 2023, PMID 37036463).",
     "Wording signed by Dr Ahmed Zayed (physician). Not tested by this app.",

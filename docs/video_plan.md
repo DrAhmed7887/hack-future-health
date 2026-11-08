@@ -1,6 +1,6 @@
 # Demo video plan: Heat Shift Planner (working name)
 
-**DRAFT: awaiting Ahmed's approval before any recording.** Nothing in this plan has been recorded, rendered or voiced.
+**DRAFT with Ahmed's decisions of 8 Nov (section 5).** Nothing has been recorded or rendered. Two voice samples exist (section 6). Capture waits on Q7 (portal format rules).
 
 Written 7 Nov 2026. Sources: `README.md` (the only source of claims), `docs/claims_audit.md`, `docs/user_flow.md`,
 `docs/g1b_relative_results.md`, `web/app.js`, `web/logic.js`, `web/data/replay.json`, `web/data/evidence.json`, `docs/workflow.png`.
@@ -43,13 +43,13 @@ Every app string quoted below comes from `web/app.js` / `web/logic.js` for the s
 | S3 | 0:19–0:28 | Navigate to `#site` (no click on a zone). App shows: "Where does your crew work? Each zone's days are ranked against its own weather in 2015 to 2021. The cut-offs were tested on US data." with the four zones. | Right panel, one held card: **Fixed thresholds tuned on the 8 original US regions → top tier on every Abu Dhabi day, June to September.** Source line (small): README, "Why a new rule was needed". | A fixed threshold tuned on eight US regions would put every Abu Dhabi day, June to September, in its top tier. |
 | S4 | 0:28–0:49 | `#trust`. Open on the h1 "How was this tested?" and the first paragraph (it contains "(2,628 reports)"). **Camera move 1:** a slow push from the paragraph down to the first fact card at "Frozen, then scored once", landing on the big "79%" (the app's rounding; see G1). | 0:30 **2,628 work-related heat hospitalisation reports · US OSHA · Jan 2015 – Nov 2025** · 0:38 **Tuned on 2015–2021 · frozen · scored once** · 0:42 **6 unseen US regions, 2022–2025 · 86 days with a reported case** · 0:45 **79.1 % caught (95 % CI 69.6–87.9) · 49 % of days alerted** · small, from 0:46: **Gain over fixed thresholds +8.1 points (95 % CI −6.9 to +24.3): not statistically clear.** | Abu Dhabi has no public data on work heat illness. So I tested on 2,628 heat hospitalisation reports from US federal OSHA. Frozen, then scored once in six US regions it had never seen: it caught 79 percent of reported-case days, alerting on 49 percent of days. |
 | S5 | 0:49–0:56 | `#trust`, hard cut to the fourth fact card ("84%": "…the same decision from the forecast made the evening before … The forecast ran warm, so it alerted on more days (59% against 51%)."). | **Same decision on 84 % of region-days · forecast issued the evening before · 8 US regions, 2024–2025** · second line: **Forecast ran warm: alerted on 59 % vs 51 % of days.** | On the evening-before forecast: the same decision as the real weather on 84 percent of days. |
-| S6 | 0:56–1:10 | `#trust`, cut to the h2 "What did not work" and its paragraph in full. Hold. **This is the proof beat: no motion, nothing else on screen.** | **Workplace-trigger rule vs the earlier fixed-threshold rule: −11.6 points (95 % CI −17.7 to −5.8)** · small: **Two separately tuned rules, same training alert budget, 8 original US regions, 2022–2025. Not the reports' isolated value.** | I expected recent incident reports to help. A rule using them as a trigger caught 11.6 points fewer heat days than the earlier fixed-threshold rule. So they only prompt a check. |
+| S6 | 0:56–1:10 | `#trust`, cut to the h2 "What did not work" and its paragraph in full. Hold. **This is the proof beat: no motion, nothing else on screen.** | **Workplace-trigger rule vs a weather-only rule tuned separately: −11.6 points (95 % CI −17.7 to −5.8)** · small: **Two separately tuned rules, same training alert budget, 8 original US regions, 2022–2025. Not the reports' isolated value.** | I expected recent incident reports to help. A rule using them as a trigger caught 11.6 points fewer heat days than a weather-only rule tuned separately. So they only prompt a check. |
 | S7 | 1:10–1:20 | Back to `#home` (the replay state persists in memory). Cut to the section "Required by law, whatever the forecast": "Midday break: no outdoor work in direct sun from 12:30 to 15:00." · "Air temperature reached 45 °C. At 35 °C or more, your site's heat stress programme applies." · "Abu Dhabi's heat stress index (Thermal Work Limit) needs on-site readings. This app does not calculate it." | Ink bracket beside the three items, labelled **Shown whatever the model says**. Source lines are already on screen in the app (MoHRE; ADPHC CoP 11.0 §3.1.1(e); ADPHC TG Safety in the Heat). | Whatever the forecast, the law shows: the midday break, and the heat stress programme from 35 degrees. The Thermal Work Limit is not calculated. |
 | S8 | 1:20–1:35 | `#crew` with both questions answered **No** (pre-set during capture). Four cuts, each on a tap: **(a)** tap Heavy work **Yes** → **(b)** `#plan`, model layer "Because of the forecast and your crew": new line "Move heavy tasks away from the hottest hours (heat peaks around 14:00)." → **(c)** `#crew` tap New or returning workers **Yes** → **(d)** `#plan`: two new lines, "New or returning workers: no more than 20% of the usual heat exposure on day 1, adding 20% a day." and "No unacclimatised worker in medium or high risk heat work." **Camera move 2:** a gentle push on (d) only, onto the two new lines. | Thin ink box round each line as it appears (no colour). Top right: **Same day, same weather: the crew answers change the plan.** Small, on (d): **Crew rules come from guidelines (NIOSH 2016; ADPHC). Not tested on outcomes.** The status line "Based on guidelines and a heat rule tested on US data. Not yet validated in Abu Dhabi." must stay in frame. | Heavy work planned? Yes adds: move heavy tasks away from the 2 p.m. peak. New or returning workers? Yes adds the acclimatisation steps: 20 percent of usual heat exposure on day one, adding 20 percent a day. |
 | S9 | 1:35–1:44 | Second capture session: `#replay` → `#rd` = 2025-07-07 → "Show this day" → crew No/No → `#plan`: **No extra steps**, model layer "No extra steps from the forecast." with the law block in the same frame (35 °C programme applies; 38.2 °C reached). Cut → crew New or returning workers **Yes** → `#plan`: **Elevated** and the status line "Raised one level from No escalation because the crew may include new or returning workers. This is our rule, based on guidelines, not tested on outcomes." | **Mon 7 Jul 2025 · Mussafah · replay** · on the second frame: underline "This is our rule, based on guidelines, not tested on outcomes." | On the seventh of July, the forecast adds no steps. The same yes raises the tier one level, labelled as our rule. |
 | S10 | 1:44–1:52 | Back to session 1 (replay date 1 Aug 2025). `#regulator`: "Regulator view" · "Zones, not people. Fri, 1 Aug 2025 (replay)." Four zones: Mussafah High, "Plans acknowledged: 9 of 12 sites", "1 incident notice in the last 3 days. … This does not change the tier." · Abu Dhabi city High, 6 of 9 · Ruwais High, "Fewer than 5 sites in this zone, so site counts are hidden." · Al Ain High, 5 of 7, 1 notice. Footer: "Sites, acknowledgements and incident notices are simulated for the demo. …" | **SIMULATED: sites, acknowledgements, incident notices** (top right, held for the whole shot). Underline the Ruwais line and "This does not change the tier." | The regulator sees zones, not people. Below five sites, site counts are hidden. Sites and notices here are simulated. |
 | S11 | 1:52–1:59 | `#trust`, cut to the h2 "Limits" and its paragraph. Locked. | Four short lines, one per beat: **US data, reported cases only · Not validated on Abu Dhabi outcomes · Tested May to September only · Not a medical device. Never a clearance to work.** | Limits: US data, May to September only, not a medical device, never a clearance to work. |
-| S12 | 1:59–2:05 | Return to the S4 end frame (the first fact card), locked, with the app dimmed to 40 % behind the overlay. Hold 1.5 s of room tone after the last word. | Large: **79.1 %** · under it: **of reported-case days caught · 6 US regions it had never seen · 49 % of days alerted** · then: **Not yet validated in Abu Dhabi.** · small, bottom: **drahmed7887.github.io/hack-future-health** | 79 percent, in regions it had never seen. Not yet validated in Abu Dhabi. |
+| S12 | 1:59–2:05 | Return to the S4 end frame (the first fact card), locked, with the app dimmed to 40 % behind the overlay. Hold 1.5 s of room tone after the last word. | Large: **79.1 %** · under it: **of reported-case days caught · 6 US regions it had never seen · 49 % of days alerted** · then: **Not yet validated in Abu Dhabi.** · small, bottom: **drahmed7887.github.io/hack-future-health** · smaller: **Narration: synthetic voice (ElevenLabs).** | 79 percent, in regions it had never seen. Not yet validated in Abu Dhabi. |
 
 Pronunciation: Mussafah = moo-SAF-fah · OSHA = OH-sha · acclimatisation = a-KLY-ma-tie-ZAY-shun · "11.6" = "eleven point six".
 Captions are typed from the narration column above. Never auto-transcribe them from the voice track.
@@ -154,7 +154,7 @@ that only exists after the re-render (`:checked`, the h1 text), never on a fixed
 - [ ] Gate G1 (Q1) settled, and the numbers on screen match the overlay in the same frame.
 - [ ] Captured `#app` innerText for S1, S4–S7, S10 checked line by line against `README.md`: 2,628 · 79.1 % (69.6–87.9) · 49 % · 86 days ·
       6 regions · 84 % · 59 % vs 51 % · −11.6 (−17.7 to −5.8) · 45 °C · 11 °C · 14:00 · 12:30–15:00 · 35 °C · 5 sites. No other number appears.
-- [ ] The wording audit is respected: "the earlier fixed-threshold rule", "this demo sends nothing", "scheduled for 18:00", "simulated".
+- [ ] The wording audit is respected: "a weather-only rule tuned separately", "this demo sends nothing", "scheduled for 18:00", "simulated".
 - [ ] Narration recorded at 137–149 wpm per shot. Full stops held as real pauses. One weighted word only, "frozen" in S4. Everything else level.
 - [ ] No silence longer than 4 s anywhere (the 1.5 s end hold in S12 counts). Room tone, not digital silence, under the gaps.
 - [ ] Loudness: integrated about −16 LUFS, true peak ≤ −1 dBTP (measure with `ffmpeg -af loudnorm=print_format=summary`, or ebur128).
@@ -176,7 +176,33 @@ that only exists after the re-render (`:checked`, the h1 text), never on a fixed
 
 ---
 
-## 5. Open questions for Ahmed
+## 5. Decisions (Ahmed, 8 Nov 2026)
+
+| Q | Decision |
+|---|---|
+| 1 Rounding | Resolved 7 Nov (ce934ab): screen and README match. |
+| 2, 10 The 7 Jul shot (S9) | **Keep.** The law block stays in the same frame. |
+| 3 Always-on citations | Resolved 7 Nov (5aead02): sourced; the block may appear in S8. |
+| 4 Returning workers | **Keep the single stricter schedule** (NIOSH new-worker 20 %/day for both); the owner line already says it is stricter than NIOSH. Logged in `docs/decisions.md`. |
+| 5 Voice | **ElevenLabs stock voice**, "a calm human-like sound": George (JBFqnCBsd6RMkjVDRZzb, warm mature British narrator). Script stays first person; the end card discloses "Narration: synthetic voice (ElevenLabs)". |
+| 6 Name | "Ahmed Zayed, physician". Product name still "(working name)". |
+| 7 Format rules | **Open: Ahmed checks the Hack2skill portal** (aspect ratio, max length, upload method). |
+| 8 Music | **Very low bed**: instrumental, at least 20 dB under the voice, no swell. Source: a free/CC0 track or ElevenLabs credits; licence noted in the README. |
+| 9 End card | URL as text. |
+| 11 Acknowledge button | Left out of the capture (Claude's call: a real clock time would not fit the evening-before story). |
+| 12 Health impact | No impact claim in the film. |
+
+## 6. Voice samples (8 Nov)
+
+Drive `Zayed OS/Hackathons/2026-11-future-health/video/`: `sample_george_eleven_v4.mp3` and `sample_george_eleven_multilingual_v2.mp3`
+(S4 + S6 lines, 24 s). Settings: stability 0.6, similarity 0.75, style 0.1. Ahmed picks the model by ear; the full narration is
+generated per shot so each shot's timing can be checked against the 137–149 wpm target. About 1,900 characters of the Student plan's
+monthly 131,000 (21,113 used on 8 Nov before the samples).
+
+---
+
+## Original open questions (7 Nov, kept for the record)
+
 
 1. **RESOLVED 7 Nov (commit ce934ab): the Evidence screen now shows 79.1 % (69.6 % to 87.9 %) and −11.6 (−17.7 to −5.8), matching the README; overlays can copy the screen.** Original note: **G1, rounding (blocking for S4, S6, S12).** The Evidence screen rounds what the README states to one decimal. The screen shows
    79 % "(95% interval 70% to 88%)", where the README has 79.1 % (69.6–87.9). It shows "12 percentage points fewer … difference -12,

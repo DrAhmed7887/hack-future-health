@@ -237,7 +237,7 @@ monthly 131,000 (21,113 used on 8 Nov before the samples).
 - New still `v3_S6_model` (live site, after commit 0022d7f); new S6 clip 13.0 s (eleven_v4, George, same settings).
   The old S6 clip was really 15.5 s (the `dur` note said 13.1), so the film shortened by 2.4 s.
 - Output: Drive `video/heat_shift_planner_demo_v3.mp4`, 1:54.6, 1920×1080, −16.7 LUFS, peak −1.5 dBFS, 5.6 MB.
-- **G4 open:** Ahmed watches v3 with sound.
+- **G4 passed (8 Nov):** Ahmed watched v3 and approved it for submission ("Yes, v3 is good"). v3 is the submission film.
 
 ## Original open questions (7 Nov, kept for the record)
 

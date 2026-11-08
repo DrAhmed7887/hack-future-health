@@ -228,6 +228,17 @@ monthly 131,000 (21,113 used on 8 Nov before the samples).
 - Build: `scripts/capture_video_stills.py`, `scripts/capture_video_stills_v2.py`, `scripts/build_video.py`.
 - **G4 open:** Ahmed watches it with sound. Product name still "(working name)".
 
+## 9. Cut v3 (8 Nov): the trained model replaces the incident-report beat
+
+- Ahmed chose "report it, keep R4" for the protocol v4 result. S6 now says the trained model ranked days better but learned hot
+  places, not unusual days, and would alert on almost every Abu Dhabi summer day, so the app keeps the rule. Numbers on screen
+  trace to `results/model_v4_results.json` and the README section "We also trained a model". The incident-report result (−11.6)
+  stays in the README and the app's evidence screen; it left the film to stay under 2:00.
+- New still `v3_S6_model` (live site, after commit 0022d7f); new S6 clip 13.0 s (eleven_v4, George, same settings).
+  The old S6 clip was really 15.5 s (the `dur` note said 13.1), so the film shortened by 2.4 s.
+- Output: Drive `video/heat_shift_planner_demo_v3.mp4`, 1:54.6, 1920×1080, −16.7 LUFS, peak −1.5 dBFS, 5.6 MB.
+- **G4 open:** Ahmed watches v3 with sound.
+
 ## Original open questions (7 Nov, kept for the record)
 
 

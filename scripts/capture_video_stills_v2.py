@@ -1,4 +1,4 @@
-"""v2 stills after the video-director review: masked evidence crops (S4-S6) and outlined plan lines (S8).
+"""v2 stills (v3 adds the trained-model still for S6) after the video-director review: masked evidence crops (S4-S6) and outlined plan lines (S8).
 Writes <out>/masks.json: {still: css_y} — the build paints the phone blank below that y."""
 import json, sys, pathlib
 from playwright.sync_api import sync_playwright
@@ -50,6 +50,7 @@ with sync_playwright() as p:
     to_top(pg, card(0)); assert "79.1" in pg.evaluate(f"{card(0)}.textContent"); shot(pg, "v2_S4b_fact79", card(0))
     to_top(pg, card(3)); assert "84" in pg.evaluate(f"{card(3)}.textContent"); shot(pg, "v2_S5_fact84", card(3))
     to_top(pg, H2("What did not work")); shot(pg, "v2_S6_failed", f"{H2('What did not work')}.nextElementSibling")
+    to_top(pg, H2("We also trained a model")); shot(pg, "v3_S6_model", f"{H2('We also trained a model')}.nextElementSibling")
     go(pg, "#crew"); answer(pg, "newWorkers", "no"); answer(pg, "heavy", "no")
     go(pg, "#plan"); to_top(pg, "document.querySelector('#app .layer.model')"); shot(pg, "v2_S8a_plan_nono")
     go(pg, "#crew"); answer(pg, "heavy", "yes"); go(pg, "#plan")

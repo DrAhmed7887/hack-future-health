@@ -1,0 +1,281 @@
+{
+  "protocol": "docs/protocol_v4_trained_model.md",
+  "seed": 20261108,
+  "sklearn": "1.9.1",
+  "features": [
+    "h",
+    "p",
+    "a",
+    "night",
+    "spell",
+    "sun",
+    "wind",
+    "season_sin",
+    "season_cos",
+    "weekend"
+  ],
+  "train": {
+    "rows_all": 8568,
+    "rows_usable": 8568,
+    "event_days": 454,
+    "data": {
+      "heat_reports": 1747,
+      "no_latlon": 0,
+      "outside_regions": 1228,
+      "assigned_reports": 493
+    }
+  },
+  "matched_to_r4": {
+    "alert_days": 3672,
+    "high_days": 3392
+  },
+  "cv_table": [
+    {
+      "family": "logistic",
+      "cfg": {
+        "C": 0.01
+      },
+      "cv_log_loss": 0.18062107016366452
+    },
+    {
+      "family": "logistic",
+      "cfg": {
+        "C": 0.1
+      },
+      "cv_log_loss": 0.1794684612538228
+    },
+    {
+      "family": "logistic",
+      "cfg": {
+        "C": 1
+      },
+      "cv_log_loss": 0.17960271965773136
+    },
+    {
+      "family": "logistic",
+      "cfg": {
+        "C": 10
+      },
+      "cv_log_loss": 0.17965031077599752
+    },
+    {
+      "family": "boosting",
+      "cfg": {
+        "max_depth": 2,
+        "learning_rate": 0.03,
+        "max_iter": 100,
+        "min_samples_leaf": 50
+      },
+      "cv_log_loss": 0.1810475048617432
+    },
+    {
+      "family": "boosting",
+      "cfg": {
+        "max_depth": 2,
+        "learning_rate": 0.03,
+        "max_iter": 100,
+        "min_samples_leaf": 200
+      },
+      "cv_log_loss": 0.1811345037049677
+    },
+    {
+      "family": "boosting",
+      "cfg": {
+        "max_depth": 2,
+        "learning_rate": 0.03,
+        "max_iter": 300,
+        "min_samples_leaf": 50
+      },
+      "cv_log_loss": 0.18059433874965716
+    },
+    {
+      "family": "boosting",
+      "cfg": {
+        "max_depth": 2,
+        "learning_rate": 0.03,
+        "max_iter": 300,
+        "min_samples_leaf": 200
+      },
+      "cv_log_loss": 0.18105801366315116
+    },
+    {
+      "family": "boosting",
+      "cfg": {
+        "max_depth": 2,
+        "learning_rate": 0.1,
+        "max_iter": 100,
+        "min_samples_leaf": 50
+      },
+      "cv_log_loss": 0.1808178285044833
+    },
+    {
+      "family": "boosting",
+      "cfg": {
+        "max_depth": 2,
+        "learning_rate": 0.1,
+        "max_iter": 100,
+        "min_samples_leaf": 200
+      },
+      "cv_log_loss": 0.18132720014799444
+    },
+    {
+      "family": "boosting",
+      "cfg": {
+        "max_depth": 2,
+        "learning_rate": 0.1,
+        "max_iter": 300,
+        "min_samples_leaf": 50
+      },
+      "cv_log_loss": 0.18502802356754497
+    },
+    {
+      "family": "boosting",
+      "cfg": {
+        "max_depth": 2,
+        "learning_rate": 0.1,
+        "max_iter": 300,
+        "min_samples_leaf": 200
+      },
+      "cv_log_loss": 0.18581043270267267
+    },
+    {
+      "family": "boosting",
+      "cfg": {
+        "max_depth": 3,
+        "learning_rate": 0.03,
+        "max_iter": 100,
+        "min_samples_leaf": 50
+      },
+      "cv_log_loss": 0.18063927511407127
+    },
+    {
+      "family": "boosting",
+      "cfg": {
+        "max_depth": 3,
+        "learning_rate": 0.03,
+        "max_iter": 100,
+        "min_samples_leaf": 200
+      },
+      "cv_log_loss": 0.1807812679781482
+    },
+    {
+      "family": "boosting",
+      "cfg": {
+        "max_depth": 3,
+        "learning_rate": 0.03,
+        "max_iter": 300,
+        "min_samples_leaf": 50
+      },
+      "cv_log_loss": 0.18197304462693017
+    },
+    {
+      "family": "boosting",
+      "cfg": {
+        "max_depth": 3,
+        "learning_rate": 0.03,
+        "max_iter": 300,
+        "min_samples_leaf": 200
+      },
+      "cv_log_loss": 0.18271295148939343
+    },
+    {
+      "family": "boosting",
+      "cfg": {
+        "max_depth": 3,
+        "learning_rate": 0.1,
+        "max_iter": 100,
+        "min_samples_leaf": 50
+      },
+      "cv_log_loss": 0.18251394398161086
+    },
+    {
+      "family": "boosting",
+      "cfg": {
+        "max_depth": 3,
+        "learning_rate": 0.1,
+        "max_iter": 100,
+        "min_samples_leaf": 200
+      },
+      "cv_log_loss": 0.18320933300349126
+    },
+    {
+      "family": "boosting",
+      "cfg": {
+        "max_depth": 3,
+        "learning_rate": 0.1,
+        "max_iter": 300,
+        "min_samples_leaf": 50
+      },
+      "cv_log_loss": 0.19118687856738895
+    },
+    {
+      "family": "boosting",
+      "cfg": {
+        "max_depth": 3,
+        "learning_rate": 0.1,
+        "max_iter": 300,
+        "min_samples_leaf": 200
+      },
+      "cv_log_loss": 0.19056360345504839
+    }
+  ],
+  "primary": {
+    "family": "logistic",
+    "cfg": {
+      "C": 0.1
+    },
+    "cv_log_loss": 0.1794684612538228,
+    "threshold_alert": 0.04084707407900004,
+    "threshold_high": 0.045663387680392506,
+    "train_in_sample": {
+      "days": 8568,
+      "insufficient": 0,
+      "event_days": 454,
+      "alert_days": 3672,
+      "tp": 377,
+      "fp": 3295,
+      "fn": 77,
+      "tn": 4819,
+      "sensitivity": 0.8303964757709251,
+      "reported_event_ppv": 0.10266884531590414,
+      "alert_fraction": 0.42857142857142855
+    },
+    "standardised_coefficients": {
+      "h": 0.8568489288141927,
+      "p": 0.013239053567726852,
+      "a": 0.015221345129193093,
+      "night": 0.4287673551125584,
+      "spell": -0.09898288791383898,
+      "sun": 0.3291540692438637,
+      "wind": -0.3015392641204208,
+      "season_sin": 0.0888929271584912,
+      "season_cos": -0.005318365302932148,
+      "weekend": -0.57895762898744
+    }
+  },
+  "secondary": {
+    "family": "boosting",
+    "cfg": {
+      "max_depth": 2,
+      "learning_rate": 0.03,
+      "max_iter": 300,
+      "min_samples_leaf": 50
+    },
+    "cv_log_loss": 0.18059433874965716,
+    "threshold_alert": 0.03617966734459352,
+    "threshold_high": 0.04166032052983418,
+    "train_in_sample": {
+      "days": 8568,
+      "insufficient": 0,
+      "event_days": 454,
+      "alert_days": 3672,
+      "tp": 399,
+      "fp": 3273,
+      "fn": 55,
+      "tn": 4841,
+      "sensitivity": 0.8788546255506607,
+      "reported_event_ppv": 0.10866013071895425,
+      "alert_fraction": 0.42857142857142855
+    }
+  }
+}

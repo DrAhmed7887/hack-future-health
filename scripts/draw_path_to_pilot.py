@@ -47,7 +47,7 @@ for i, (name, when, items, gate) in enumerate(stages):
     if i < len(stages) - 1:
         ax = x + bw + 2; ay = y0 + bh // 2
         d.polygon([(ax, ay - 12), (ax + gap - 4, ay), (ax, ay + 12)], fill=INK)
-d.text((80, 895), "Who pays: ADPHC first, as the digital layer of its Safety in Heat programme (free to employers); paid integrations for large employers later.", font=F(BODY, 28), fill=INK)
+d.text((80, 895), "Target pilot partner: ADPHC (no agreement yet), as the digital layer of its Safety in Heat programme, free to employers.", font=F(BODY, 28), fill=INK)
 d.text((80, 940), "No hardware, no personal data: a public forecast and three yes / no crew questions. Each zone's own climate sets its thresholds.", font=F(BODY, 28), fill=INK)
 d.text((80, 1005), "Targets for stages 1–3 are proposals to agree with ADPHC. Rule tested on US outcomes; not yet validated in Abu Dhabi.", font=F(BODY, 24), fill=MUTED)
 im.save(OUT); print("ok")

@@ -42,7 +42,9 @@ that day's weather. Rules were tuned on 2015–2021, committed, and scored once 
 (`docs/backtest_protocol.md`, `docs/protocol_v3_relative.md`, `docs/protocol_v4_trained_model.md`), including expected results and one logged amendment. One logged
 bug fix in the confidence-interval code led to a re-run with rules and point estimates unchanged (`docs/decisions.md`).
 
-**Transfer test: 6 US regions never used in tuning, 2022–2025** (86 days with a reported heat hospitalisation; `results/holdout_results.json`)
+**Transfer test: 6 US regions never used in tuning, 2022–2025** (86 days with a reported heat hospitalisation, a subset of the
+2,628 reports; each day scored with the weather that actually happened, so this is a back-test, not a forecast test; the forecast check
+is below; `results/holdout_results.json`)
 
 | Rule | Days with a reported case that got an alert (95 % CI) | Share of days alerted |
 |---|---|---|
@@ -69,7 +71,7 @@ as a trigger, tuned to the same training alert budget, caught **11.6 points fewe
 value: spending part of the alert budget on "recent report" days left less for hot days. In the app the reports appear only
 as a prompt to check that workplace, never as a reason to raise the level.
 
-## We also trained a model. It did not transfer, so the app keeps the rule
+## We also trained a model. It missed the pass mark set before scoring, so the app keeps the rule
 
 We trained a risk model (logistic regression, chosen over gradient boosting by leave-one-year-out cross-validation) on the
 same 2015–2021 data with more inputs: night-time heat, days in a row of unusual heat, sunshine, wind, season and weekend.
@@ -95,7 +97,7 @@ Environmental (the forecast, ranked against local climate) and workplace (superv
 heavy work) are combined into the plan. The workplace rules come from guidelines (NIOSH 2016 acclimatisation schedule;
 ADPHC Code of Practice 11.0 and Technical Guideline "Safety in the Heat", v4.0, 2024) and are **labelled as not tested on outcomes**.
 
-## From warning to survival (signed by a physician, not tested by this app)
+## From warning to survival (wording signed by Dr Ahmed Zayed, physician; not tested by this app)
 
 Prediction only helps if the worst case is handled well. For heat stroke, survival depends on how fast the body is cooled, so
 the app adds two things on Elevated and High days and on every screen:

@@ -20,7 +20,7 @@ SHOTS = {
             beats=[(0.30, "big", "As hot as the hottest days here at this time of year (2015–2021)"),
                    (0.62, "big", "11 °C above the previous 14 days")]),
  "S2": dict(stills=[(0, "S2_header")], label="",
-            beats=[(0.05, "title", "Heat Shift Planner (working name)"), (0.05, "small", "Ahmed Zayed, physician"), (0.05, "src", "Narration: synthetic voice (ElevenLabs), script by the author.")]),
+            beats=[(0.05, "title", "Heat Shift Planner"), (0.05, "small", "Ahmed Zayed, physician"), (0.05, "src", "Narration: synthetic voice (ElevenLabs), script by the author.")]),
  "S3": dict(stills=[(0, "S3_site")], label="Why a new rule was needed",
             beats=[(0.05, "big", "Fixed thresholds tuned on 8 US regions: top tier on every Abu Dhabi day, June to September"),
                    (0.05, "src", "Source: back-test, transfer check (README)")]),

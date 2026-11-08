@@ -1,4 +1,4 @@
-# Heat Shift Planner (working name)
+# Heat Shift Planner
 
 Future Health Digital Innovation Challenge (Abu Dhabi) · Challenge 06: Population and Workforce Health Early Warning.
 

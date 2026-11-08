@@ -80,7 +80,7 @@ S = list(p.slides)
 
 # 1 Team name, size, problem
 tb = next(sh for sh in S[0].shapes if sh.has_text_frame)
-vals = ["Heat Shift Planner (working name), Ahmed Zayed", "1 (solo)",
+vals = ["Heat Shift Planner, Ahmed Zayed", "1 (solo)",
         "[Population Health] Population and Workforce Health Early Warning. Abu Dhabi has heat rules, weather warnings "
         "and an awareness programme, but no free tool ranks tomorrow's forecast against that zone's own climate and "
         "turns it, with the crew, into a pre-shift plan the evening before."]

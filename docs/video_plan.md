@@ -1,4 +1,4 @@
-# Demo video plan: Heat Shift Planner (working name)
+# Demo video plan: Heat Shift Planner
 
 **DRAFT with Ahmed's decisions of 8 Nov (section 5).** Nothing has been recorded or rendered. Two voice samples exist (section 6). Capture waits on Q7 (portal format rules).
 
@@ -248,6 +248,13 @@ monthly 131,000 (21,113 used on 8 Nov before the samples).
   of the page, and the plan stills include the cooling-station step. Previous stills in `video/stills_v3_prev/`.
 - Output: Drive `video/heat_shift_planner_demo_v4.mp4`, 1:59.3, −16.7 LUFS, peak −1.5 dBFS; contact sheet `video/contact_sheet_v4.png`.
 - **G4 reopened:** v3 was approved; v4 changes S9, S9c, S10 and the end hold. Ahmed watches v4 with sound.
+
+## 11. Cut v5 (8 Nov): final name
+
+- Ahmed chose the final name **Heat Shift Planner**; the S2 title card drops "(working name)". Narration, stills and timing
+  unchanged from v4. Output: Drive `video/heat_shift_planner_demo_v5.mp4`, 1:59.3, −16.7 LUFS, peak −1.5 dBFS.
+- Stills predate commit 2cc0caa (red bar made sticky), so scrolled screens in the film don't show the bar; the live app does.
+- **G4 open:** Ahmed watches v5 with sound (it replaces v4).
 
 ## Original open questions (7 Nov, kept for the record)
 

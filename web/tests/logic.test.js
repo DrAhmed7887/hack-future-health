@@ -116,3 +116,9 @@ test("emergency card: cool first and call 998 at the same time, signed order", (
   assert.match(e[4], /no drinks/i);
   assert.ok(L.EMERGENCY_SOURCES.includes("998"));
 });
+
+test("insufficient data gets the cooling station too (floored to Elevated, as in the plan)", () => {
+  const tier = L.effectiveTier("Insufficient data", { newWorkers: "no" }).tier;
+  assert.equal(tier, "Elevated");
+  assert.ok(L.planSteps(tier, { newWorkers: "no", heavy: "no" }, true, null).some(x => /cooling station/.test(x.text)));
+});

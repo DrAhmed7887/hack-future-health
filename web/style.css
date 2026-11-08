@@ -114,8 +114,8 @@ select, input[type=date] { font: 400 17px var(--body); padding: 10px; border: 2p
 @media (min-width: 900px) { .foot { max-width: 640px; } }
 
 /* S7: emergency card */
-.sos { display: block; max-width: 520px; margin: 10px auto 0; padding: 10px 16px; background: var(--danger); color: #fff; font: 700 17px/1.25 var(--body); text-decoration: none; box-sizing: border-box; }
-.sos::before { content: "+ "; }
+.sos { position: sticky; top: 0; z-index: 5; display: block; max-width: 520px; margin: 10px auto 0; padding: 10px 16px; background: var(--danger); color: #fff; font: 700 17px/1.25 var(--body); text-decoration: none; box-sizing: border-box; }
+.sos::before { content: "+ " / ""; }
 .btn.call { display: block; margin: 14px 0 6px; background: var(--danger); border-color: var(--danger); font-size: 22px; }
 .sos-steps { padding-left: 24px; margin: 14px 0; }
 .sos-steps li { margin-bottom: 12px; font-size: 18px; }

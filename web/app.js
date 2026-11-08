@@ -3,6 +3,7 @@
 
 const state = { zone: null, crew: { newWorkers: null, heavy: null }, replayDate: null, ackAt: null };
 let DATA = { live: null, replay: null, evidence: null };
+let LOAD_ERROR = null;   // when set, every route except #help shows the error page (the emergency card needs no data)
 
 const SIM_SITES = { mussafah: 12, adcity: 9, ruwais: 4, alain: 7 };   // simulated, labelled in the UI
 const SIM_NOTICES = { mussafah: 1, alain: 1 };                          // simulated incident notices, last 3 days
@@ -20,16 +21,21 @@ function pts1(x) { return (Math.round(x * 1000) / 10).toFixed(1).replace("-", "\
 
 async function load() {
   const get = p => fetch(p, { cache: "no-store" }).then(r => { if (!r.ok) throw new Error(p + " " + r.status); return r.json(); });
+  window.addEventListener("hashchange", render);
   try {
     [DATA.live, DATA.replay, DATA.evidence] = await Promise.all([get("data/live.json"), get("data/replay.json"), get("data/evidence.json")]);
   } catch (e) {
-    document.getElementById("app").innerHTML = `<h1>The forecast data did not load</h1><p>Reload the page. If it keeps failing, the data files are missing from this deployment (${esc(e.message)}).</p>${legalBlock({ date: HeatLogic.dubaiDate(new Date(), 1) })}`;
+    LOAD_ERROR = e;
+    render();
     return;
   }
   state.zone = recall("zone");
   if (!DATA.replay || !Object.prototype.hasOwnProperty.call(DATA.replay, state.zone)) state.zone = null;   // corrupt or old saved value
-  window.addEventListener("hashchange", render);
   render();
+}
+
+function errorPage() {
+  return `<h1>The forecast data did not load</h1><p>Reload the page. If it keeps failing, the data files are missing from this deployment (${esc(LOAD_ERROR.message)}).</p>${legalBlock({ date: HeatLogic.dubaiDate(new Date(), 1) })}`;
 }
 
 function liveDay(zone) {
@@ -214,7 +220,8 @@ const VIEWS = {
       const head = `<div class="zrow"><strong>${esc(v.name)}</strong><span class="chip ${t.cls}">${t.word}</span></div>`;
       if (n < SUPPRESS_BELOW) return `<li>${head}<p class="small">Fewer than ${SUPPRESS_BELOW} sites in this zone, so site counts are hidden.</p></li>`;
       const notice = SIM_NOTICES[k] ? `<p><strong>${SIM_NOTICES[k]} incident notice in the last 3 days.</strong> Check that site's acclimatisation plan and rest breaks. This does not change the tier.</p>` : `<p class="small">No incident notices in the last 3 days.</p>`;
-      const hot = day && (day.tier === "Elevated" || day.tier === "High");
+      const eff = HeatLogic.effectiveTier(day?.tier || "Insufficient data", { newWorkers: "no" }).tier;   // same floor as the plan
+      const hot = eff === "Elevated" || eff === "High";
       const cooling = hot ? `<p>Cooling station ready: ${SIM_COOLING[k]} of ${n} sites</p>` : "";
       return `<li>${head}<p>Plans acknowledged: ${Math.floor(n * 0.75)} of ${n} sites</p>${cooling}${notice}</li>`;
     }).join("");
@@ -228,7 +235,7 @@ const VIEWS = {
 
 function render() {
   const route = (location.hash || "#home").slice(1);
-  const view = VIEWS[route] || VIEWS.home;
+  const view = LOAD_ERROR && route !== "help" ? errorPage : (VIEWS[route] || VIEWS.home);
   const app = document.getElementById("app");
   app.innerHTML = view();
   bind(route);

@@ -143,27 +143,30 @@ for i, (hd, body) in enumerate(users):
     card(S[4], X0 + i * (cw + gap), Y0, cw, 1.6, hd, body, color=BLUE if i == 0 else INK)
 text(S[4], X0, Y0 + 1.85, W, 1.5, [
     ("Intended outcome", 12, True, INK),
-    ("Fewer serious heat illnesses at work, by acting the evening before on the days that are unusual for each zone, protecting new and returning workers, and cooling on site at once if someone collapses. Proven so far: the alert rule on US outcomes (back-test). Not yet proven: any effect in Abu Dhabi; that is what the pilot measures.", 10, False, INK),
+    ("Fewer serious heat illnesses at work, and so less sickness absence and fewer lost workdays, by acting the evening before on the days that are unusual for each zone, protecting new and returning workers, and cooling on site at once if someone collapses. Pilot logs by zone and day also give ADPHC evidence for policy (for example, whether the 35 °C trigger and the midday-break dates cover the dangerous days). Proven so far: the alert rule on US outcomes (back-test). Not yet proven: any effect in Abu Dhabi; the pilot measures it.", 10, False, INK),
 ])
 
 # 6 Success measures
-text(S[5], X0, Y0, W, 0.3, [("Measured on the prototype (US data, back-test)", 11, True, INK)])
+R4c = ho["rules"]["R4"]
+PPV = R4c["tp"] / (R4c["tp"] + R4c["fp"]); FA = R4c["fp"] / (R4c["fp"] + R4c["tn"])
+text(S[5], X0, Y0, W, 0.3, [("Measured on the prototype: the six measures the challenge asks for (US data, back-test)", 11, True, INK)])
 table(S[5], X0, Y0 + 0.3, W, [
-    ["Measure", "Result", "Why it matters"],
-    [f"Case days with an alert, 6 unseen US regions, 2022–2025 ({EVENT_DAYS} days)", f"{pc(SENS)} (95 % CI {pc(CI[0])}–{pc(CI[1])})", "Sensitivity on real outcomes"],
-    ["Share of days alerted (the common fixed trigger: 82 %)", f"{pc(SHARE, 0)}", "Fewer alerts for the same protection"],
-    ["Spread of alert load across regions", f"{round(ho['primary_B_alert_share_spread']['R4'] * 100)} points (fixed thresholds: {round(ho['primary_B_alert_share_spread']['R2'] * 100)})", "Does it transfer to a new climate?"],
-    ["Case days caught using the evening-before forecast (8 tuning regions, 2024–25: the archived forecasts start in 2024)", f"{pc(DA['day_ahead']['sensitivity'])} (actual weather: {pc(DA['observed']['sensitivity'])})", "Works as a forecast, not only in hindsight"],
-    ["Same decision from the evening-before forecast as from actual weather (same regions and years)", f"{pc(ev['dayahead_same_decision'], 0)}", "Forecast error changes few decisions"],
-], [4.6, 2.0, 2.6], size=9)
-text(S[5], X0, Y0 + 2.1, W, 0.3, [("Proposed for the Abu Dhabi pilot (to agree with ADPHC before the season; targets are not results)", 11, True, INK)])
-table(S[5], X0, Y0 + 2.4, W, [
+    ["Measure", "Result", "Note"],
+    [f"Sensitivity: case days with an alert, 6 unseen US regions, 2022–2025 ({EVENT_DAYS} days)", f"{pc(SENS)} (95 % CI {pc(CI[0])}–{pc(CI[1])})", f"Alerted on {pc(SHARE, 0)} of days (fixed trigger: 82 %)"],
+    ["Positive predictive value / false alarms", f"{pc(PPV)} / {pc(FA, 0)} of no-case days", "Reported severe cases only; most heat illness is unreported"],
+    ["Alert-load spread across regions", f"{round(ho['primary_B_alert_share_spread']['R4'] * 100)} points (fixed thresholds: {round(ho['primary_B_alert_share_spread']['R2'] * 100)})", "Transfers to a new climate"],
+    ["Sensitivity with the evening-before forecast (8 original regions, held-out 2024–25)", f"{pc(DA['day_ahead']['sensitivity'])} (actual weather: {pc(DA['observed']['sensitivity'])})", f"Same decision on {pc(ev['dayahead_same_decision'], 0)} of days"],
+    ["Lead time / data latency", "≈ 12 h (18:00 the evening before) / daily", "Older than 36 h counts as missing"],
+    ["Missing inputs", "'Not enough data', treated as Elevated", "Legal layer always shown"],
+], [4.3, 2.6, 2.3], size=8)
+text(S[5], X0, Y0 + 2.32, W, 0.3, [("Proposed for the Abu Dhabi pilot (to agree with ADPHC before the season; targets are not results)", 10, True, INK)])
+table(S[5], X0, Y0 + 2.58, W, [
     ["Measure", "Proposed target"],
     ["Share of days with an alert, per zone", "30–60 % in every zone"],
-    ["Heat cases on alert days / all cases, all Abu Dhabi zones (zone-day incident or ED counts; sites alone are too few)", "Not worse than 79 %, with a 95 % CI"],
+    ["Heat cases on alert days / all cases, all zones (zone-day counts; sites alone are too few)", "Not worse than 79 %, with a 95 % CI"],
     ["Plans acknowledged before the shift / cooling station ready on alert days", "≥ 80 % of site-evenings / baseline in 2027"],
-    ["Heat cases per 1,000 workers, pilot sites vs others", "Measured, not promised (one season is too short)"],
-], [5.6, 3.6], size=9)
+    ["Heat cases, sickness absence and lost workdays per 1,000 workers, pilot sites vs others", "Measured, not promised (one season is too short)"],
+], [5.6, 3.6], size=8)
 
 # 7 Evidence
 cd = CategoryChartData()
@@ -293,6 +296,7 @@ card(S[14], X0 + 4.75, Y0, W - 4.75, 3.0, "A trained model we chose not to deplo
     f"Logistic regression with more inputs (night heat, hot spells, sun, wind), pre-registered, frozen, scored once on the same unseen regions.",
     f"It ranked days better (AUC {P['primary_B_auc']['M']:.2f} vs {P['primary_B_auc']['R4_tiers']:.2f}) and caught {pc(P['M']['sensitivity'])} of case days vs {pc(P['R4']['sensitivity'])}.",
     f"But its alert load swung {round(P['alert_share_spread']['M'] * 100)} points across cities (rule: {round(P['alert_share_spread']['R4'] * 100)}): it learned 'hot place', not 'unusual day'. In Abu Dhabi it would alert on {min(z['alert_share_2025'] for z in mv['abu_dhabi_descriptive'].values()) * 100:.0f}–{max(z['alert_share_2025'] for z in mv['abu_dhabi_descriptive'].values()) * 100:.0f} % of summer days.",
+    "Absolute heat was an input on purpose: the protocol tested whether standard weather inputs transfer as they are.",
     "It missed the pass mark set before scoring, so the app keeps the relative rule: a governance decision, reported in full.",
 ], color=BLUE, size=9)
 

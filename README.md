@@ -63,6 +63,17 @@ available at 18:00 the day before): the deployed rule gave the same decision as 
 The forecast ran warm, so it alerted on more days (59 % vs 51 %) and caught more reported-case days (81.7 % vs 73.1 %)
 (`results/dayahead_r4_results.json`; frozen rule, checked after the main tests).
 
+**The six measures the challenge asks for (item 5)**, deployed rule, 6 unseen US regions, 2022–2025, unless stated:
+
+| Measure | Result | Source and note |
+|---|---|---|
+| Sensitivity | 79.1 % of 86 reported-case days (95 % CI 69.6–87.9) | `results/holdout_results.json` |
+| Positive predictive value | 3.8 % (68 of 1,797 alert days had a reported case) | Reported severe cases only: most heat illness is never reported to OSHA (illness reporting about 25 % in one state, evidence pack 6.3), so this is a floor, not the true rate |
+| False alarms | 1,729 of 3,586 days with no reported case got an alert (48 %); the common fixed trigger alerted on 82 % of all days | Same file; the alert is a prompt to plan, not an evacuation |
+| Lead time | Forecast scheduled at 18:00 Abu Dhabi time the evening before, about 12 hours before a 06:00 shift | `.github/workflows/refresh-live.yml`; GitHub can delay scheduled runs |
+| Data latency | One forecast a day; data older than 36 hours is treated as missing | `web/logic.js` (`STALE_HOURS`) |
+| Missing inputs | Fewer than 18 valid hours in a day, or a stale forecast: "Not enough data", treated as Elevated; the legal layer stays visible (0 such days in the test data) | `heatwarn/signals.py`, `web/logic.js`, tests |
+
 ## What did not work
 
 We expected recent incident reports nearby to improve the alert, and pre-registered that test. A rule that also used them
@@ -87,14 +98,19 @@ least as many case days as the rule, with alert-load spread no more than 5 point
 - The model **ranks days better** (AUC 0.73 against 0.66 for the rule's tiers; difference +0.07, 95 % CI +0.01 to +0.13).
 - It caught about the same share of case days (difference −1.2 points, 95 % CI −13.9 to +10.8), but its alert load swung
   with local climate, so the criterion was **not met**.
+- Why absolute heat was an input at all: the protocol tested whether standard weather inputs transfer to a new climate as
+  they are, without forcing them to be relative. They did not, which is the evidence for keeping the relative rule.
 - The reason is in its weights: it learned **absolute heat** (standardised coefficient 0.86), not how unusual the day is for that
   place (0.01). Run on Abu Dhabi's four zones, it would alert on **93–100 % of May–September 2025 days**: the same failure as the
   fixed thresholds. A ranking against each zone's own climate is what transferred.
 
 ## Combining signals (challenge requirement 1)
 
-Environmental (the forecast, ranked against local climate) and workplace (supervisor-entered crew composition and planned
-heavy work) are combined into the plan. The workplace rules come from guidelines (NIOSH 2016 acclimatisation schedule;
+Two levels. **At the site**, environmental (the forecast, ranked against local climate) and workplace (supervisor-entered
+crew composition and planned heavy work) are combined into the plan. **For the regulator**, each zone's heat tier is shown with
+site-level service signals: plans acknowledged, cooling stations ready and incident notices (simulated in the demo; in the pilot,
+ADOSH-SF incident notifications and emergency-department heat-illness visits by zone and day), so ADPHC can see zones where
+risk is high and preparation is low. Incident notices never change the tier (that rule failed its pre-registered test). The workplace rules come from guidelines (NIOSH 2016 acclimatisation schedule;
 ADPHC Code of Practice 11.0 and Technical Guideline "Safety in the Heat", v4.0, 2024) and are **labelled as not tested on outcomes**.
 
 ## From warning to survival (wording signed by Dr Ahmed Zayed, physician; not tested by this app)
@@ -122,6 +138,13 @@ are simulated.
 - Small numbers: 86 event days in the transfer test; intervals are wide.
 - Decision support for supervisors. Not a diagnosis, not a medical device, never a clearance to work.
 
+## Expected impact (challenge item 6)
+
+Preventing severe heat illness means fewer hospital days and less **sickness absence and lost workdays**: the outcome tested here,
+work heat hospitalisation, means days off work every time. Not yet shown in Abu Dhabi; the pilot measures it. The pilot logs
+(tier, plan acknowledged, cooling ready, cases) by zone and day also give ADPHC **evidence for policy**, for example whether
+the 35 °C programme trigger and the 15 June – 15 September midday break cover the days that turn out dangerous.
+
 ## Privacy and governance
 
 No worker names, health data or job histories are collected. Crew questions are yes / no / not sure ("not sure", or no answer, counts as yes).
@@ -136,19 +159,28 @@ Sites, acknowledgements and incident notices in the demo are simulated and label
 
 ## Reproduce
 
+**Quick check, no downloads** (all results are committed in `results/`):
+
 ```bash
 uv sync
 uv run pytest -q && node --test web/tests/logic.test.js
+python3 -m http.server 8765 --directory web   # then open http://localhost:8765
+```
+
+**Full rebuild from raw data.** First download the OSHA Severe Injury Reports file (osha.gov/severe-injury-reports) into
+`data/raw/osha_sir/` (not redistributed; its SHA-256 is in `docs/backtest_protocol.md`). Weather is fetched from Open-Meteo.
+
+```bash
 uv run python scripts/fetch_weather.py && uv run python scripts/fetch_weather.py --holdout
 uv run python scripts/tune.py && uv run python scripts/score_test.py        # original regions
 uv run python scripts/tune_relative.py && uv run python scripts/score_holdout.py
 uv run python scripts/fetch_dayahead.py && uv run python scripts/score_dayahead.py && uv run python scripts/score_dayahead_r4.py
 uv run python scripts/fetch_sunwind.py && uv run python scripts/train_model.py && uv run python scripts/score_model.py   # trained model (not deployed)
 uv run python scripts/abu_dhabi_tiers.py && uv run python scripts/build_web_data.py
-python3 -m http.server 8765 --directory web
 ```
 
-The OSHA file goes in `data/raw/osha_sir/` (download from osha.gov/severe-injury-reports). The live forecast refresh is scheduled
+Deck, film and diagram scripts (`scripts/build_deck.py`, `build_video.py`, `capture_video_stills*.py`, `draw_path_to_pilot.py`)
+need extra packages, run as `uv run --with python-pptx --with pillow --with playwright python <script>`. The live forecast refresh is scheduled
 daily at 18:00 Abu Dhabi time (`.github/workflows/refresh-live.yml`); GitHub can delay scheduled runs by hours, and the app
 shows "Not enough data" if the forecast is out of date.
 

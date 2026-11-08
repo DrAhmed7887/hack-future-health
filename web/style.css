@@ -119,3 +119,7 @@ select, input[type=date] { font: 400 17px var(--body); padding: 10px; border: 2p
 .btn.call { display: block; margin: 14px 0 6px; background: var(--danger); border-color: var(--danger); font-size: 22px; }
 .sos-steps { padding-left: 24px; margin: 14px 0; }
 .sos-steps li { margin-bottom: 12px; font-size: 18px; }
+
+/* Out of season: one tap to a real summer day */
+.offseason { border: 2px solid var(--ink); padding: 12px 14px; margin: 14px 0; }
+.offseason .btn { display: block; width: 100%; margin: 10px 0 6px; }

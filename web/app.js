@@ -116,11 +116,13 @@ const VIEWS = {
     const t = TIERS[day.tier] || TIERS["Insufficient data"];
     const when = state.replayDate ? "That day" : `${day.when || "Tomorrow"}, ${esc(fmtDate(day.date))}`;
     const issued = state.replayDate ? "Real weather for that day (ERA5 reanalysis)." : `Forecast issued ${esc(DATA.live.generated_utc)} UTC. Next update scheduled for 18:00 Abu Dhabi time.`;
-    const off = day.tier === "Outside tested season" && !state.replayDate ? `<p><a href="#replay">Replay a real summer day</a> to see how alerts work.</p>` : "";
+    const off = day.tier === "Outside tested season" && !state.replayDate
+      ? `<div class="offseason"><p><strong>Alerts run May to September.</strong> See what this zone got on a real summer day, with that day's weather.</p><button class="btn" data-feature="2025-08-01">Show 1 Aug 2025 (a High day)</button><p class="small">Or <a href="#replay">pick any summer 2025 day</a>.</p></div>`
+      : "";
     return `${zoneBar()}
-      <section class="tier ${t.cls}" aria-live="polite"><p class="small">${when}</p><p class="word">${t.word}</p><p class="what">${t.what}</p></section>
+      <section class="tier ${t.cls}" aria-live="polite"><p class="small">${when}</p><p class="word">${t.word}</p><p class="what">${t.what}</p></section>${off}
       <p class="why">${esc(whySentence(day))}</p>${Number.isFinite(day.heat_index_f) ? strip(day) : ""}
-      <p class="small">${issued} <a href="#trust">How was this tested?</a></p>${off}
+      <p class="small">${issued} <a href="#trust">How was this tested?</a></p>
       ${legalBlock(day)}
       ${cta("#crew", state.replayDate ? "Plan that day's crew" : "Plan tomorrow's crew")}`;
   },
@@ -246,6 +248,10 @@ function render() {
 function bind(route) {
   document.querySelectorAll("[data-zone]").forEach(b => b.addEventListener("click", () => {
     state.zone = b.dataset.zone; store("zone", state.zone); location.hash = "#home"; render();
+  }));
+  document.querySelectorAll("[data-feature]").forEach(b => b.addEventListener("click", () => {
+    state.replayDate = b.dataset.feature; state.ackAt = null;
+    if (location.hash === "#home") render(); else location.hash = "#home";
   }));
   document.querySelectorAll("[data-act=live]").forEach(a => a.addEventListener("click", () => { state.replayDate = null; state.ackAt = null; }));
   document.querySelectorAll("input[type=radio]").forEach(r => r.addEventListener("change", () => { state.crew[r.name] = r.value; state.ackAt = null; render(); }));

@@ -213,6 +213,21 @@ monthly 131,000 (21,113 used on 8 Nov before the samples).
   frame) and added S10b (Ruwais row) after the first sheet review.
 - Next: the edit (1920×1080, phone frame left third, overlays and captions right), after Ahmed reports the portal's format rules.
 
+## 8. Cut v2 (8 Nov): portal rule is max 2:00, 16:9
+
+- Narration trimmed and partly rewritten after a video-director review of cut v1; final spoken text per shot is
+  `docs/video_narration.json` (S3 is now a silent 3.2 s card, per the cut list).
+- Review fixes applied: S4 says "used 2,628 … scored once on 86 case days" (the 2,628 is the whole record, not the test set);
+  S6 says "pre-registered" and "on earlier fixed-threshold rules"; S3 says "a threshold tuned on US regions … June to September";
+  evidence crops are masked below the line being spoken (no 82 % beside 79.1 %); S8 shows three plan states with crew chips and
+  outlined new lines; the synthetic-voice disclosure is on screen from 0:11; S7 overlay says "rule", not "model".
+- Numbers from the app's replay data (45 °C, 11 °C, 14:00, 38.2 °C) and legal text (12:30–15:00, 20 % a day) trace to
+  `web/data/replay.json` (written by `scripts/build_web_data.py`) and the app's cited sources, not to README.
+- Output: Drive `video/heat_shift_planner_demo_v2.mp4`, 1:57.0, 1920×1080 H.264, AAC, −16.7 LUFS integrated, peak −1.4 dBFS;
+  contact sheet `video/contact_sheet_v2.png`. Music bed: ElevenLabs Music (generated 8 Nov), about 22 dB under the voice.
+- Build: `scripts/capture_video_stills.py`, `scripts/capture_video_stills_v2.py`, `scripts/build_video.py`.
+- **G4 open:** Ahmed watches it with sound. Product name still "(working name)".
+
 ## Original open questions (7 Nov, kept for the record)
 
 

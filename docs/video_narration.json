@@ -1,0 +1,69 @@
+{
+ "S1": {
+  "time": "0:00\u20130:13",
+  "narr": "Mussafah, the first of August 2025. As hot as the hottest days there at this time of year, and 11 degrees above the previous 14 days.",
+  "old": "Mussafah, the first of August 2025. Heat and humidity together: as hot as the hottest days there at this time of year, and 11 degrees above the previous 14 days.",
+  "dur": 10.4
+ },
+ "S2": {
+  "time": "0:13\u20130:19",
+  "narr": "Heat Shift Planner turns that into tomorrow's plan for site supervisors in Abu Dhabi.",
+  "dur": 5.52
+ },
+ "S3": {
+  "time": "0:19\u20130:28",
+  "narr": "",
+  "old": "A fixed threshold tuned on eight US regions would put every Abu Dhabi day, June to September, in its top tier.",
+  "dur": 5.52
+ },
+ "S4": {
+  "time": "0:28\u20130:49",
+  "narr": "Abu Dhabi has no public data on work heat illness. So I used 2,628 US workplace heat hospitalisation reports. Frozen, then scored once on 86 case days in six regions it had never seen: it caught 79 percent, alerting on 49 percent of days.",
+  "old": "Abu Dhabi has no public data on work heat illness. So I tested on 2,628 heat hospitalisation reports from US federal OSHA. Frozen, then scored once in six US regions it had never seen: it caught 79 percent of reported-case days, alerting on 49 percent of days.",
+  "dur": 21.28
+ },
+ "S5": {
+  "time": "0:49\u20130:56",
+  "narr": "On the evening-before forecast: the same decision as the real weather on 84 percent of days.",
+  "dur": 6.72
+ },
+ "S6": {
+  "time": "0:56\u20131:10",
+  "narr": "I pre-registered a test I expected to pass: incident reports as a trigger. On earlier fixed-threshold rules, it caught 11.6 points fewer heat days than a weather-only rule. So reports only prompt a check.",
+  "dur": 13.12
+ },
+ "S7": {
+  "time": "1:10\u20131:20",
+  "narr": "Whatever the forecast, the app shows the law: the midday break, and the heat stress programme from 35 degrees.",
+  "old": "Whatever the forecast, the law shows: the midday break, and the heat stress programme from 35 degrees. The Thermal Work Limit is not calculated.",
+  "dur": 7.6
+ },
+ "S8": {
+  "time": "1:20\u20131:35",
+  "narr": "Heavy work planned? Move heavy tasks away from the 2 p.m. peak. New or returning workers? 20 percent of usual heat exposure on day one, adding 20 percent a day.",
+  "old": "Heavy work planned? Yes adds: move heavy tasks away from the 2 p.m. peak. New or returning workers? Yes adds the acclimatisation steps: 20 percent of usual heat exposure on day one, adding 20 percent a day.",
+  "dur": 12.56
+ },
+ "S9": {
+  "time": "1:35\u20131:44",
+  "narr": "On the seventh of July, the forecast adds no steps. A yes to new workers raises the tier one level, labelled as our rule.",
+  "dur": 9.36
+ },
+ "S10": {
+  "time": "1:44\u20131:52",
+  "narr": "The regulator sees zones, not people. Sites and notices here are simulated.",
+  "old": "The regulator sees zones, not people. Below five sites, site counts are hidden. Sites and notices here are simulated.",
+  "dur": 6.56
+ },
+ "S11": {
+  "time": "1:52\u20131:59",
+  "narr": "Limits: US data, May to September only, never a clearance to work.",
+  "old": "Limits: US data, May to September only, not a medical device, never a clearance to work.",
+  "dur": 6.16
+ },
+ "S12": {
+  "time": "1:59\u20132:05",
+  "narr": "79 percent, in regions it had never seen. Not yet validated in Abu Dhabi.",
+  "dur": 6.64
+ }
+}

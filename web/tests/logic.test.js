@@ -91,3 +91,28 @@ test("legal layer never reassures when the temperature is unknown", () => {
   assert.doesNotMatch(s, /undefined|below the 35/);
   assert.match(s, /assume the 35/i);
 });
+
+// S7 (signed 8 Nov 2026): on-site cooling. Written before the code.
+test("cooling station step on Elevated and High days only", () => {
+  const has = tier => L.planSteps(tier, { newWorkers: "no", heavy: "no" }, true, 14).some(x => /cooling station/.test(x.text));
+  assert.equal(has("Elevated"), true);
+  assert.equal(has("High"), true);
+  assert.equal(has("No escalation"), false);
+  const s = L.planSteps("High", { newWorkers: "no", heavy: "no" }, true, 14).find(x => /cooling station/.test(x.text));
+  assert.match(s.text, /name who runs it/);
+  assert.match(s.owner, /ACSM 2023/);
+});
+
+test("emergency card: cool first and call 998 at the same time, signed order", () => {
+  const e = L.EMERGENCY_STEPS;
+  assert.equal(e.length, 5);
+  assert.match(e[0], /shade/);
+  assert.match(e[1], /998/);
+  assert.match(e[1], /suspected heat stroke/);
+  assert.match(e[2], /Don't wait for the ambulance/);
+  assert.match(e[2], /head/);
+  assert.match(e[2], /ice water/);
+  assert.match(e[3], /until the medics take over/);
+  assert.match(e[4], /no drinks/i);
+  assert.ok(L.EMERGENCY_SOURCES.includes("998"));
+});

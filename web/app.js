@@ -6,6 +6,7 @@ let DATA = { live: null, replay: null, evidence: null };
 
 const SIM_SITES = { mussafah: 12, adcity: 9, ruwais: 4, alain: 7 };   // simulated, labelled in the UI
 const SIM_NOTICES = { mussafah: 1, alain: 1 };                          // simulated incident notices, last 3 days
+const SIM_COOLING = { mussafah: 7, adcity: 5, ruwais: 2, alain: 4 };     // simulated: sites with a cooling station ready (S7c)
 const SUPPRESS_BELOW = 5;
 const ZONE_NOTE = { mussafah: "Industrial area and workshops", adcity: "City construction sites", ruwais: "Industrial area, Al Dhafra, coastal", alain: "Inland, drier heat" };                                               // signed S6
 
@@ -143,7 +144,7 @@ const VIEWS = {
       li("Drinking water at the work area: at least 2 litres every 2 to 3 hours for each worker.", "Employer · ADPHC OSH Code of Practice 11.0"),
       li("Shade and cooling shelters for everyone working outside in the summer months.", "Employer · ADPHC OSH Code of Practice 11.0, section 3.2(b)(vii)"),
       li("Nobody works alone in heat stress areas.", "Supervisor · ADPHC OSH Code of Practice 11.0, section 3.2(e)"),
-      li("Anyone with heat symptoms stops work now: rest in a cool, shaded place, drink water, cool down. If confused, collapsed or not improving, call an ambulance on 998.", "Everyone on site · ADPHC Technical Guideline, Safety in the Heat, sections 4.4(c) and 4.5(c); ambulance 998 (u.ae)"),
+      li("Anyone with heat symptoms stops work now: rest in a cool, shaded place, drink water, cool down. If confused, collapsed or not improving, call an ambulance on 998 and start cooling at once: see the red emergency card at the top of every screen.", "Everyone on site · ADPHC Technical Guideline, Safety in the Heat, sections 4.4(c) and 4.5(c); ambulance 998 (u.ae)"),
     ].join("");
     const steps = HeatLogic.planSteps(tier, state.crew, inSeason, day.peak_hour).map(x => li(x.text, x.owner));
     const t = TIERS[tier] || TIERS["Insufficient data"];
@@ -196,6 +197,15 @@ const VIEWS = {
       <input id="rd" type="date" min="2025-05-01" max="2025-09-30" value="2025-07-15">
       ${cta("#home", "Show this day", "")}`;
   },
+  help() {
+    const steps = HeatLogic.EMERGENCY_STEPS.map(x => `<li>${esc(x)}</li>`).join("");
+    return `<h1>Suspected heat stroke: cool first</h1>
+      <p>Confused, collapsed or acting strangely while working in heat? Treat it as heat stroke. Cooling on site, straight away, is what saves lives.</p>
+      <a class="btn call" href="tel:998">Call 998</a>
+      <ol class="sos-steps">${steps}</ol>
+      <p class="small">${esc(HeatLogic.EMERGENCY_SOURCES)}. First aid for a supervisor, not a diagnosis. Follow the ambulance call-taker's instructions.</p>
+      ${cta("#home", "Back to the plan")}`;
+  },
   regulator() {
     const rows = Object.entries(DATA.replay).map(([k, v]) => {
       const day = state.replayDate ? v.days.find(d => d.date === state.replayDate) : liveDay(k);
@@ -204,12 +214,14 @@ const VIEWS = {
       const head = `<div class="zrow"><strong>${esc(v.name)}</strong><span class="chip ${t.cls}">${t.word}</span></div>`;
       if (n < SUPPRESS_BELOW) return `<li>${head}<p class="small">Fewer than ${SUPPRESS_BELOW} sites in this zone, so site counts are hidden.</p></li>`;
       const notice = SIM_NOTICES[k] ? `<p><strong>${SIM_NOTICES[k]} incident notice in the last 3 days.</strong> Check that site's acclimatisation plan and rest breaks. This does not change the tier.</p>` : `<p class="small">No incident notices in the last 3 days.</p>`;
-      return `<li>${head}<p>Plans acknowledged: ${Math.floor(n * 0.75)} of ${n} sites</p>${notice}</li>`;
+      const hot = day && (day.tier === "Elevated" || day.tier === "High");
+      const cooling = hot ? `<p>Cooling station ready: ${SIM_COOLING[k]} of ${n} sites</p>` : "";
+      return `<li>${head}<p>Plans acknowledged: ${Math.floor(n * 0.75)} of ${n} sites</p>${cooling}${notice}</li>`;
     }).join("");
     return `<h1>Regulator view</h1>
       <p>Zones, not people. ${state.replayDate ? esc(fmtDate(state.replayDate)) + " (replay)." : "Tomorrow's forecast."}</p>
       <ul class="zlist">${rows}</ul>
-      <p class="small">Sites, acknowledgements and incident notices are simulated for the demo. No individual worker data is collected. Not for employment or disciplinary use.</p>
+      <p class="small">Sites, acknowledgements, cooling stations and incident notices are simulated for the demo. No individual worker data is collected. Not for employment or disciplinary use.</p>
       ${cta("#home", "Back to the site view")}`;
   },
 };

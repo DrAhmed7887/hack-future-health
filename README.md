@@ -7,10 +7,12 @@ alerts run May to September only.
 
 ![How Heat Shift Planner works](docs/workflow.png)
 
-The evening before a shift, a site supervisor in Abu Dhabi sees three things for tomorrow:
+The evening before a shift, a site supervisor in Abu Dhabi sees three things for tomorrow, plus one for emergencies:
 1. **What the law already requires** (UAE midday break; the ADPHC rule that a heat stress programme applies at 35 °C or more).
 2. **Whether tomorrow is hotter than most days for that place and time of year**, using a rule tested on real heat hospitalisations.
 3. **A plan for their crew**: new or returning workers and heavy work change the steps, each with an owner and a source.
+4. **What to do if someone collapses**: a red card on every screen. Heat stroke is treated by cooling on site at once,
+   while the ambulance (998) is on its way ("cool first, transport second").
 
 The regulator sees zones, never people. Nothing in the app clears anyone to work.
 
@@ -92,6 +94,22 @@ least as many case days as the rule, with alert-load spread no more than 5 point
 Environmental (the forecast, ranked against local climate) and workplace (supervisor-entered crew composition and planned
 heavy work) are combined into the plan. The workplace rules come from guidelines (NIOSH 2016 acclimatisation schedule;
 ADPHC Code of Practice 11.0 and Technical Guideline "Safety in the Heat", v4.0, 2024) and are **labelled as not tested on outcomes**.
+
+## From warning to survival (signed by a physician, not tested by this app)
+
+Prediction only helps if the worst case is handled well. For heat stroke, survival depends on how fast the body is cooled, so
+the app adds two things on Elevated and High days and on every screen:
+- **A cooling station before the shift**: a tub or tarp with water, ice and towels in the shade, with a named person in charge.
+- **An emergency card**: move them to shade, call 998, start cooling now without waiting for the ambulance (cold water to the
+  neck, or whole-body towels or sheets soaked in ice water), keep cooling until medics take over, no drinks if confused.
+
+Evidence: rapid total-body cooling is "essential for survival … time is tissue" (ACSM consensus 2023, PMID 37036463). In US
+states whose ambulance guidelines include cold-water immersion and "cool first, transport second", labourers were 3.0 and 3.7
+times less likely to die of heat stroke (Tishukaj 2024, PMID 39183116; ecological, state level). 454 runners with heat stroke
+treated by cold-water immersion all survived (Stearns 2024, PMID 37655801); ice-soaked sheets had 0.20 % mortality in 462
+soldiers (DeGroot 2023, PMID 36806435). The ADPHC guideline says "Cool the employee"; the card says how. Wording signed in
+`docs/signoff.md` (S7). Alignment with UAE ambulance instructions is a pilot item. The regulator view's cooling-station counts
+are simulated.
 
 ## Limits
 

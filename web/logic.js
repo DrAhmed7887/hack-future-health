@@ -20,6 +20,8 @@
     const steps = [];
     const hot = tier === "Elevated" || tier === "High";
     if (hot) steps.push({ text: "Check every crew member before the shift: symptoms, sleep, fluids.", owner: "Supervisor · before the shift starts" });
+    // Signed S7a (8 Nov 2026)
+    if (hot) steps.push({ text: "Before the shift: set up a cooling station in the shade (a tub or a tarp you can fill with water, ice, and towels) and name who runs it.", owner: "Supervisor · ACSM 2023 heat illness consensus; ADPHC Technical Guideline, Safety in the Heat, section 4.5(c)" });
     if (tier === "High") steps.push({ text: "Get a site heat assessment from your OSH practitioner before heavy outdoor work starts.", owner: "OSH practitioner · before heavy work" });
     if (hot && answeredYes(crew.heavy)) {
       const when = peakHour == null ? "" : ` (heat peaks around ${peakHour}:00)`;
@@ -77,7 +79,17 @@
     ];
   }
 
-  const api = { answeredYes, effectiveTier, planSteps, isStale, legalItems, resolveDay, inTestedSeason, dubaiDate, STALE_HOURS };
+  // Signed S7b (8 Nov 2026): cool first, call 998 at the same time. Wording is Ahmed's signed text; do not edit without a new sign-off.
+  const EMERGENCY_STEPS = [
+    "Stop their work and move them into the shade.",
+    "Call 998 now. Say \"suspected heat stroke\".",
+    "Start cooling now. Don't wait for the ambulance. Put them in cold water up to the neck with someone holding their head out of the water, or cover their whole body with towels or sheets soaked in ice water and swap them as they warm.",
+    "Keep cooling until the medics take over. Tell them what time cooling started.",
+    "Give no drinks to anyone confused or drowsy.",
+  ];
+  const EMERGENCY_SOURCES = "ACSM 2023 heat illness consensus; Tishukaj 2024 (workers: cool first, transport second); DeGroot 2023 (ice sheets); ADPHC Technical Guideline, Safety in the Heat, section 4.5(c); ambulance 998 (u.ae)";
+
+  const api = { EMERGENCY_STEPS, EMERGENCY_SOURCES, answeredYes, effectiveTier, planSteps, isStale, legalItems, resolveDay, inTestedSeason, dubaiDate, STALE_HOURS };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   else root.HeatLogic = api;
 })(typeof window !== "undefined" ? window : globalThis);

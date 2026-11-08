@@ -14,3 +14,14 @@ PMID 29975679 spot-checked on PubMed). Signed by: **Ahmed Zayed, 7 Nov 2026** (i
 
 Always shown with any output: no green "safe to work" state; "TWL not computed (needs globe temperature and a verified TWL
 algorithm)"; "US data, not validated in Abu Dhabi"; "insufficient data" instead of a low tier when inputs are missing.
+
+## S7: cool first, call 998 at the same time (signed by Ahmed Zayed, 8 Nov 2026, in chat: "Signed, build it")
+
+| # | Criterion | Wording in the app | Source | Tested on real outcomes? |
+|---|---|---|---|---|
+| S7a | Cooling station on alert days | Plan step on Elevated and High days: "Before the shift: set up a cooling station in the shade (a tub or a tarp you can fill with water, ice, and towels) and name who runs it." | ACSM 2023 (PMID 37036463); ADPHC TG v4.0 4.5(c) | No (not by this app) |
+| S7b | Emergency card, on every screen | 1 Stop work, move to shade. 2 Call 998, say "suspected heat stroke". 3 Start cooling now, don't wait for the ambulance: cold water to the neck with the head held out, or whole body covered in towels or sheets soaked in ice water, swapped as they warm. 4 Keep cooling until medics take over; tell them when cooling started. 5 No drinks if confused or drowsy. | ACSM 2023; Tishukaj 2024 (PMID 39183116); Stearns 2024 (PMID 37655801); DeGroot 2023 (PMID 36806435); Hemingway 2025 (PMID 40139736); ADPHC TG 4.5(c); u.ae (998) | No (by this app); survival evidence from published cohorts |
+| S7c | Regulator measure | Sites with a cooling station ready on Elevated and High days (simulated in the demo) | Pilot measure | No |
+
+Open questions answered by default when signing "as drafted": S7a shows on Elevated **and** High; S7b keeps step 5. Alignment
+with UAE ambulance instructions (National Ambulance / SEHA) is not checked; it is a pilot item.

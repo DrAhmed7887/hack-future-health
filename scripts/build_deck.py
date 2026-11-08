@@ -109,7 +109,7 @@ CAP = ("Ahmed Zayed, MB BCh (Alexandria University, 2010), is a physician with m
        "SAFE-Triage, an emergency triage safety check (35 of 36 correct, no critical under-triage, on the MIETIC English "
        "set). For this entry he did everything himself: the clinical criteria and their sign-off, a pre-registered "
        "back-test on 2,628 US work heat hospitalisations (scored on 86 case days in 6 regions never used in tuning), the web app, and the emergency first-aid wording. His method: "
-       "evidence first (every rule has a source), tests written before code (42 automated tests), and independent model "
+       "evidence first (every rule has a source), tests written before code (43 automated tests), and independent model "
        "reviews at each stage.")
 assert len(CAP) <= 1000, len(CAP)
 text(S[2], X0, Y0 + 0.1, W, 3.0, [(CAP, 13, False, INK)])

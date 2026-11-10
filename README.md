@@ -7,6 +7,8 @@ alerts run May to September only.
 
 ![How Heat Shift Planner works](docs/workflow.png)
 
+**For judges:** each challenge criterion and where its evidence is: [`JUDGES.md`](JUDGES.md).
+
 The evening before a shift, a site supervisor in Abu Dhabi sees three things for tomorrow, plus one for emergencies:
 1. **What the law already requires** (UAE midday break; the ADPHC rule that a heat stress programme applies at 35 °C or more).
 2. **Whether tomorrow is hotter than most days for that place and time of year**, using a rule tested on real heat hospitalisations.

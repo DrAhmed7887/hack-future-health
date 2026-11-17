@@ -21,6 +21,30 @@ The regulator sees zones, never people. Nothing in the app clears anyone to work
 > This README is the single source for every claim. Slides, submission text and the video are made from it, and every number
 > below comes from a script output in `results/`.
 
+## Risk map (v3, after the review feedback of 17 Nov 2026)
+
+The app now opens on a **risk map** of the four zones, coloured by heat level. Out of season it opens on a **summer 2025
+replay** (slider, play, and a strip with every zone's level on every day), because model tiers run May to September only.
+Replay uses each day's observed weather, so it is a back-test, not a forecast.
+
+- **Each alert explains itself.** The drivers are shown as bars with their thresholds: the heat rank against the zone's own
+  2015–2021 climate, the rise over the last 14 days, the heat index floor, and the crew factors. Each driver is tagged
+  *tested on US outcomes*, *from guidelines, not tested*, or *simulated*.
+- **Each alert has an owner.** It names the owner role, a due time, an escalation chain and when it closes. An
+  unacknowledged heat alert passes from the site supervisors to the OSH practitioner at 06:30, then to the ADPHC OSH zone
+  officer at 09:00 (a proposal for the pilot). A clock control lets a judge watch it happen.
+- **Each alert has a prevention plan.** Every action shows the driver that caused it, an owner, a deadline and a source.
+- **Two service alerts.** *High risk, low preparation*: a High or Elevated day with too few cooling stations ready or plans
+  acknowledged. *Incident notice*: a prompt to check that workplace. Neither changes the heat level.
+- Sites, crews, acknowledgements, cooling stations and notices are **simulated and seeded**
+  (`docs/data_card_simulated.md`). Statuses are kept only in the viewer's browser.
+
+![Risk map, replay of 15 Jul 2025](docs/v3_risk_map.png)
+
+Code: `web/alerts.js` (alert logic, unit-tested in `web/tests/alerts.test.js`) and `web/dash.js` (map and panels; map tiles
+© OpenStreetMap contributors, via Leaflet). Proposed next signals (live dust/PM10, and an EARS C2 baseline-deviation flag on a
+simulated health signal) are sourced in `docs/evidence_v3_signals.md` and **not built** until signed.
+
 ## Why a new rule was needed
 
 A fixed heat trigger fails in both directions. The common US trigger (heat index ≥ 80 °F) alerted on **93 %** of summer days in
@@ -161,6 +185,7 @@ research and educational use. See `LICENSE`. Third-party data and libraries keep
 
 - US OSHA Severe Injury Reports, Jan 2015 – Nov 2025 (US government public data). Raw file not committed; `docs/backtest_protocol.md` records its SHA-256.
 - Weather: Open-Meteo (CC BY 4.0): Historical Weather API (ERA5 reanalysis, Copernicus Climate Change Service), Previous Runs API, Forecast API.
+- Map (v3): Leaflet 1.9.4 (BSD-2-Clause, from cdnjs with a subresource-integrity hash); map tiles © OpenStreetMap contributors (ODbL), standard tile server.
 - Guidance quoted: NIOSH 2016; OSHA CPL 03-00-024 (2026); ADPHC CoP 11.0 and TG Safety in the Heat (v4.0); UAE MoHRE midday break. Evidence with quotes: `docs/evidence_pack.md`, `docs/evidence_relative_thresholds.md`.
 
 ## Reproduce

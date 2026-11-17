@@ -5,10 +5,8 @@ const state = { zone: null, crew: { newWorkers: null, heavy: null }, replayDate:
 let DATA = { live: null, replay: null, evidence: null };
 let LOAD_ERROR = null;   // when set, every route except #help shows the error page (the emergency card needs no data)
 
-const SIM_SITES = { mussafah: 12, adcity: 9, ruwais: 4, alain: 7 };   // simulated, labelled in the UI
-const SIM_NOTICES = { mussafah: 1, alain: 1 };                          // simulated incident notices, last 3 days
-const SIM_COOLING = { mussafah: 7, adcity: 5, ruwais: 2, alain: 4 };     // simulated: sites with a cooling station ready (S7c)
-const SUPPRESS_BELOW = 5;
+// Simulated sites, acknowledgements, cooling stations and notices: seeded per zone and day in alerts.js (labelled in the UI).
+const SUPPRESS_BELOW = AlertLogic.SUPPRESS_BELOW;
 const ZONE_NOTE = { mussafah: "Industrial area and workshops", adcity: "City construction sites", ruwais: "Industrial area, Al Dhafra, coastal", alain: "Inland, drier heat" };                                               // signed S6
 
 function store(key, value) { try { localStorage.setItem(key, JSON.stringify(value)); } catch (e) { /* storage blocked: fine */ } }
@@ -218,27 +216,39 @@ const VIEWS = {
     const rows = Object.entries(DATA.replay).map(([k, v]) => {
       const day = state.replayDate ? v.days.find(d => d.date === state.replayDate) : liveDay(k);
       const t = TIERS[day?.tier] || TIERS["Insufficient data"];
-      const n = SIM_SITES[k];
+      const sim = AlertLogic.simSignals(k, day?.date || HeatLogic.dubaiDate(new Date(), 1));
+      const n = sim.sites;
       const head = `<div class="zrow"><strong>${esc(v.name)}</strong><span class="chip ${t.cls}">${t.word}</span></div>`;
       if (n < SUPPRESS_BELOW) return `<li>${head}<p class="small">Fewer than ${SUPPRESS_BELOW} sites in this zone, so site counts are hidden.</p></li>`;
-      const notice = SIM_NOTICES[k] ? `<p><strong>${SIM_NOTICES[k]} incident notice in the last 3 days.</strong> Check that site's acclimatisation plan and rest breaks. This does not change the tier.</p>` : `<p class="small">No incident notices in the last 3 days.</p>`;
+      const notice = sim.notices3d ? `<p><strong>${sim.notices3d} incident notice in the last 3 days (simulated).</strong> Check that site's acclimatisation plan and rest breaks. This does not change the tier.</p>` : `<p class="small">No incident notices in the last 3 days.</p>`;
       const eff = HeatLogic.effectiveTier(day?.tier || "Insufficient data", { newWorkers: "no" }).tier;   // same floor as the plan
       const hot = eff === "Elevated" || eff === "High";
-      const cooling = hot ? `<p>Cooling station ready: ${SIM_COOLING[k]} of ${n} sites</p>` : "";
-      return `<li>${head}<p>Plans acknowledged: ${Math.floor(n * 0.75)} of ${n} sites</p>${cooling}${notice}</li>`;
+      const cooling = hot ? `<p>Cooling station ready: ${sim.cooling} of ${n} sites (simulated)</p>` : "";
+      return `<li>${head}<p>Plans acknowledged: ${sim.acked} of ${n} sites (simulated)</p>${cooling}${notice}</li>`;
     }).join("");
     return `<h1>Regulator view</h1>
       <p>Zones, not people. ${state.replayDate ? esc(fmtDate(state.replayDate)) + " (replay)." : "Tomorrow's forecast."}</p>
       <ul class="zlist">${rows}</ul>
       <p class="small">Sites, acknowledgements, cooling stations and incident notices are simulated for the demo. No individual worker data is collected. Not for employment or disciplinary use.</p>
+      <p><a href="#map">See the risk map, with each alert's drivers and follow-up</a></p>
       ${cta("#home", "Back to the site view")}`;
   },
 };
 
+const DASH_CTX = {
+  get DATA() { return DATA; }, liveDay, esc, fmtDate,
+  openPlan(zone, date) { state.zone = zone; store("zone", zone); state.replayDate = date; state.ackAt = null; location.hash = "#plan"; },
+};
+
 function render() {
-  const route = (location.hash || "#home").slice(1);
-  const view = LOAD_ERROR && route !== "help" ? errorPage : (VIEWS[route] || VIEWS.home);
+  const route = location.hash ? location.hash.slice(1) : "map";
   const app = document.getElementById("app");
+  const dash = route === "map" && !LOAD_ERROR;
+  document.body.classList.toggle("wide", dash);
+  document.querySelectorAll("nav a").forEach(a => { if (a.getAttribute("href") === "#" + route) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
+  if (dash) { Dash.mount(app, DASH_CTX); window.scrollTo(0, 0); return; }
+  Dash.unmount();
+  const view = LOAD_ERROR && route !== "help" ? errorPage : (VIEWS[route] || VIEWS.home);
   app.innerHTML = view();
   bind(route);
   app.focus({ preventScroll: true });

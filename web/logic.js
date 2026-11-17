@@ -19,17 +19,17 @@
   function planSteps(tier, crew, inSeason, peakHour) {
     const steps = [];
     const hot = tier === "Elevated" || tier === "High";
-    if (hot) steps.push({ text: "Check every crew member before the shift: symptoms, sleep, fluids.", owner: "Supervisor · before the shift starts" });
+    if (hot) steps.push({ text: "Check every crew member before the shift: symptoms, sleep, fluids.", owner: "Supervisor · before the shift starts", because: "rank" });
     // Signed S7a (8 Nov 2026)
-    if (hot) steps.push({ text: "Before the shift: set up a cooling station in the shade (a tub or a tarp you can fill with water, ice, and towels) and name who runs it.", owner: "Supervisor · ACSM 2023 heat illness consensus; ADPHC Technical Guideline, Safety in the Heat, section 4.5(c)" });
-    if (tier === "High") steps.push({ text: "Get a site heat assessment from your OSH practitioner before heavy outdoor work starts.", owner: "OSH practitioner · before heavy work" });
+    if (hot) steps.push({ text: "Before the shift: set up a cooling station in the shade (a tub or a tarp you can fill with water, ice, and towels) and name who runs it.", owner: "Supervisor · ACSM 2023 heat illness consensus; ADPHC Technical Guideline, Safety in the Heat, section 4.5(c)", because: "rank" });
+    if (tier === "High") steps.push({ text: "Get a site heat assessment from your OSH practitioner before heavy outdoor work starts.", owner: "OSH practitioner · before heavy work", because: "rank" });
     if (hot && answeredYes(crew.heavy)) {
       const when = peakHour == null ? "" : ` (heat peaks around ${peakHour}:00)`;
-      steps.push({ text: `Move heavy tasks away from the hottest hours${when}.`, owner: "Supervisor · when setting the shift plan" });
+      steps.push({ text: `Move heavy tasks away from the hottest hours${when}.`, owner: "Supervisor · when setting the shift plan", because: "heavy" });
     }
     if (answeredYes(crew.newWorkers)) {
-      steps.push({ text: "New or returning workers: no more than 20% of the usual heat exposure on day 1, adding 20% a day.", owner: "Supervisor · NIOSH 2016 schedule for new workers; using it for returning workers too is stricter than NIOSH" });
-      steps.push({ text: "No unacclimatised worker in medium or high risk heat work.", owner: "Supervisor · ADPHC Technical Guideline, Safety in the Heat" });
+      steps.push({ text: "New or returning workers: no more than 20% of the usual heat exposure on day 1, adding 20% a day.", owner: "Supervisor · NIOSH 2016 schedule for new workers; using it for returning workers too is stricter than NIOSH", because: "newWorkers" });
+      steps.push({ text: "No unacclimatised worker in medium or high risk heat work.", owner: "Supervisor · ADPHC Technical Guideline, Safety in the Heat", because: "newWorkers" });
     }
     if (!steps.length) steps.push({ text: inSeason ? "No extra steps from the forecast." : "No forecast-based steps outside May to September.", owner: "" });
     return steps;

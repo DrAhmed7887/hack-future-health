@@ -109,7 +109,7 @@ CAP = ("Ahmed Zayed, MB BCh (Alexandria University, 2010), is a physician with m
        "SAFE-Triage, an emergency triage safety check (35 of 36 correct, no critical under-triage, on the MIETIC English "
        "set). For this entry he did everything himself: the clinical criteria and their sign-off, a pre-registered "
        "back-test on 2,628 US work heat hospitalisations (scored on 86 case days in 6 regions never used in tuning), the web app, and the emergency first-aid wording. His method: "
-       "evidence first (every rule has a source), tests written before code (43 automated tests), and independent model "
+       "evidence first (every rule has a source), tests written before code (97 automated tests: 30 Python, 67 JavaScript), and independent model "
        "reviews at each stage.")
 assert len(CAP) <= 1000, len(CAP)
 text(S[2], X0, Y0 + 0.1, W, 3.0, [(CAP, 13, False, INK)])
@@ -229,10 +229,14 @@ text(S[9], X0, Y0, W, 1.0, [("Not applicable. Software only: no wearable, sensor
 # 11 Access
 text(S[10], X0, Y0, W, 1.3, [
     [("No login needed. Every feature is open to guests:  ", 12, True, INK), ("https://drahmed7887.github.io/hack-future-health/", 12, True, BLUE)],
-    ("Pick a zone, see tomorrow's tier and the legal layer, answer two crew questions, get the plan, open the red emergency card. Also: Replay a day (real summer 2025 weather), Regulator view, Evidence.", 10, False, INK),
-    ("Alerts are tested for May to September only. Outside the season, use Replay a day to see alerts at work (screens below: Mussafah, 1 Aug 2025).", 10, False, MUTED),
+    ("It opens on a risk map of 10 Abu Dhabi work zones. Tap a zone: heat, dust, workplace and health alerts, each with its drivers, an owner, an escalation clock and a prevention plan; the red emergency card; Replay a day (real summer 2025 weather); Regulator view; Evidence (every back-test day against the real case days). Also a heatwarn command line.", 10, False, INK),
+    ("Alerts are tested for May to September only. Outside the season, use Replay a day to see alerts at work (screens below: risk map, replay of 15 Jul 2025). Health and dust signals: health is simulated, dust is modelled (CAMS), neither tested on outcomes.", 10, False, MUTED),
 ])
 
+MAP = ROOT / "docs" / "v3_risk_map.png"
+if len(sys.argv) <= 3 and MAP.exists():
+    pic = S[10].shapes.add_picture(str(MAP), Inches(X0), Inches(2.85), height=Inches(2.6))
+    pic.line.color.rgb = INK; pic.line.width = Pt(0.75)
 STILLS = Path(sys.argv[3]) if len(sys.argv) > 3 else None
 if STILLS:
     from PIL import Image

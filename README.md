@@ -262,7 +262,7 @@ research and educational use. See `LICENSE`. Third-party data and libraries keep
 
 ```bash
 uv sync
-uv run pytest -q && node --test web/tests/logic.test.js
+uv run pytest -q && node --test web/tests/*.test.js
 python3 -m http.server 8765 --directory web   # then open http://localhost:8765
 ```
 

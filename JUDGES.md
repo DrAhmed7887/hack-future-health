@@ -2,7 +2,7 @@
 
 **Try it (no login):** https://drahmed7887.github.io/hack-future-health/. Outside May–September, tap "Replay a day" to see a real summer day.
 
-**Headline result:** in 6 US regions never used in tuning (2022–2025), the relative rule alerted on **79.1 %** of days with a reported work heat hospitalisation (95 % CI 69.6–87.9). It did this while alerting on **49 %** of days; the common fixed trigger (heat index ≥ 80 °F) alerted on 82 %. Source: `results/holdout_results.json`. Limits are below and in the README.
+**Headline result:** in 6 US regions never used in tuning (2022–2025), the relative rule alerted on **79.1 %** of days with a reported work heat hospitalisation (95 % CI 69.6–87.9). It did this while alerting on **49 %** of days; the common fixed trigger (heat index ≥ 80 °F) caught more case days (98.8 %) but alerted on 82 % of days: an alarm that rarely switches off. Source: `results/holdout_results.json`. Limits are below and in the README.
 
 Every number here comes from a script output in `results/`. The README is the single source for claims; this page only points to them.
 

@@ -114,7 +114,7 @@
       <div class="modes btnav"><button data-btcase="-1">Previous case day</button><button data-btcase="1">Next case day</button></div>
       <p class="legend-keys small"><span><i class="kh"></i> High</span> <span><i class="ke"></i> Elevated</span> <span><i class="kn"></i> No alert</span> <span><i class="kev"></i> Case day, alerted</span> <span><i class="kmiss"></i> Case day, missed</span></p>
       <div class="btday" aria-live="polite">${detailHtml(data, v, esc, fmtDate)}</div>
-      <table><thead><tr><th>Region, 2022 to 2025</th><th>Case days with an alert</th><th>Days alerted</th><th>Fixed 80 \u00b0F trigger</th></tr></thead>
+      <table><thead><tr><th>Region, 2022 to 2025</th><th>Case days with an alert</th><th>Days alerted</th><th>Days alerted by the fixed 80 \u00b0F trigger</th></tr></thead>
       <tbody>${rows}<tr class="total"><td>All 6</td><td class="num">${all.caught} of ${all.events}</td><td class="num">${pc(all.alertDays, all.days)}</td><td class="num">${pc(all.fixedAlertDays, all.days)}</td></tr></tbody></table>`;
   }
 

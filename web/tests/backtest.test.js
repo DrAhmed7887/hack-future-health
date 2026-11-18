@@ -110,3 +110,8 @@ test("a no-alert day between the 50th and 60th percentile names the missing jump
   assert.match(t, /jump of only \+1\.2/);
   assert.match(t, /needs 3 °F/);
 });
+
+test("the fixed-trigger column says it counts days alerted, not case days caught", () => {
+  const out = BT.html(DATA, BT.defaultView(DATA), s => String(s), d => d);
+  assert.match(out, /Days alerted by the fixed 80 °F trigger/);
+});

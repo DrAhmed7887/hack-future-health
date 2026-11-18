@@ -179,7 +179,7 @@ function backtestText(data, opts) {
   const b = data.backtest, regs = Object.keys(b.regions);
   if (opts.region && !regs.includes(opts.region)) throw new UsageError(`Unknown region "${opts.region}". Regions: ${regs.map(k => `${k} (${b.regions[k].name})`).join(", ")}`);
   const pc = (x, n) => (n ? Math.round(100 * x / n) + "%" : "-");
-  const line = (label, s) => `${label.padEnd(30)} ${String(s.caught).padStart(3)} of ${String(s.events).padEnd(3)} case days alerted   alerts on ${pc(s.alertDays, s.days).padStart(4)} of days   fixed 80 °F trigger ${pc(s.fixedAlertDays, s.days).padStart(4)}`;
+  const line = (label, s) => `${label.padEnd(30)} ${String(s.caught).padStart(3)} of ${String(s.events).padEnd(3)} case days alerted   alerts on ${pc(s.alertDays, s.days).padStart(4)} of days   fixed 80 °F trigger alerts on ${pc(s.fixedAlertDays, s.days).padStart(4)} of days`;
   const out = [b.source + ".", ""];
   const show = opts.region ? [opts.region] : regs;
   for (const k of show) out.push(line(b.regions[k].name + (opts.year ? ` ${opts.year}` : ""), BT.summary(b, k, opts.year)));

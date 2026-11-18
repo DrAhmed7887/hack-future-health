@@ -6,7 +6,7 @@
   const H = typeof module !== "undefined" && module.exports ? require("./logic.js") : root.HeatLogic;
 
   // Simulated for the demo (labelled in the UI and in docs/data_card_simulated.md).
-  const SITES = { mussafah: 12, adcity: 9, ruwais: 4, alain: 7 };
+  const SITES = { mussafah: 12, adcity: 9, ruwais: 4, alain: 7, taweelah: 10, wathbah: 6, sweihan: 3, madinatzayed: 5, ghayathi: 3, liwa: 4 };
   const SUPPRESS_BELOW = 5;
   const PREP = { cooling: 0.75, acked: 0.8 };   // demo thresholds for a preparedness gap, our choice
   const JUMP_F = 3;                              // frozen R4 parameter a (results/frozen_params_r4.json)

@@ -1,13 +1,13 @@
 "use strict";
 // Heat Shift Planner. Reads data/*.json produced by scripts/build_web_data.py. No numbers are typed in by hand here.
 
-const state = { zone: null, crew: { newWorkers: null, heavy: null }, replayDate: null, ackAt: null };
+const state = { zone: null, crew: { newWorkers: null, heavy: null }, replayDate: null, ackAt: null, bt: null };
 let DATA = { live: null, replay: null, evidence: null };
 let LOAD_ERROR = null;   // when set, every route except #help shows the error page (the emergency card needs no data)
 
 // Simulated sites, acknowledgements, cooling stations and notices: seeded per zone and day in alerts.js (labelled in the UI).
 const SUPPRESS_BELOW = AlertLogic.SUPPRESS_BELOW;
-const ZONE_NOTE = { mussafah: "Industrial area and workshops", adcity: "City construction sites", ruwais: "Industrial area, Al Dhafra, coastal", alain: "Inland, drier heat" };                                               // signed S6
+const ZONE_NOTE = { mussafah: "Industrial area and workshops", adcity: "City construction sites", ruwais: "Industrial area, Al Dhafra, coastal", alain: "Inland, drier heat", taweelah: "Coastal industrial zone and port, north-east of the city", wathbah: "Inland edge of the capital: industry and farms", sweihan: "Inland farms, towards Al Ain", madinatzayed: "Al Dhafra, inland town", ghayathi: "Al Dhafra, western inland", liwa: "Liwa oasis, desert farms" };                                               // signed S6
 
 function store(key, value) { try { localStorage.setItem(key, JSON.stringify(value)); } catch (e) { /* storage blocked: fine */ } }
 function recall(key) { try { return JSON.parse(localStorage.getItem(key)); } catch (e) { return null; } }
@@ -177,6 +177,9 @@ const VIEWS = {
         <div><span class="big">${Math.round(h.spread_r4 * 100)} vs ${Math.round(h.spread_r2 * 100)}</span><p>points of spread in alert load between cool and hot cities: thresholds set from each place's own climate, against fixed thresholds.</p></div>
         <div><span class="big">${pct(e.dayahead_same_decision)}</span><p>of days got the same decision from the forecast made the evening before as from the weather that actually happened (8 US regions, 2024 to 2025). The forecast ran warm, so it alerted on more days (${pct(e.dayahead_alert_share)} against ${pct(e.observed_alert_share_same_days)}).</p></div>
       </div>
+      <h2>Every day, every case</h2>
+      <p>The same back-test, day by day: each square is one day of the rule, each dot a day with a reported work heat hospitalisation. Pick a region and a year, then tap a day to see why the rule did or did not alert.</p>
+      <div id="bt" class="bt"><p class="small">Loading the back-test\u2026</p></div>
       <h2>What did not work</h2>
       <p>We expected recent incident reports nearby to improve the alert. A rule that also used them as a trigger, tuned to the same training alert budget, caught ${pts1(Math.abs(e.workplace_trigger.r3_minus_r2))} percentage points ${e.workplace_trigger.r3_minus_r2 < 0 ? "fewer" : "more"} heat days than a weather-only rule tuned separately (earlier fixed-threshold rules, 8 US regions, 2022 to 2025; difference ${pts1(e.workplace_trigger.r3_minus_r2)}, 95% interval ${pts1(e.workplace_trigger.ci[0])} to ${pts1(e.workplace_trigger.ci[1])}). So here they are a prompt to check that workplace, not a reason to raise the alert.</p>
       <h2>We also trained a model</h2>
@@ -259,6 +262,44 @@ function alertLoadHtml() {
     <p>Abu Dhabi summers are hot, so the heat level is often High. The map marks the day a zone turns High as "New": those days are the early signal, and there are far fewer of them. Dust is modelled (CAMS); its thresholds are a proposal pending physician sign-off and were not tested on outcomes.</p>${health}`;
 }
 
+// v4 back-test explorer on the Evidence page: loaded only when the page opens (about 100 kB).
+let BT_LOAD = null;
+function bindBacktest() {
+  const box = document.getElementById("bt");
+  if (!box || !window.Backtest) return;
+  BT_LOAD = BT_LOAD || fetch("data/backtest.json", { cache: "no-store" }).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); });
+  BT_LOAD.then(data => {
+    state.bt = state.bt || Backtest.defaultView(data);
+    const draw = () => {
+      box.innerHTML = Backtest.html(data, state.bt, esc, fmtDate);
+      box.querySelector("#btr").addEventListener("change", e => { state.bt = { ...state.bt, region: e.target.value, date: Backtest.firstCase(data, e.target.value, state.bt.year) }; draw(); });
+      box.querySelectorAll("[data-bty]").forEach(b => b.addEventListener("click", () => { state.bt = { ...state.bt, year: Number(b.dataset.bty), date: Backtest.firstCase(data, state.bt.region, Number(b.dataset.bty)) }; draw(); }));
+      const cells = [...box.querySelectorAll("[data-btd]")];
+      const pick = (b, focus) => {
+        state.bt = { ...state.bt, date: b.dataset.btd };
+        cells.forEach(c => { c.setAttribute("aria-pressed", String(c === b)); c.tabIndex = c === b ? 0 : -1; });
+        box.querySelector(".btday").innerHTML = Backtest.detailHtml(data, state.bt, esc, fmtDate);
+        if (focus) b.focus();
+      };
+      cells.forEach((b, i) => {
+        b.addEventListener("click", () => pick(b, false));
+        b.addEventListener("keydown", e => {
+          const step = { ArrowRight: 1, ArrowDown: 7, ArrowLeft: -1, ArrowUp: -7 }[e.key];
+          if (!step) return;
+          e.preventDefault();
+          pick(cells[Math.min(cells.length - 1, Math.max(0, i + step))], true);
+        });
+      });
+      box.querySelectorAll("[data-btcase]").forEach(b => b.addEventListener("click", () => {
+        const d = Backtest.stepCase(data, state.bt.region, state.bt.year, state.bt.date, Number(b.dataset.btcase));
+        const cell = d && cells.find(c => c.dataset.btd === d);
+        if (cell) pick(cell, false);
+      }));
+    };
+    draw();
+  }).catch(() => { BT_LOAD = null; box.innerHTML = `<p class="small">The back-test file did not load. Reload the page to try again.</p>`; });
+}
+
 const DASH_CTX = {
   get DATA() { return DATA; }, liveDay, esc, fmtDate,
   openPlan(zone, date) { state.zone = zone; store("zone", zone); state.replayDate = date; state.ackAt = null; location.hash = "#plan"; },
@@ -293,6 +334,7 @@ function bind(route) {
     const btn = document.querySelector(".cta .btn:not(.secondary)");
     if (btn) btn.addEventListener("click", ev => { ev.preventDefault(); if (!state.ackAt) { state.ackAt = new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }); render(); } });
   }
+  if (route === "trust") bindBacktest();
   if (route === "replay") {
     const rz = document.getElementById("rz"), rd = document.getElementById("rd");
     rz.addEventListener("change", () => { state.zone = rz.value; store("zone", state.zone); render(); });

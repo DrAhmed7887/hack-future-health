@@ -3,7 +3,9 @@
 // Mounted by app.js on #map. Updates its own parts in place so the map is not rebuilt on every change.
 (function (root) {
   const A = root.AlertLogic, H = root.HeatLogic;
-  const LL = { mussafah: [24.35, 54.50], adcity: [24.47, 54.37], ruwais: [24.11, 52.73], alain: [24.21, 55.74] };   // scripts/abu_dhabi_tiers.py
+  const LL = { mussafah: [24.35, 54.50], adcity: [24.47, 54.37], ruwais: [24.11, 52.73], alain: [24.21, 55.74],   // scripts/abu_dhabi_tiers.py
+    taweelah: [24.735, 54.684], wathbah: [24.26, 54.708], sweihan: [24.462, 55.337], madinatzayed: [23.70, 53.748], ghayathi: [23.843, 52.81], liwa: [23.144, 53.788] };
+  const TIP = { adcity: "left", mussafah: "bottom", taweelah: "top", wathbah: "right", sweihan: "top", alain: "bottom", ruwais: "top", ghayathi: "bottom", madinatzayed: "top", liwa: "bottom" };
   const DEFAULT_DATE = "2025-06-26";   // a replay day with every alert type: a new High, health flag, dust, gap and notice
   const COLOUR = { High: "#B3261E", Elevated: "#F2B705", "Insufficient data": "#F2B705", "No escalation": "#9AA3A0", "Outside tested season": "#FFFFFF" };
   const WORD = { High: "High", Elevated: "Elevated", "Insufficient data": "No data", "No escalation": "No extra steps", "Outside tested season": "Off season" };
@@ -12,12 +14,23 @@
     newWorkers: "new or returning workers", heavy: "heavy work planned", heat: "heat alert", cooling: "cooling stations ready", acked: "plans acknowledged", notices: "incident notices",
     visits: "heat-illness visits above baseline", pm10: "dust (PM10) above the UAE standard", heatctx: "heat level" };
   const DUST_RING = "#7A4A1E";
+  // NASA GIBS satellite layers (free, no key; checked 18 Nov 2026 in the GIBS WMTS capabilities). Context only: never used by an alert.
+  const GIBS = "https://gibs.earthdata.nasa.gov";
+  const SAT = {
+    heat: { layer: "MODIS_Terra_Land_Surface_Temp_Day", tms: "GoogleMapsCompatible_Level7", native: 7, legend: "MODIS_Land_Surface_Temp_H.svg",
+      name: "Surface heat", label: "Land surface temperature, daytime (NASA MODIS Terra, late-morning pass)",
+      note: "The temperature of the ground, not the air; sunlit ground is often much hotter than the air above it. It shows where it is hot, not the heat-stress level. The scale is in kelvin: subtract 273 for \u00b0C (320 K is 47 \u00b0C)." },
+    aerosol: { layer: "MODIS_Aqua_AOD_Deep_Blue_Combined", tms: "GoogleMapsCompatible_Level6", native: 6, legend: "MODIS_VIIRS_AOD_H.svg",
+      name: "Haze and dust", label: "Aerosol optical depth (NASA MODIS Aqua, Deep Blue, early-afternoon pass)",
+      note: "How hazy the whole air column is, from dust and other particles. It is not PM10 at ground level, so it does not set the dust alert." },
+  };
   const CLOCKS = [["evening", "18:00 the evening before"], ["shift", "06:30"], ["mid", "09:00"], ["end", "18:00 on the day"]];
   const STATUS_WORD = { open: "Open", acknowledged: "Acknowledged", done: "Actions done", closed: "Closed" };
   const KEY = "hsp.v3";
 
   let ctx = null, el = null, map = null, markers = {}, rings = {}, timer = null;
-  const D = { mode: "replay", date: DEFAULT_DATE, zone: null, alertId: null, clock: "evening" };
+  const D = { mode: "replay", date: DEFAULT_DATE, zone: null, alertId: null, clock: "evening", sat: "heat", satOpacity: 0.65 };
+  let satLayer = null, satErrors = 0;
 
   // Demo state, this browser only: { status: {alertId: "acknowledged"}, done: {"alertId#i": true} }
   function loadState() {
@@ -75,8 +88,12 @@
         <p id="d-banner" class="banner"></p>
       </div>
       <div class="dash-left"><div class="dash-map">
-        <div id="d-map" class="map" role="img" aria-label="Map of the four zones, coloured by heat level"></div>
-        <div id="d-zones" class="zchips" role="group" aria-label="Zones"></div>
+        <div id="d-map" class="map" role="img" aria-label="Map of the ten zones, coloured by heat level"></div>
+        <div class="satbar"><div class="modes" role="group" aria-label="NASA satellite layer"><span class="small">NASA satellite:</span>
+          <button type="button" data-sat="off">Off</button><button type="button" data-sat="heat">${SAT.heat.name}</button><button type="button" data-sat="aerosol">${SAT.aerosol.name}</button></div>
+        <label class="small" for="d-sat-op">Opacity</label><input id="d-sat-op" type="range" min="20" max="100" step="5" value="65" aria-valuetext="65%"></div>
+      <div id="d-satinfo" class="satinfo small"></div>
+      <div id="d-zones" class="zchips" role="group" aria-label="Zones"></div>
         <ul class="legend-keys" aria-label="Map key"><li><i style="background:#B3261E"></i>Heat High</li><li><i style="background:#F2B705"></i>Elevated or no data</li><li><i style="background:#9AA3A0"></i>No extra steps</li><li><i class="off"></i>Outside tested season</li><li><i class="ring"></i>Dust above the UAE standard</li><li><b class="hflag">+</b>Health flag (simulated)</li></ul>
       </div>
       <div class="dash-time" id="d-time"></div>
@@ -96,16 +113,22 @@
 
   function initMap() {
     if (!root.L) { el.querySelector("#d-map").outerHTML = `<p class="small" id="d-map">The map library did not load. The zone buttons below work the same way.</p>`; return; }
-    map = root.L.map("d-map", { scrollWheelZoom: false, attributionControl: true, zoomSnap: 0.25, dragging: !root.L.Browser.mobile, tap: false }).fitBounds([[23.5, 52.3], [24.8, 56.2]]);
+    map = root.L.map("d-map", { scrollWheelZoom: false, attributionControl: true, zoomSnap: 0.25, dragging: !root.L.Browser.mobile, tap: false }).fitBounds([[22.9, 52.3], [24.9, 56.0]]);
     root.L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
       maxZoom: 12, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(map);
+    map.createPane("sat").style.zIndex = 250;   // above the base map, below the zone markers
+    setSat();
+    const small = root.matchMedia && root.matchMedia("(max-width: 500px)").matches;   // close zones (Mussafah, Abu Dhabi city) must not cover each other on a phone
+    const R = small ? 8 : 14, RING = small ? 13 : 22;
     for (const [k, v] of zones()) {
-      const m = root.L.circleMarker(LL[k], { radius: 16, weight: 2, color: "#1C2321", fillOpacity: 0.9 }).addTo(map);
-      m.bindTooltip(esc(v.name), { permanent: true, direction: k === "adcity" ? "top" : "bottom", offset: [0, k === "adcity" ? -14 : 14], className: "ztip" });
+      if (!LL[k]) continue;
+      const dir = TIP[k] || "bottom", off = { top: [0, -R], bottom: [0, R], left: [-R, 0], right: [R, 0] }[dir];
+      const m = root.L.circleMarker(LL[k], { radius: R, weight: 2, color: "#1C2321", fillOpacity: 0.9 }).addTo(map);
+      m.bindTooltip(esc(v.name), { permanent: true, direction: dir, offset: off, className: "ztip" });
       m.on("click", () => selectZone(k));
       markers[k] = m;
-      rings[k] = root.L.circleMarker(LL[k], { radius: 25, weight: 3, color: DUST_RING, dashArray: "5 4", fill: false, opacity: 0, interactive: false }).addTo(map);
+      rings[k] = root.L.circleMarker(LL[k], { radius: RING, weight: 3, color: DUST_RING, dashArray: "5 4", fill: false, opacity: 0, interactive: false }).addTo(map);
     }
   }
 
@@ -115,7 +138,7 @@
       const dusty = o.dust && (o.dust.level === "Elevated" || o.dust.level === "High"), flag = o.health && o.health.flag;
       if (markers[k]) {
         markers[k].setStyle({ fillColor: COLOUR[tier] || "#F2B705", dashArray: tier === "Insufficient data" ? "4 3" : null, weight: D.zone === k ? 5 : 2 });
-        markers[k].setTooltipContent(`<strong>${esc(v.name)}</strong> ${esc(WORD[tier] || tier)}${dusty ? " · dust" : ""}${flag ? " · <b class=\"hflag\">+</b>" : ""}`);
+        markers[k].setTooltipContent(`<strong>${esc(v.name)}</strong>${tier === "High" ? " High" : tier === "Elevated" ? " Elevated" : ""}${dusty ? " \u00b7 dust" : ""}${flag ? " <b class=\"hflag\">+</b>" : ""}`);
         rings[k].setStyle({ opacity: dusty ? 1 : 0 });
       }
     }
@@ -126,6 +149,34 @@
       const flag = o.health && o.health.flag ? ", health flag" : "";
       return `<button type="button" data-z="${esc(k)}" aria-pressed="${D.zone === k}"><i style="background:${COLOUR[tier] || "#F2B705"}"></i>${esc(v.name)}<span>${esc(WORD[tier] || tier)}${esc(hi)}${esc(pm)}${esc(flag)}</span></button>`;
     }).join("") + (D.zone ? `<button type="button" data-z="">All zones</button>` : "");
+  }
+
+  // Satellite image date: the replay day, or yesterday in live mode (a satellite sees the past, not tomorrow).
+  const satDate = () => (D.mode === "replay" ? D.date : H.dubaiDate(new Date(), -1));
+  const satUrl = (s, date) => `${GIBS}/wmts/epsg3857/best/${s.layer}/default/${date}/${s.tms}/{z}/{y}/{x}.png`;
+  function setSat() {
+    if (!map) return;
+    const s = SAT[D.sat];
+    if (!s) { if (satLayer) { map.removeLayer(satLayer); satLayer = null; } return; }
+    const url = satUrl(s, satDate());
+    if (satLayer && satLayer.options.gibsLayer === s.layer) {   // same layer: reload tiles only when the date changed
+      if (satLayer._url !== url) { satErrors = 0; satLayer.setUrl(url); }
+      satLayer.setOpacity(D.satOpacity);
+      return;
+    }
+    satErrors = 0;
+    if (satLayer) map.removeLayer(satLayer);
+    satLayer = root.L.tileLayer(url, { pane: "sat", gibsLayer: s.layer, maxNativeZoom: s.native, maxZoom: 12, opacity: D.satOpacity,
+      attribution: 'Satellite: <a href="https://earthdata.nasa.gov/gibs">NASA GIBS / EOSDIS</a>' });
+    satLayer.on("tileerror", () => { satErrors += 1; const i = el && el.querySelector("#d-satinfo .err"); if (i) i.hidden = satErrors < 2; });
+    satLayer.addTo(map);
+  }
+  function satInfo() {
+    const s = SAT[D.sat];
+    if (!s) return "";
+    return `<img src="${GIBS}/legends/${s.legend}" alt="Colour scale for ${esc(s.name)}" width="300" height="68" loading="lazy">
+      <p><strong>${esc(s.label)}</strong>, ${esc(ctx.fmtDate(satDate()))}${D.mode === "live" ? " (yesterday: the latest pass)" : ""}. ${esc(s.note)} Clouds and missing passes leave gaps. Shown for context only: no alert uses it.</p>
+      <p class="err" hidden>NASA imagery did not load for this date. The alerts do not depend on it.</p>`;
   }
 
   function banner() {
@@ -238,6 +289,9 @@
     if (!D.alertId && list.length && root.matchMedia && root.matchMedia("(min-width: 900px)").matches) D.alertId = list[0].id;
     el.querySelectorAll("[data-mode]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.mode === D.mode)));
     el.querySelectorAll("[data-clock]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.clock === D.clock)));
+    el.querySelectorAll("[data-sat]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.sat === D.sat)));
+    setSat();
+    el.querySelector("#d-satinfo").innerHTML = satInfo();
     el.querySelector("#d-banner").innerHTML = banner();
     updateMap();
     if (!keepTime) el.querySelector("#d-time").innerHTML = timeline();
@@ -267,6 +321,7 @@
     const ds = t.dataset;
     if (ds.mode) { stop(); D.mode = ds.mode; D.alertId = null; update(); }
     else if (ds.clock) { D.clock = ds.clock; update(); }
+    else if (ds.sat) { D.sat = ds.sat; update(); }
     else if (ds.z !== undefined) selectZone(ds.z);
     else if (ds.a) { D.alertId = ds.a; update(); if (!root.matchMedia("(min-width: 900px)").matches) el.querySelector("#d-detail").scrollIntoView({ block: "start" }); }
     else if (ds.st) { setStatus(D.alertId, ds.st); update(); el.querySelector("#d-say").textContent = `Status: ${STATUS_WORD[ds.st]}.`; }
@@ -299,6 +354,12 @@
   }
 
   function onSlide(ev) {
+    if (ev.target.id === "d-sat-op") {
+      D.satOpacity = Number(ev.target.value) / 100;
+      ev.target.setAttribute("aria-valuetext", `${ev.target.value}%`);
+      if (satLayer) satLayer.setOpacity(D.satOpacity);
+      return;
+    }
     if (ev.target.id !== "d-range") return;
     stop();
     const days = seasonDays();
@@ -322,7 +383,7 @@
   }
   function unmount() {
     stop();
-    if (map) { map.remove(); map = null; markers = {}; rings = {}; }
+    if (map) { map.remove(); map = null; markers = {}; rings = {}; satLayer = null; }
     if (el) { el.removeEventListener("click", onClick); el.removeEventListener("input", onSlide); el.removeEventListener("change", onChange); }
     el = null;
   }

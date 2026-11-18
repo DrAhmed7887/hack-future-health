@@ -5,7 +5,7 @@
 (function (root) {
   const BASE_DAYS = 7, GUARD = 2, SD_FLOOR = 1.0, THRESHOLD = 3, MIN_COUNT = 3, SUPPRESS_BELOW = 5;   // E1-E5
   const START = "2025-04-21", END = "2025-09-30";   // 10 days of run-in before the May-September replay
-  const RATE = { mussafah: 1.5, adcity: 1.2, ruwais: 0.6, alain: 1.0 };   // illustrative visits a day, not from any source
+  const RATE = { mussafah: 1.5, adcity: 1.2, ruwais: 0.6, alain: 1.0, taweelah: 0.9, wathbah: 0.7, sweihan: 0.4, madinatzayed: 0.5, ghayathi: 0.3, liwa: 0.4 };   // illustrative visits a day, not from any source
   const EPISODE_EXTRA = [5, 6, 4];                                        // illustrative extra visits on 3 consecutive days
 
   function rng(key) {

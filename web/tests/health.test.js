@@ -48,8 +48,8 @@ test("healthDay suppresses counts under 5 and reports the expected level", () =>
 
 test("on its own simulation, C2 catches most injected episodes within 2 days", () => {
   const ev = HS.evaluate();
-  assert.equal(ev.episodes, 12);
-  assert.ok(ev.detected >= 9, `detected ${ev.detected}`);
+  assert.equal(ev.episodes, 30);   // 3 per zone, 10 zones
+  assert.ok(ev.detected >= 24, `detected ${ev.detected}`);
   assert.ok(ev.falseFlags >= 0 && Number.isInteger(ev.falseFlags));
   assert.ok(ev.zoneDays > 500);
 });

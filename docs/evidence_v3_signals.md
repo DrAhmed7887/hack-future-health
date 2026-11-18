@@ -1,7 +1,7 @@
 # Evidence pack v3: dust / PM10 signal and baseline-deviation (EARS C2) signal
 
 Compiled 17 Nov 2026. Project: Heat Shift Planner (Abu Dhabi outdoor-worker heat early warning, static web app).
-Status: DRAFT for physician sign-off. Nothing here is built. Not committed to git.
+Status: proposals D1–D6 and E1–E6 are built in v4 (`heatwarn/dust.py`, `web/health.js`, `web/alerts.js`) and labelled "pending sign-off" in the app until the table in section 4 is signed.
 
 Reading guide
 - Each bullet: claim, exact quote or number, source, verified (yes / partial / no).

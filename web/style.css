@@ -221,3 +221,31 @@ nav { flex-wrap: wrap; gap: 4px 14px; }
 .send { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; margin-top: 14px; }
 .send .btn { flex: 0 0 auto; padding: 8px 14px; font-size: 15px; }
 .send .small { flex: 1 1 220px; }
+
+/* v4: NASA satellite layer */
+.satbar { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; margin-top: 8px; }
+.satbar input[type=range] { width: 140px; accent-color: var(--ink); }
+.satinfo img { display: block; max-width: 100%; height: auto; margin-top: 6px; background: #fff; }
+.satinfo p { margin: 4px 0; max-width: none; }
+.satinfo .err { color: var(--danger); }
+
+/* v4 back-test explorer (Evidence page) */
+.bty { margin-top: 10px; }
+.btsum { margin-top: 12px; }
+.btcal { margin-top: 8px; }
+.btm { margin-top: 6px; }
+.btl { font-size: 13px; color: var(--muted); display: block; }
+.btr { display: grid; grid-template-columns: repeat(31, 1fr); gap: 2px; }
+.btr .c { aspect-ratio: 1; min-width: 0; padding: 0; border: 0; position: relative; cursor: pointer; background: var(--concrete); }
+.btr .c.h { background: var(--danger); } .btr .c.e { background: var(--warning); } .btr .c.x { background: transparent; cursor: default; }
+.btr .c.ev::after { content: ""; position: absolute; inset: 22%; border-radius: 50%; background: #fff; border: 2px solid var(--ink); }
+.btr .c.miss::after { background: var(--ink); }
+.btr .c[aria-pressed=true] { outline: 3px solid var(--mandatory); outline-offset: 1px; z-index: 1; }
+.legend-keys span { white-space: nowrap; margin-right: 8px; }
+.legend-keys i.kh { background: var(--danger); } .legend-keys i.ke { background: var(--warning); } .legend-keys i.kn { background: var(--concrete); }
+.legend-keys i.kev { background: #fff; border-radius: 50%; border: 2px solid var(--ink); } .legend-keys i.kmiss { background: var(--ink); border-radius: 50%; }
+.btday { margin-top: 10px; padding: 10px 12px; border-left: 6px solid var(--ink); background: #F6F7F6; }
+.btday p { margin: 4px 0; }
+tr.sel td { font-weight: 700; } tr.total td { border-top: 2px solid var(--ink); font-weight: 700; }
+@media (max-width: 480px) { .btr { grid-template-columns: repeat(11, 1fr); gap: 3px; } }   /* about 30 px squares on a 390 px phone */
+.btnav { margin-top: 8px; }

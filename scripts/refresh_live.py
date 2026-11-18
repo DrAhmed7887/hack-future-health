@@ -25,8 +25,7 @@ from heatwarn.signals import anomaly, daily_max_heat_index  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 WEB = ROOT / "web" / "data"
-ZONES = {"mussafah": ("Mussafah", 24.35, 54.50), "adcity": ("Abu Dhabi city", 24.47, 54.37),
-         "ruwais": ("Ruwais", 24.11, 52.73), "alain": ("Al Ain", 24.21, 55.74)}
+from scripts.abu_dhabi_tiers import ZONES  # noqa: E402  one list of zones for the replay, the reference and the live job
 SEASON = (5, 9)
 
 

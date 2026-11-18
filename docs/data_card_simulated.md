@@ -13,7 +13,7 @@ they do, when it escalates), not to support any claim. Every number from this fi
 
 | Field | Rule | Range |
 |---|---|---|
-| `sites` | Fixed per zone: Mussafah 12, Abu Dhabi city 9, Ruwais 4, Al Ain 7 (as in v2) | — |
+| `sites` | Fixed per zone: Mussafah 12, Abu Dhabi city 9, Ruwais 4, Al Ain 7 (as in v2); from v4 also Al Taweelah 10, Al Wathbah 6, Sweihan 3, Madinat Zayed 5, Ghayathi 3, Liwa 4 (illustrative) | — |
 | `acked` | round(sites × U(0.6, 1.0)) | 60–100 % of sites |
 | `cooling` | round(sites × U(0.4, 1.0)) | 40–100 % of sites |
 | `newWorkerSites` | floor(sites × 0.35 × U(0, 1)) | 0–35 % of sites |
@@ -41,7 +41,8 @@ they do, when it escalates), not to support any claim. Every number from this fi
 Dhabi zones. The counts are drawn independently of the weather, so the app makes no claim that heat caused them.
 
 **How it is made.** Seeded (`zone|health`, FNV-1a + mulberry32). Background: Poisson with an illustrative daily rate
-(Mussafah 1.5, Abu Dhabi city 1.2, Ruwais 0.6, Al Ain 1.0). Three clusters per zone are injected on purpose, one in each
+(Mussafah 1.5, Abu Dhabi city 1.2, Ruwais 0.6, Al Ain 1.0, Al Taweelah 0.9, Al Wathbah 0.7, Sweihan 0.4, Madinat Zayed 0.5,
+Ghayathi 0.3, Liwa 0.4). Three clusters per zone are injected on purpose, one in each
 ~5-week window from 1 June, each 3 days long with +5, +6 and +4 extra visits.
 
 **What the app shows.** The C2 score and the flag. A count under 5 is never shown ("Fewer than 5"), the usual small-cell rule
@@ -52,7 +53,7 @@ days); because the clusters were made easy to see, that number checks the code, 
 
 Daily mean PM10 per zone from the Open-Meteo Air Quality API (CAMS, CC BY 4.0): summer 2025 in
 `web/data/dust_replay.json` (`scripts/build_dust_replay.py`), and tomorrow's forecast in `web/data/live.json` (nightly
-`scripts/refresh_live.py`). Mussafah and Abu Dhabi city fall in the same CAMS grid cell, so they share values. CAMS accuracy
+`scripts/refresh_live.py`). Mussafah and Abu Dhabi city fall in the same CAMS grid cell, as do Ruwais and Ghayathi, so each pair shares values. CAMS accuracy
 over Abu Dhabi was not checked here. Thresholds (D1–D6) are a proposal pending sign-off.
 
 **In the pilot** these would be replaced by real feeds: plan acknowledgements and cooling-station check-ins from the app itself,

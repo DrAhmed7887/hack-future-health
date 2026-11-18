@@ -22,7 +22,11 @@ from heatwarn.signals import anomaly, daily_max_heat_index  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 ZONES = {"mussafah": ("Mussafah", 24.35, 54.50), "adcity": ("Abu Dhabi city", 24.47, 54.37),
-         "ruwais": ("Ruwais", 24.11, 52.73), "alain": ("Al Ain", 24.21, 55.74)}
+         "ruwais": ("Ruwais", 24.11, 52.73), "alain": ("Al Ain", 24.21, 55.74),
+         # v4 (18 Nov 2026): six more zones so the map covers the emirate. Centres from the Open-Meteo geocoding API (GeoNames).
+         "taweelah": ("Al Taweelah", 24.735, 54.684), "wathbah": ("Al Wathbah", 24.26, 54.708),
+         "sweihan": ("Sweihan", 24.462, 55.337), "madinatzayed": ("Madinat Zayed", 23.70, 53.748),
+         "ghayathi": ("Ghayathi", 23.843, 52.81), "liwa": ("Liwa (Mezaira'a)", 23.144, 53.788)}
 
 
 def hourly(key: str, lat: float, lon: float) -> pd.DataFrame:

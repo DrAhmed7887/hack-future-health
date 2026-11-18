@@ -29,8 +29,8 @@ jobs:
       - name: Site files only (no tests, no raw data)
         run: |
           mkdir -p _site/data
-          cp web/index.html web/style.css web/logic.js web/health.js web/alerts.js web/dash.js web/app.js _site/
-          cp web/data/live.json web/data/replay.json web/data/evidence.json web/data/dust_replay.json _site/data/
+          cp web/index.html web/style.css web/logic.js web/health.js web/backtest.js web/alerts.js web/dash.js web/app.js _site/
+          cp web/data/live.json web/data/replay.json web/data/evidence.json web/data/dust_replay.json web/data/backtest.json _site/data/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

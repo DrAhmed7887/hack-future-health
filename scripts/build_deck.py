@@ -230,10 +230,10 @@ text(S[9], X0, Y0, W, 1.0, [("Not applicable. Software only: no wearable, sensor
 text(S[10], X0, Y0, W, 1.3, [
     [("No login needed. Every feature is open to guests:  ", 12, True, INK), ("https://drahmed7887.github.io/hack-future-health/", 12, True, BLUE)],
     ("It opens on a risk map of 10 Abu Dhabi work zones. Tap a zone: heat, dust, workplace and health alerts, each with its drivers, an owner, an escalation clock and a prevention plan; the red emergency card; Replay a day (real summer 2025 weather); Regulator view; Evidence (every back-test day against the real case days). Also a heatwarn command line.", 10, False, INK),
-    ("Alerts are tested for May to September only. Outside the season, use Replay a day to see alerts at work (screens below: risk map, replay of 15 Jul 2025). Health and dust signals: health is simulated, dust is modelled (CAMS), neither tested on outcomes.", 10, False, MUTED),
+    ("Alerts are tested for May to September only. Outside the season, use Replay a day to see alerts at work (screens below: risk map of 10 zones, replay of 26 Jun 2025). Health and dust signals: health is simulated, dust is modelled (CAMS), neither tested on outcomes.", 10, False, MUTED),
 ])
 
-MAP = ROOT / "docs" / "v3_risk_map.png"
+MAP = ROOT / "docs" / "v4_risk_map.png"
 if len(sys.argv) <= 3 and MAP.exists():
     pic = S[10].shapes.add_picture(str(MAP), Inches(X0), Inches(2.85), height=Inches(2.6))
     pic.line.color.rgb = INK; pic.line.width = Pt(0.75)

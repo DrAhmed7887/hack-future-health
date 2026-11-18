@@ -14,9 +14,11 @@ import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from heatwarn.dust import daily_pm10, dust_level  # noqa: E402
 from heatwarn.heat_index import c_to_f, heat_index_f  # noqa: E402
 from heatwarn.relative import RelParams, percentile_rank, r4_tier  # noqa: E402
 from heatwarn.signals import anomaly, daily_max_heat_index  # noqa: E402
@@ -60,12 +62,34 @@ def zone_row(key: str, name: str, lat: float, lon: float, ref: dict, rp: RelPara
             "tier": tier[tomorrow] if in_season else "Outside tested season"}
 
 
+_DUST_DOWN = {"down": False}   # after one failed call, skip the other zones instead of waiting out each timeout
+
+
+def dust_fields(lat: float, lon: float, date: str) -> dict:
+    """Tomorrow's forecast daily mean PM10 and dust level (v4, proposal D1-D3). Never breaks the heat row."""
+    if _DUST_DOWN["down"]:
+        return {"pm10_mean": None, "dust": dust_level(None)}
+    try:
+        q = urllib.parse.urlencode({"latitude": lat, "longitude": lon, "hourly": "pm10", "forecast_days": 3, "timezone": "Asia/Dubai"})
+        with urllib.request.urlopen(f"https://air-quality-api.open-meteo.com/v1/air-quality?{q}", timeout=30) as r:
+            h = json.load(r)["hourly"]
+        d = daily_pm10(pd.Series(h["pm10"], index=pd.to_datetime(h["time"]), dtype=float))
+        v = d.get(pd.Timestamp(date))
+        pm = round(float(v), 1) if v is not None and np.isfinite(v) else None
+    except Exception as e:  # network or format error: report missing, keep the heat forecast
+        print(f"dust fetch failed: {type(e).__name__}", file=sys.stderr)
+        _DUST_DOWN["down"] = True
+        pm = None
+    return {"pm10_mean": pm, "dust": dust_level(pm)}
+
+
 def main() -> None:
     rp = RelParams(**json.loads((ROOT / "results" / "frozen_params_r4.json").read_text())["params"])
     ref = json.loads((WEB / "reference.json").read_text())
     out = {"generated_utc": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M"), "zones": {}}
     for key, (name, lat, lon) in ZONES.items():
-        out["zones"][key] = zone_row(key, name, lat, lon, ref, rp)
+        row = zone_row(key, name, lat, lon, ref, rp)
+        out["zones"][key] = {**row, **dust_fields(lat, lon, row["date"])}
     (WEB / "live.json").write_text(json.dumps(out, indent=1, allow_nan=False))  # NaN would break JSON.parse in the app
     print(json.dumps(out, indent=1))
 

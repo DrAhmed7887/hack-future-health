@@ -208,3 +208,16 @@ fieldset[disabled] .trow, fieldset[disabled] .season { opacity: .45; }
 }
 nav { flex-wrap: wrap; gap: 4px 14px; }
 @media (min-width: 900px) { .feed button:not([aria-pressed=true]) .sum { display: none; } }
+
+/* v4: health signal, dust, onset, hand-off (second review, 18 Nov 2026) */
+:root { --signal: #6B3FA0; --dust: #7A4A1E; }
+.chip.signal { background: var(--signal); color: #fff; } .chip.dust { background: var(--dust); color: #fff; }
+.feed .lv-signal { border-left-color: var(--signal); } .feed .lv-dust { border-left-color: var(--dust); }
+.card.lv-signal { border-top-color: var(--signal); } .card.lv-dust { border-top-color: var(--dust); }
+.new { display: inline-block; margin-left: 6px; padding: 1px 6px; font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; background: var(--ink); color: #fff; }
+.tag.pending { border-color: var(--signal); color: var(--signal); font-weight: 700; }
+.legend-keys i.ring { background: transparent; border: 2px dashed var(--dust); border-radius: 50%; }
+.hflag { color: var(--signal); font-weight: 700; font-size: 15px; line-height: 1; }
+.send { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; margin-top: 14px; }
+.send .btn { flex: 0 0 auto; padding: 8px 14px; font-size: 15px; }
+.send .small { flex: 1 1 220px; }

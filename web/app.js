@@ -22,6 +22,7 @@ async function load() {
   window.addEventListener("hashchange", render);
   try {
     [DATA.live, DATA.replay, DATA.evidence] = await Promise.all([get("data/live.json"), get("data/replay.json"), get("data/evidence.json")]);
+    DATA.dust = await get("data/dust_replay.json").catch(() => null);   // optional: without it the replay simply shows no dust
   } catch (e) {
     LOAD_ERROR = e;
     render();
@@ -180,6 +181,7 @@ const VIEWS = {
       <p>We expected recent incident reports nearby to improve the alert. A rule that also used them as a trigger, tuned to the same training alert budget, caught ${pts1(Math.abs(e.workplace_trigger.r3_minus_r2))} percentage points ${e.workplace_trigger.r3_minus_r2 < 0 ? "fewer" : "more"} heat days than a weather-only rule tuned separately (earlier fixed-threshold rules, 8 US regions, 2022 to 2025; difference ${pts1(e.workplace_trigger.r3_minus_r2)}, 95% interval ${pts1(e.workplace_trigger.ci[0])} to ${pts1(e.workplace_trigger.ci[1])}). So here they are a prompt to check that workplace, not a reason to raise the alert.</p>
       <h2>We also trained a model</h2>
       <p>A risk model trained on the same years with more inputs (night-time heat, days in a row of unusual heat, sunshine, wind) ranked days better than this rule (AUC ${e.trained_model.auc.toFixed(2)} against ${e.trained_model.auc_rule.toFixed(2)}) and caught ${pct1(e.trained_model.sensitivity)} of case days in the unseen regions. But it learned that hot places have more cases, not which days are unusual: its alert load swung by ${Math.round(e.trained_model.spread * 100)} points between cities, and in Abu Dhabi it would alert on ${pct(e.trained_model.abu_dhabi_alert_share[0])} to ${pct(e.trained_model.abu_dhabi_alert_share[1])} of summer days. It missed the pass mark we set before scoring, so the app keeps the rule.</p>
+      ${alertLoadHtml()}
       <h2>Limits</h2>
       <p>US data, reported cases only, and most cases go unreported. Not validated on Abu Dhabi outcomes. Tested for May to September only. It does not calculate the Thermal Work Limit. The heat index is used only to rank days: the US weather service says its formula "is not valid for extreme temperature and relative humidity conditions", conditions Abu Dhabi summers can reach. The crew rules come from guidelines and were not tested. It is decision support for supervisors, not a diagnosis, and never a clearance to work.</p>
       ${cta("#home", "Back to the plan")}`;
@@ -214,26 +216,48 @@ const VIEWS = {
   },
   regulator() {
     const rows = Object.entries(DATA.replay).map(([k, v]) => {
-      const day = state.replayDate ? v.days.find(d => d.date === state.replayDate) : liveDay(k);
+      const rd = state.replayDate || Dash.replayDate();
+      const day = rd ? v.days.find(d => d.date === rd) : liveDay(k);
       const t = TIERS[day?.tier] || TIERS["Insufficient data"];
+      const pmRaw = rd ? DATA.dust?.zones?.[k]?.[rd] : (day && !day.stale ? day.pm10_mean : null);
+      const pm = Number.isFinite(pmRaw) ? pmRaw : null;
+      const hs = rd && window.HealthSignal ? HealthSignal.healthDay(k, rd) : null;
+      const extra = `<p>Dust (daily mean PM10): ${pm == null ? "not available" : `${Math.round(pm)} \u00b5g/m\u00b3${pm > 150 ? ", above the UAE standard (rule pending sign-off)" : ""}`}</p>`
+        + (hs ? `<p>Heat-illness visits (simulated): ${hs.flag ? "<strong>above baseline (EARS C2 flag)</strong>" : "within baseline"}</p>` : "");
       const sim = AlertLogic.simSignals(k, day?.date || HeatLogic.dubaiDate(new Date(), 1));
       const n = sim.sites;
       const head = `<div class="zrow"><strong>${esc(v.name)}</strong><span class="chip ${t.cls}">${t.word}</span></div>`;
-      if (n < SUPPRESS_BELOW) return `<li>${head}<p class="small">Fewer than ${SUPPRESS_BELOW} sites in this zone, so site counts are hidden.</p></li>`;
+      if (n < SUPPRESS_BELOW) return `<li>${head}${extra}<p class="small">Fewer than ${SUPPRESS_BELOW} sites in this zone, so site counts are hidden.</p></li>`;
       const notice = sim.notices3d ? `<p><strong>${sim.notices3d} incident notice in the last 3 days (simulated).</strong> Check that site's acclimatisation plan and rest breaks. This does not change the tier.</p>` : `<p class="small">No incident notices in the last 3 days.</p>`;
       const eff = HeatLogic.effectiveTier(day?.tier || "Insufficient data", { newWorkers: "no" }).tier;   // same floor as the plan
       const hot = eff === "Elevated" || eff === "High";
       const cooling = hot ? `<p>Cooling station ready: ${sim.cooling} of ${n} sites (simulated)</p>` : "";
-      return `<li>${head}<p>Plans acknowledged: ${sim.acked} of ${n} sites (simulated)</p>${cooling}${notice}</li>`;
+      return `<li>${head}${extra}<p>Plans acknowledged: ${sim.acked} of ${n} sites (simulated)</p>${cooling}${notice}</li>`;
     }).join("");
     return `<h1>Regulator view</h1>
-      <p>Zones, not people. ${state.replayDate ? esc(fmtDate(state.replayDate)) + " (replay)." : "Tomorrow's forecast."}</p>
+      <p>Zones, not people. ${(state.replayDate || Dash.replayDate()) ? esc(fmtDate(state.replayDate || Dash.replayDate())) + " (replay, the day shown on the risk map)." : "Tomorrow's forecast."}</p>
       <ul class="zlist">${rows}</ul>
       <p class="small">Sites, acknowledgements, cooling stations and incident notices are simulated for the demo. No individual worker data is collected. Not for employment or disciplinary use.</p>
       <p><a href="#map">See the risk map, with each alert's drivers and follow-up</a></p>
       ${cta("#home", "Back to the site view")}`;
   },
 };
+
+// v4: alert load, onsets and dust days per zone from the summer 2025 replay, and the health flag's check on its own simulation.
+function alertLoadHtml() {
+  const rows = Object.entries(DATA.replay).map(([k, v]) => {
+    const n = v.days.length, alertDays = v.days.filter(d => d.tier === "High" || d.tier === "Elevated").length;
+    const onsets = v.days.filter((d, i) => i > 0 && d.tier === "High" && v.days[i - 1].tier !== "High").length;   // same rule as the map's "New" tag
+    const dust = DATA.dust?.zones?.[k] ? Object.values(DATA.dust.zones[k]).filter(x => Number.isFinite(x) && x > 150).length : null;
+    return `<tr><td>${esc(v.name)}</td><td class="num">${(alertDays / (n / 7)).toFixed(1)}</td><td class="num">${onsets}</td><td class="num">${dust == null ? "\u2014" : dust}</td></tr>`;
+  }).join("");
+  const ev = window.HealthSignal ? HealthSignal.evaluate() : null;
+  const health = ev ? `<h2>Health signal: a check on its own simulation</h2>
+    <p>Heat-illness emergency visits are simulated (no real series is public), with ${ev.episodes} clusters injected on purpose. The EARS C2 flag caught ${ev.detected} of ${ev.episodes} on their first or second day, and flagged ${ev.falseFlags} other days out of ${ev.zoneDays} zone-days. The clusters were made easy to see (4 to 6 extra visits a day), so this checks the code, not real-world performance. The rule (7-day baseline, 2-day gap, flag above 3 SD with at least 3 visits) is a proposal pending physician sign-off.</p>` : "";
+  return `<h2>How often it alerts in Abu Dhabi (summer 2025 replay)</h2>
+    <table><thead><tr><th>Zone</th><th>Heat alert days a week</th><th>Times it turned High (from 2 May)</th><th>Dust days above 150 \u00b5g/m\u00b3</th></tr></thead><tbody>${rows}</tbody></table>
+    <p>Abu Dhabi summers are hot, so the heat level is often High. The map marks the day a zone turns High as "New": those days are the early signal, and there are far fewer of them. Dust is modelled (CAMS); its thresholds are a proposal pending physician sign-off and were not tested on outcomes.</p>${health}`;
+}
 
 const DASH_CTX = {
   get DATA() { return DATA; }, liveDay, esc, fmtDate,

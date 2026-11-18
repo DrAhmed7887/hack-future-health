@@ -32,5 +32,28 @@ they do, when it escalates), not to support any claim. Every number from this fi
 - Incident notices raise a "check that workplace" alert and **never** change the heat level (that use failed its pre-registered
   test; README, "What did not work").
 
+## Simulated health signal (v4): heat-illness emergency-department visits
+
+**What it is.** One daily count per zone, 21 Apr to 30 Sep 2025 (10 run-in days before the May–September replay), in
+`web/health.js` (`simulate`). It feeds the EARS C2 flag (proposal E1–E6 in `docs/evidence_v3_signals.md`, pending sign-off).
+
+**What it is not.** Not real visits and not modelled on heat: no public daily series of heat-illness visits exists for Abu
+Dhabi zones. The counts are drawn independently of the weather, so the app makes no claim that heat caused them.
+
+**How it is made.** Seeded (`zone|health`, FNV-1a + mulberry32). Background: Poisson with an illustrative daily rate
+(Mussafah 1.5, Abu Dhabi city 1.2, Ruwais 0.6, Al Ain 1.0). Three clusters per zone are injected on purpose, one in each
+~5-week window from 1 June, each 3 days long with +5, +6 and +4 extra visits.
+
+**What the app shows.** The C2 score and the flag. A count under 5 is never shown ("Fewer than 5"), the usual small-cell rule
+for health data. The Evidence page reports how the flag did on this simulation (injected clusters caught, flags on other
+days); because the clusters were made easy to see, that number checks the code, not real-world performance.
+
+## Dust (v4): real modelled data, not simulated
+
+Daily mean PM10 per zone from the Open-Meteo Air Quality API (CAMS, CC BY 4.0): summer 2025 in
+`web/data/dust_replay.json` (`scripts/build_dust_replay.py`), and tomorrow's forecast in `web/data/live.json` (nightly
+`scripts/refresh_live.py`). Mussafah and Abu Dhabi city fall in the same CAMS grid cell, so they share values. CAMS accuracy
+over Abu Dhabi was not checked here. Thresholds (D1–D6) are a proposal pending sign-off.
+
 **In the pilot** these would be replaced by real feeds: plan acknowledgements and cooling-station check-ins from the app itself,
 and ADOSH-SF incident notifications by zone and day.

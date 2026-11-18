@@ -45,6 +45,28 @@ Code: `web/alerts.js` (alert logic, unit-tested in `web/tests/alerts.test.js`) a
 © OpenStreetMap contributors, via Leaflet). Proposed next signals (live dust/PM10, and an EARS C2 baseline-deviation flag on a
 simulated health signal) are sourced in `docs/evidence_v3_signals.md` and **not built** until signed.
 
+## Health and dust signals, and newly-High days (v4, after a second review on 18 Nov 2026)
+
+A second review against the review team's comment found three gaps: no health indicator, an empty live view out of
+season, and no way to tell a *new* risk from a repeat High day. v4 adds:
+
+- **A health signal (simulated).** Daily heat-illness emergency visits per zone, with the CDC EARS C2 baseline-deviation
+  flag (7-day baseline, 2-day gap, flag above 3 SD with at least 3 visits). A flag raises its own alert, owned by an ADPHC
+  public health surveillance officer, worded as "a statistical flag on simulated data, not a confirmed cluster". Counts under
+  5 are never shown. It never changes the heat level. On its own simulation it caught 12 of 12 injected clusters on day 1
+  or 2, with 2 flags on other days in 612 zone-days; the clusters were made easy, so this checks the code only.
+- **A dust signal (real, modelled).** Daily mean PM10 from CAMS via Open-Meteo, live every evening and replayed for summer
+  2025. Alert above 150 µg/m³ (the UAE 24-hour standard, Cabinet Decree 12/2006) and High above 250 (the UAE index's
+  "Unhealthy" band). Actions say review and protect, never stop work: no source sets a PM10 level at which work must stop.
+  Not tested on outcomes.
+- **Newly-High tag.** The day a zone turns High is marked "New". In summer 2025 a zone turned High 15 to 19 times (from 2 May), against
+  3.3 to 5.0 heat alert days a week (Evidence page, computed from the replay).
+- The regulator view follows the day shown on the map; the live view offers a summer demo day when it has no alerts; each
+  alert has a "Send to …" hand-off (email or share sheet, the user picks the recipient).
+
+The dust and health thresholds are **proposals pending physician sign-off** (`docs/evidence_v3_signals.md`, section 4), and
+the app says so on each driver until they are signed. Data card: `docs/data_card_simulated.md`.
+
 ## Why a new rule was needed
 
 A fixed heat trigger fails in both directions. The common US trigger (heat index ≥ 80 °F) alerted on **93 %** of summer days in
@@ -185,6 +207,7 @@ research and educational use. See `LICENSE`. Third-party data and libraries keep
 
 - US OSHA Severe Injury Reports, Jan 2015 – Nov 2025 (US government public data). Raw file not committed; `docs/backtest_protocol.md` records its SHA-256.
 - Weather: Open-Meteo (CC BY 4.0): Historical Weather API (ERA5 reanalysis, Copernicus Climate Change Service), Previous Runs API, Forecast API.
+- Air quality (v4): Open-Meteo Air Quality API (CC BY 4.0), CAMS global PM10; `scripts/build_dust_replay.py`, `scripts/refresh_live.py`.
 - Map (v3): Leaflet 1.9.4 (BSD-2-Clause, from cdnjs with a subresource-integrity hash); map tiles © OpenStreetMap contributors (ODbL), standard tile server.
 - Guidance quoted: NIOSH 2016; OSHA CPL 03-00-024 (2026); ADPHC CoP 11.0 and TG Safety in the Heat (v4.0); UAE MoHRE midday break. Evidence with quotes: `docs/evidence_pack.md`, `docs/evidence_relative_thresholds.md`.
 

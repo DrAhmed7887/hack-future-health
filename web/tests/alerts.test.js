@@ -135,3 +135,64 @@ test("notice and preparedness alerts label their simulated counts", () => {
   assert.match(all.find(a => a.type === "notice").title, /simulated/);
   assert.match(all.find(a => a.type === "prep").summary, /simulated/);
 });
+
+// v4 (second review, 18 Nov): newly-High onset, health signal and dust. Written before the code.
+const FLAG = { date: "2025-08-01", visits: 7, suppressed: false, expected: 1.4, S: 5.2, flag: true, baselineOk: true };
+const FLAG_SMALL = { ...FLAG, visits: 4, suppressed: true, S: 3.4 };
+const READY = { sites: 12, acked: 12, cooling: 12, newWorkerSites: 0, heavySites: 0, notices3d: 0 };
+
+test("a High day after a non-High day is marked as new; repeat High days are not", () => {
+  assert.equal(heat(A.buildAlerts("mussafah", "Mussafah", HIGH, { sim: READY, prevTier: "No escalation" })).onset, true);
+  assert.match(heat(A.buildAlerts("mussafah", "Mussafah", HIGH, { sim: READY, prevTier: "No escalation" })).title, /new/i);
+  assert.equal(heat(A.buildAlerts("mussafah", "Mussafah", HIGH, { sim: READY, prevTier: "High" })).onset, false);
+  assert.equal(heat(A.buildAlerts("mussafah", "Mussafah", HIGH, { sim: READY })).onset, false);
+});
+
+test("a health flag raises its own alert, worded as a flag on simulated data, and never changes the heat level", () => {
+  const all = A.buildAlerts("mussafah", "Mussafah", ELEV, { sim: READY, health: FLAG });
+  const h = all.find(a => a.type === "health");
+  assert.ok(h);
+  assert.equal(h.level, "Signal");
+  assert.match(h.summary, /simulated/i);
+  assert.match(h.summary, /not a confirmed cluster/i);
+  assert.doesNotMatch(JSON.stringify(h), /outbreak/i);
+  assert.equal(heat(all).level, "Elevated");
+  assert.ok(heat(all).drivers.some(d => d.group === "Health"));
+  assert.ok(A.buildAlerts("mussafah", "Mussafah", NONE, { sim: READY, health: FLAG }).some(a => a.type === "health"));
+  assert.ok(!A.buildAlerts("mussafah", "Mussafah", ELEV, { sim: READY, health: { ...FLAG, flag: false } }).some(a => a.type === "health"));
+});
+
+test("health counts under 5 are never shown", () => {
+  const h = A.buildAlerts("mussafah", "Mussafah", NONE, { sim: READY, health: FLAG_SMALL }).find(a => a.type === "health");
+  assert.doesNotMatch(JSON.stringify(h), /\b4 visits\b|"value":4\b/);
+  assert.match(h.summary, /fewer than 5/i);
+});
+
+test("dust above the UAE standard raises a dust alert with sourced actions and never says stop work", () => {
+  for (const [lv, pm] of [["Elevated", 180], ["High", 300]]) {
+    const d = A.buildAlerts("alain", "Al Ain", NONE, { sim: READY, dust: { pm10: pm, level: lv } }).find(a => a.type === "dust");
+    assert.ok(d, lv);
+    assert.equal(d.level, lv);
+    assert.match(d.title, /dust/i);
+    for (const x of d.actions) { assert.ok(x.source && x.owner && x.due, x.text); assert.doesNotMatch(x.text, /stop work/i); }
+  }
+  assert.ok(!A.buildAlerts("alain", "Al Ain", NONE, { sim: READY, dust: { pm10: 90, level: "None" } }).some(a => a.type === "dust"));
+  assert.ok(!A.buildAlerts("alain", "Al Ain", NONE, { sim: READY, dust: { pm10: null, level: "Insufficient data" } }).some(a => a.type === "dust"));
+});
+
+test("new alert types also carry owner, chain, closing condition and linked actions", () => {
+  const all = A.buildAlerts("mussafah", "Mussafah", HIGH, { sim: READY, prevTier: "Elevated", health: FLAG, dust: { pm10: 300, level: "High" } });
+  for (const a of all.filter(x => x.type === "health" || x.type === "dust")) {
+    assert.ok(a.owner.role && a.owner.due && a.chain.length && a.closeWhen, a.id);
+    const ids = new Set(a.drivers.map(d => d.id));
+    for (const x of a.actions) assert.ok(ids.has(x.because), `${a.id}: ${x.because}`);
+  }
+});
+
+// Code review 18 Nov (HIGH): a hidden count must not be recoverable from expected + score.
+test("a suppressed health count shows neither the expected level nor the C2 score", () => {
+  const h = A.buildAlerts("mussafah", "Mussafah", NONE, { sim: READY, health: { ...FLAG_SMALL, expected: 0.9, S: 3.1 } }).find(a => a.type === "health");
+  const text = JSON.stringify(h);
+  assert.doesNotMatch(text, /0\.9|3\.1/);
+  assert.equal(h.drivers.find(d => d.id === "visits").value, null);
+});

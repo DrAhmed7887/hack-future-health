@@ -1,6 +1,6 @@
 "use strict";
 // v4 health signal: simulated daily emergency-department heat-illness visits per zone, summer 2025, with an EARS C2 flag.
-// PROPOSAL E1-E6 (docs/evidence_v3_signals.md), pending Dr Zayed's sign-off. Simulated, seeded; see docs/data_card_simulated.md.
+// Rules E1-E6 (docs/evidence_v3_signals.md), signed by Dr Zayed on 18 Nov 2026 (docs/signoff.md S8). Simulated, seeded; see docs/data_card_simulated.md.
 // The flag is a statistical prompt to review, never a confirmed cluster, and it never changes the heat level.
 (function (root) {
   const BASE_DAYS = 7, GUARD = 2, SD_FLOOR = 1.0, THRESHOLD = 3, MIN_COUNT = 3, SUPPRESS_BELOW = 5;   // E1-E5

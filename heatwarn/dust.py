@@ -1,4 +1,4 @@
-"""Dust / PM10 signal (v4). PROPOSAL D1-D3 in docs/evidence_v3_signals.md, pending Dr Zayed's sign-off.
+"""Dust / PM10 signal (v4). Rules D1-D3 in docs/evidence_v3_signals.md, signed by Dr Zayed on 18 Nov 2026 (docs/signoff.md S8).
 
 Not tested on outcomes. Thresholds come from regulation and public-health sources:
 - Elevated: daily mean PM10 > 150 ug/m3 (UAE Cabinet Decree 12/2006, Annex 8, 24-hour standard; = WHO 2021 IT-1).

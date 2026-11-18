@@ -196,3 +196,8 @@ test("a suppressed health count shows neither the expected level nor the C2 scor
   assert.doesNotMatch(text, /0\.9|3\.1/);
   assert.equal(h.drivers.find(d => d.id === "visits").value, null);
 });
+
+test("D1-D6 and E1-E6 are signed (docs/signoff.md S8), so no driver carries the pending tag", () => {
+  const AL = require("../alerts.js");
+  assert.equal(AL.SIGNED, true);
+});

@@ -1,7 +1,7 @@
 # Evidence pack v3: dust / PM10 signal and baseline-deviation (EARS C2) signal
 
 Compiled 17 Nov 2026. Project: Heat Shift Planner (Abu Dhabi outdoor-worker heat early warning, static web app).
-Status: proposals D1–D6 and E1–E6 are built in v4 (`heatwarn/dust.py`, `web/health.js`, `web/alerts.js`) and labelled "pending sign-off" in the app until the table in section 4 is signed.
+Status: D1–D6 and E1–E6 **signed by Ahmed Zayed, 18 Nov 2026** (in chat: "Sign as proposed"; the more cautious D3-alt pair was not chosen). Built in v4: `heatwarn/dust.py`, `web/health.js`, `web/alerts.js`. Signed means the physician accepts the rules for the demo; they are still not tested on outcomes.
 
 Reading guide
 - Each bullet: claim, exact quote or number, source, verified (yes / partial / no).
@@ -148,16 +148,16 @@ State in the UI and in the write-up: false-alarm rate per zone-day is about 1.6%
 
 | # | Proposed rule | Source | Exact number | Signed (Ahmed) |
 |---|---|---|---|---|
-| D1 | Dust metric = daily mean of hourly forecast PM10, local day, at least 18 valid hours | UAE EAQI guideline NCM 2023 (24 h rolling average; 18 of 24 valid hours) | 24 h; 18 h minimum | |
-| D2 | "Dust: elevated" when daily mean PM10 exceeds the UAE standard | UAE Cabinet Decree 12/2006 Annex 8 (= WHO IT-1 24 h PM10) | > 150 µg/m³ | |
-| D3 | "Dust: high" when daily mean PM10 reaches the EAQI "Unhealthy" band | NCM EAQI 2023 Table 2 (PM10 index 151–200 starts above 250); cross-check Kuwait storm-day 200 (PMID 22819885) | > 250 µg/m³ | |
-| D3-alt | More cautious pair: elevated > 100 (WHO IT-2), high > 200 (Kuwait storm-day definition) | WHO 2021 Table 0.1; PMID 22819885 | 100 / 200 µg/m³ | |
-| D4 | Elevated actions: check official announcements; flag sensitive workers; mask or damp cloth available | Al Dhafra Municipality 2021; ADPHC 2022; MoHAP 2022 (all via press) | no number | |
-| D5 | High actions: review outdoor tasks, flexible hours or indoor work where possible; follow emirate directives | MoHRE 24 Mar 2026; MoHAP; WHO GPS 1; Abu Dhabi directives Dec 2024 (via press) | no number | |
-| D6 | App never states "stop work" as an official dust rule | no official source found | none | |
-| E1 | EARS C2 baseline window | Collier 2010 (7-day sliding window baseline); Allévius & Höhle (k = 7) | 7 days (t−9 to t−3) | |
-| E2 | Guard band | Collier 2010 | 2 days | |
-| E3 | Alert threshold | Allévius & Höhle (U = ȳ + 3 s) | mean + 3 SD (S_t > 3) | |
-| E4 | SD floor (division by zero guard) | PROPOSAL, judgement (Collier used 0.2 on a different data type) | 1.0 visit | |
-| E5 | Minimum count to alert | PROPOSAL, judgement (informed by Collier "3 or more") | 3 visits | |
-| E6 | Alert wording says "statistical flag on simulated data", no "outbreak" | project design | n/a | |
+| D1 | Dust metric = daily mean of hourly forecast PM10, local day, at least 18 valid hours | UAE EAQI guideline NCM 2023 (24 h rolling average; 18 of 24 valid hours) | 24 h; 18 h minimum | Signed, 18 Nov 2026 |
+| D2 | "Dust: elevated" when daily mean PM10 exceeds the UAE standard | UAE Cabinet Decree 12/2006 Annex 8 (= WHO IT-1 24 h PM10) | > 150 µg/m³ | Signed, 18 Nov 2026 |
+| D3 | "Dust: high" when daily mean PM10 reaches the EAQI "Unhealthy" band | NCM EAQI 2023 Table 2 (PM10 index 151–200 starts above 250); cross-check Kuwait storm-day 200 (PMID 22819885) | > 250 µg/m³ | Signed, 18 Nov 2026 |
+| D3-alt | More cautious pair: elevated > 100 (WHO IT-2), high > 200 (Kuwait storm-day definition) | WHO 2021 Table 0.1; PMID 22819885 | 100 / 200 µg/m³ | not chosen |
+| D4 | Elevated actions: check official announcements; flag sensitive workers; mask or damp cloth available | Al Dhafra Municipality 2021; ADPHC 2022; MoHAP 2022 (all via press) | no number | Signed, 18 Nov 2026 |
+| D5 | High actions: review outdoor tasks, flexible hours or indoor work where possible; follow emirate directives | MoHRE 24 Mar 2026; MoHAP; WHO GPS 1; Abu Dhabi directives Dec 2024 (via press) | no number | Signed, 18 Nov 2026 |
+| D6 | App never states "stop work" as an official dust rule | no official source found | none | Signed, 18 Nov 2026 |
+| E1 | EARS C2 baseline window | Collier 2010 (7-day sliding window baseline); Allévius & Höhle (k = 7) | 7 days (t−9 to t−3) | Signed, 18 Nov 2026 |
+| E2 | Guard band | Collier 2010 | 2 days | Signed, 18 Nov 2026 |
+| E3 | Alert threshold | Allévius & Höhle (U = ȳ + 3 s) | mean + 3 SD (S_t > 3) | Signed, 18 Nov 2026 |
+| E4 | SD floor (division by zero guard) | PROPOSAL, judgement (Collier used 0.2 on a different data type) | 1.0 visit | Signed, 18 Nov 2026 |
+| E5 | Minimum count to alert | PROPOSAL, judgement (informed by Collier "3 or more") | 3 visits | Signed, 18 Nov 2026 |
+| E6 | Alert wording says "statistical flag on simulated data", no "outbreak" | project design | n/a | Signed, 18 Nov 2026 |

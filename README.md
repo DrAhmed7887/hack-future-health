@@ -74,8 +74,9 @@ season, and no way to tell a *new* risk from a repeat High day. v4 adds:
 - The regulator view follows the day shown on the map; the live view offers a summer demo day when it has no alerts; each
   alert has a "Send to …" hand-off (email or share sheet, the user picks the recipient).
 
-The dust and health thresholds are **proposals pending physician sign-off** (`docs/evidence_v3_signals.md`, section 4), and
-the app says so on each driver until they are signed. Data card: `docs/data_card_simulated.md`.
+The dust and health thresholds were **signed by a physician (Ahmed Zayed) on 18 Nov 2026** as proposed: dust at 150 and
+250 µg/m³, not the more cautious 100/200 pair (`docs/signoff.md` S8, `docs/evidence_v3_signals.md` section 4). Signed is not
+tested: each driver keeps its "from guidelines, not tested" or "simulated" tag. Data card: `docs/data_card_simulated.md`.
 
 ## Why a new rule was needed
 

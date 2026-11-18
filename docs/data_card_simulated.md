@@ -35,7 +35,7 @@ they do, when it escalates), not to support any claim. Every number from this fi
 ## Simulated health signal (v4): heat-illness emergency-department visits
 
 **What it is.** One daily count per zone, 21 Apr to 30 Sep 2025 (10 run-in days before the May–September replay), in
-`web/health.js` (`simulate`). It feeds the EARS C2 flag (proposal E1–E6 in `docs/evidence_v3_signals.md`, pending sign-off).
+`web/health.js` (`simulate`). It feeds the EARS C2 flag (rules E1–E6 in `docs/evidence_v3_signals.md`, signed 18 Nov 2026).
 
 **What it is not.** Not real visits and not modelled on heat: no public daily series of heat-illness visits exists for Abu
 Dhabi zones. The counts are drawn independently of the weather, so the app makes no claim that heat caused them.
@@ -54,7 +54,7 @@ days); because the clusters were made easy to see, that number checks the code, 
 Daily mean PM10 per zone from the Open-Meteo Air Quality API (CAMS, CC BY 4.0): summer 2025 in
 `web/data/dust_replay.json` (`scripts/build_dust_replay.py`), and tomorrow's forecast in `web/data/live.json` (nightly
 `scripts/refresh_live.py`). Mussafah and Abu Dhabi city fall in the same CAMS grid cell, as do Ruwais and Ghayathi, so each pair shares values. CAMS accuracy
-over Abu Dhabi was not checked here. Thresholds (D1–D6) are a proposal pending sign-off.
+over Abu Dhabi was not checked here. Thresholds (D1–D6) were signed on 18 Nov 2026 and are not tested on outcomes.
 
 **In the pilot** these would be replaced by real feeds: plan acknowledgements and cooling-station check-ins from the app itself,
 and ADOSH-SF incident notifications by zone and day.

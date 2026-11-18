@@ -20,4 +20,5 @@
 
 - **8 Nov 2026, returning workers (Ahmed):** keep one schedule for new and returning workers, NIOSH 2016's new-worker schedule (20 % of usual heat exposure on day 1, +20 % a day). This is stricter than NIOSH's own returning-worker schedule (50/60/80/100 %) that signed S4 named. The app's owner line says so. No code change.
 - **8 Nov 2026, medical edge (Ahmed signed S7):** the app adds on-site cooling: a cooling-station step on Elevated and High days, an emergency card ("cool first, call 998 at the same time") on every screen, and a simulated regulator measure. Draft and evidence: `docs/signoff.md` S7, `docs/evidence_pack.md` (8 Nov). The film v3 (approved) does not show it.
+- **18 Nov 2026, dust and health signals (Ahmed signed S8):** D1–D6 and E1–E6 signed as proposed (dust 150/250 µg/m³, not the 100/200 alternative). `SIGNED = true` in `web/alerts.js`, so the "pending sign-off" tags are gone; the drivers keep their "not tested" and "simulated" tags. `docs/signoff.md` S8.
 - **8 Nov 2026, name (Ahmed):** final product name **Heat Shift Planner**; "(working name)" removed from README, deck and film title card.

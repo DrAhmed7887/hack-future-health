@@ -25,3 +25,14 @@ algorithm)"; "US data, not validated in Abu Dhabi"; "insufficient data" instead 
 
 Open questions answered by default when signing "as drafted": S7a shows on Elevated **and** High; S7b keeps step 5. Alignment
 with UAE ambulance instructions (National Ambulance / SEHA) is not checked; it is a pilot item.
+
+## S8: dust and health signals (signed by Ahmed Zayed, 18 Nov 2026, in chat: "Sign as proposed")
+
+The full rules, sources and exact quotes are in `docs/evidence_v3_signals.md`, section 4 (D1–D6, E1–E6). In short:
+
+| # | Criterion | Rule in the app | Tested on real outcomes? |
+|---|---|---|---|
+| D1–D3 | Dust (PM10, CAMS model via Open-Meteo) | Daily mean of hourly PM10, at least 18 valid hours; Elevated above 150 µg/m³ (UAE 24-hour standard, Cabinet Decree 12/2006), High above 250 (UAE index "Unhealthy" band). The more cautious 100/200 pair (D3-alt) was **not** chosen | No |
+| D4–D6 | Dust actions | Elevated: check official announcements, flag sensitive workers, masks or damp cloths available. High: review outdoor tasks, flexible hours or indoor work where possible, follow emirate directives. Never "stop work" as an official dust rule | No |
+| E1–E5 | Health flag (EARS C2, simulated visits only) | 7-day baseline (t−9 to t−3), 2-day guard, flag when S > 3 with an SD floor of 1 visit and at least 3 visits | No (simulated data) |
+| E6 | Health flag wording | "A statistical flag on simulated data, not a confirmed cluster"; never "outbreak"; never changes the heat level | — |

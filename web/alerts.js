@@ -17,7 +17,7 @@
   const RANK = { High: 0, Signal: 1, Elevated: 2, Gap: 3, Check: 4 };
   const TYPE_ORDER = { heat: 0, health: 1, dust: 2, prep: 3, notice: 4 };
   // Dust (D1-D6) and health (E1-E6) rules are proposals until Dr Zayed signs them; their drivers say so while this is false.
-  const SIGNED = false;
+  const SIGNED = true;   // D1-D6 and E1-E6 signed by Dr Zayed, 18 Nov 2026 (docs/signoff.md S8)
   const DUST_ELEVATED = 150, DUST_HIGH = 250;   // same as heatwarn/dust.py
   function dustLevel(pm) {
     if (pm == null || !Number.isFinite(pm)) return "Insufficient data";
@@ -165,7 +165,7 @@
     };
   }
 
-  // PROPOSAL E1-E6: EARS C2 flag on simulated heat-illness visits (web/health.js). Counts under 5 are never shown.
+  // Signed E1-E6 (S8): EARS C2 flag on simulated heat-illness visits (web/health.js). Counts under 5 are never shown.
   function healthAlert(zone, zoneName, day, hs, heatLevel) {
     // Counts under 5 are hidden; so are the expected level and the score, from which a hidden count could be worked out.
     const hidden = hs.suppressed;
@@ -197,7 +197,7 @@
     };
   }
 
-  // PROPOSAL D1-D6: forecast daily mean PM10 (CAMS via Open-Meteo) against the UAE 24-hour standard. Not tested on outcomes.
+  // Signed D1-D6 (S8): forecast daily mean PM10 (CAMS via Open-Meteo) against the UAE 24-hour standard. Not tested on outcomes.
   function dustAlert(zone, zoneName, day, dust) {
     const high = dust.level === "High";
     const drivers = [{ id: "pm10", group: "Environment", basis: "guideline", pending: !SIGNED, role: "trigger", value: dust.pm10, threshold: high ? 250 : 150, min: 0, max: 500, unit: "\u00b5g/m\u00b3", met: true,

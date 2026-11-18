@@ -225,7 +225,7 @@ const VIEWS = {
       const pmRaw = rd ? DATA.dust?.zones?.[k]?.[rd] : (day && !day.stale ? day.pm10_mean : null);
       const pm = Number.isFinite(pmRaw) ? pmRaw : null;
       const hs = rd && window.HealthSignal ? HealthSignal.healthDay(k, rd) : null;
-      const extra = `<p>Dust (daily mean PM10): ${pm == null ? "not available" : `${Math.round(pm)} \u00b5g/m\u00b3${pm > 150 ? ", above the UAE standard (rule pending sign-off)" : ""}`}</p>`
+      const extra = `<p>Dust (daily mean PM10): ${pm == null ? "not available" : `${Math.round(pm)} \u00b5g/m\u00b3${pm > 150 ? ", above the UAE standard" : ""}`}</p>`
         + (hs ? `<p>Heat-illness visits (simulated): ${hs.flag ? "<strong>above baseline (EARS C2 flag)</strong>" : "within baseline"}</p>` : "");
       const sim = AlertLogic.simSignals(k, day?.date || HeatLogic.dubaiDate(new Date(), 1));
       const n = sim.sites;
@@ -256,10 +256,10 @@ function alertLoadHtml() {
   }).join("");
   const ev = window.HealthSignal ? HealthSignal.evaluate() : null;
   const health = ev ? `<h2>Health signal: a check on its own simulation</h2>
-    <p>Heat-illness emergency visits are simulated (no real series is public), with ${ev.episodes} clusters injected on purpose. The EARS C2 flag caught ${ev.detected} of ${ev.episodes} on their first or second day, and flagged ${ev.falseFlags} other days out of ${ev.zoneDays} zone-days. The clusters were made easy to see (4 to 6 extra visits a day), so this checks the code, not real-world performance. The rule (7-day baseline, 2-day gap, flag above 3 SD with at least 3 visits) is a proposal pending physician sign-off.</p>` : "";
+    <p>Heat-illness emergency visits are simulated (no real series is public), with ${ev.episodes} clusters injected on purpose. The EARS C2 flag caught ${ev.detected} of ${ev.episodes} on their first or second day, and flagged ${ev.falseFlags} other days out of ${ev.zoneDays} zone-days. The clusters were made easy to see (4 to 6 extra visits a day), so this checks the code, not real-world performance. The rule (7-day baseline, 2-day gap, flag above 3 SD with at least 3 visits) was signed by a physician on 18 Nov 2026; it was not tested on real visits.</p>` : "";
   return `<h2>How often it alerts in Abu Dhabi (summer 2025 replay)</h2>
     <table><thead><tr><th>Zone</th><th>Heat alert days a week</th><th>Times it turned High (from 2 May)</th><th>Dust days above 150 \u00b5g/m\u00b3</th></tr></thead><tbody>${rows}</tbody></table>
-    <p>Abu Dhabi summers are hot, so the heat level is often High. The map marks the day a zone turns High as "New": those days are the early signal, and there are far fewer of them. Dust is modelled (CAMS); its thresholds are a proposal pending physician sign-off and were not tested on outcomes.</p>${health}`;
+    <p>Abu Dhabi summers are hot, so the heat level is often High. The map marks the day a zone turns High as "New": those days are the early signal, and there are far fewer of them. Dust is modelled (CAMS); its thresholds come from UAE air quality rules, were signed by a physician on 18 Nov 2026, and were not tested on outcomes.</p>${health}`;
 }
 
 // v4 back-test explorer on the Evidence page: loaded only when the page opens (about 100 kB).

@@ -1,0 +1,10 @@
+{
+  "name": "heat-shift-planner",
+  "version": "4.0.0",
+  "private": true,
+  "description": "Heat Shift Planner: heat, dust and health alerts for outdoor work in Abu Dhabi. Static web app plus the heatwarn CLI.",
+  "bin": { "heatwarn": "cli/heatwarn.js" },
+  "engines": { "node": ">=18" },
+  "scripts": { "test": "node --test web/tests/*.test.js" },
+  "license": "UNLICENSED"
+}

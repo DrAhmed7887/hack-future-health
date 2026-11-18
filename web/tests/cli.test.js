@@ -82,3 +82,7 @@ test("piping into head does not crash", () => {
   assert.equal(r.status, 0);
   assert.ok(!/EPIPE|Error/.test(r.stderr), r.stderr);
 });
+
+test("back-test text labels the fixed trigger as days alerted", () => {
+  assert.match(HW.backtestText(DATA, {}), /fixed 80 °F trigger alerts on +\d+% of days/);
+});

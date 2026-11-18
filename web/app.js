@@ -173,7 +173,7 @@ const VIEWS = {
       <p>There is no public data on heat illness at work in Abu Dhabi. So the rule was tested on the closest real record we could find: the work-related heat hospitalisations reported to US federal OSHA from January 2015 to November 2025 (${e.reports_total.toLocaleString()} reports), matched with the weather on that day.</p>
       <div class="facts">
         <div><span class="big">${pct1(h.r4_sensitivity)}</span><p>of days with a reported heat hospitalisation got an alert, in ${h.regions} US regions the rule had never seen, using each day's actual weather (${h.event_days} such days; 95% interval ${pct1(h.r4_ci[0])} to ${pct1(h.r4_ci[1])}). It alerted on ${pct(h.r4_alert_share)} of days.</p></div>
-        <div><span class="big">${pct(e.fixed_80f_alert_share)}</span><p>of days in the same unseen regions would get an alert under the common fixed trigger (heat index 80 °F). An alert that rarely switches off is easy to ignore.</p></div>
+        <div><span class="big">${pct(e.fixed_80f_alert_share)}</span><p>of days in the same unseen regions would get an alert under the common fixed trigger (heat index 80 °F). It caught more case days (${pct1(e.fixed_80f_sensitivity)}), but an alert that rarely switches off is easy to ignore.</p></div>
         <div><span class="big">${Math.round(h.spread_r4 * 100)} vs ${Math.round(h.spread_r2 * 100)}</span><p>points of spread in alert load between cool and hot cities: thresholds set from each place's own climate, against fixed thresholds.</p></div>
         <div><span class="big">${pct(e.dayahead_same_decision)}</span><p>of days got the same decision from the forecast made the evening before as from the weather that actually happened (8 US regions, 2024 to 2025). The forecast ran warm, so it alerted on more days (${pct(e.dayahead_alert_share)} against ${pct(e.observed_alert_share_same_days)}).</p></div>
       </div>
@@ -229,7 +229,7 @@ const VIEWS = {
         + (hs ? `<p>Heat-illness visits (simulated): ${hs.flag ? "<strong>above baseline (EARS C2 flag)</strong>" : "within baseline"}</p>` : "");
       const sim = AlertLogic.simSignals(k, day?.date || HeatLogic.dubaiDate(new Date(), 1));
       const n = sim.sites;
-      const head = `<div class="zrow"><strong>${esc(v.name)}</strong><span class="chip ${t.cls}">${t.word}</span></div>`;
+      const head = `<div class="zrow"><strong>${esc(v.name)}</strong><span class="chip ${t.cls}">Heat: ${t.word}</span></div>`;
       if (n < SUPPRESS_BELOW) return `<li>${head}${extra}<p class="small">Fewer than ${SUPPRESS_BELOW} sites in this zone, so site counts are hidden.</p></li>`;
       const notice = sim.notices3d ? `<p><strong>${sim.notices3d} incident notice in the last 3 days (simulated).</strong> Check that site's acclimatisation plan and rest breaks. This does not change the tier.</p>` : `<p class="small">No incident notices in the last 3 days.</p>`;
       const eff = HeatLogic.effectiveTier(day?.tier || "Insufficient data", { newWorkers: "no" }).tier;   // same floor as the plan

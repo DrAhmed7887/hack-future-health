@@ -23,7 +23,7 @@ The regulator sees zones, never people. Nothing in the app clears anyone to work
 
 ## Risk map (v3, after the review feedback of 17 Nov 2026)
 
-The app now opens on a **risk map** of the four zones, coloured by heat level. Out of season it opens on a **summer 2025
+The app now opens on a **risk map** of the zones (four in v3, ten from v4), coloured by heat level. Out of season it opens on a **summer 2025
 replay** (slider, play, and a strip with every zone's level on every day), because model tiers run May to September only.
 Replay uses each day's observed weather, so it is a back-test, not a forecast.
 
@@ -44,6 +44,39 @@ Replay uses each day's observed weather, so it is a back-test, not a forecast.
 Code: `web/alerts.js` (alert logic, unit-tested in `web/tests/alerts.test.js`) and `web/dash.js` (map and panels; map tiles
 © OpenStreetMap contributors, via Leaflet). Proposed next signals (live dust/PM10, and an EARS C2 baseline-deviation flag on a
 simulated health signal) are sourced in `docs/evidence_v3_signals.md` and **not built** until signed.
+
+## Health and dust signals, and newly-High days (v4, after a second review on 18 Nov 2026)
+
+A second review against the review team's comment found three gaps: no health indicator, an empty live view out of
+season, and no way to tell a *new* risk from a repeat High day. v4 adds:
+
+- **A health signal (simulated).** Daily heat-illness emergency visits per zone, with the CDC EARS C2 baseline-deviation
+  flag (7-day baseline, 2-day gap, flag above 3 SD with at least 3 visits). A flag raises its own alert, owned by an ADPHC
+  public health surveillance officer, worded as "a statistical flag on simulated data, not a confirmed cluster". Counts under
+  5 are never shown. It never changes the heat level. On its own simulation it caught 29 of 30 injected clusters on day 1
+  or 2, with 3 flags on other days in 1,530 zone-days; the clusters were made easy, so this checks the code only.
+- **A dust signal (real, modelled).** Daily mean PM10 from CAMS via Open-Meteo, live every evening and replayed for summer
+  2025. Alert above 150 µg/m³ (the UAE 24-hour standard, Cabinet Decree 12/2006) and High above 250 (the UAE index's
+  "Unhealthy" band). Actions say review and protect, never stop work: no source sets a PM10 level at which work must stop.
+  Not tested on outcomes.
+- **Newly-High tag.** The day a zone turns High is marked "New". In summer 2025 a zone turned High 15 to 25 times (from 2 May), against
+  3.3 to 5.0 heat alert days a week (Evidence page, computed from the replay).
+- **Ten zones.** Mussafah, Abu Dhabi city, Ruwais and Al Ain, plus Al Taweelah, Al Wathbah, Sweihan,
+  Madinat Zayed, Ghayathi and Liwa (Mezaira'a); coordinates from the Open-Meteo geocoding API, `scripts/abu_dhabi_tiers.py`.
+  The first four zones' replay is unchanged.
+- **NASA satellite layers (context only).** The map can lay daytime land surface temperature (MODIS Terra) or aerosol
+  optical depth (MODIS Aqua, Deep Blue) for the day shown, from NASA GIBS (free, no key), with NASA's own colour scale and an
+  opacity slider. Neither layer feeds an alert: land surface temperature is the ground, not the air workers breathe.
+- **Back-test explorer.** The Evidence page shows every day of the US transfer test (6 regions, May to September
+  2022–2025): one square a day coloured by the rule's level, a dot on each day with a reported work heat hospitalisation,
+  and, for any day, the reason the rule did or did not alert. Its totals are checked against `results/holdout_results.json`
+  when the file is built (`scripts/build_backtest_web.py`, `web/data/backtest.json`) and again in `web/tests/backtest.test.js`.
+- The regulator view follows the day shown on the map; the live view offers a summer demo day when it has no alerts; each
+  alert has a "Send to …" hand-off (email or share sheet, the user picks the recipient).
+
+The dust and health thresholds were **signed by a physician (Ahmed Zayed) on 18 Nov 2026** as proposed: dust at 150 and
+250 µg/m³, not the more cautious 100/200 pair (`docs/signoff.md` S8, `docs/evidence_v3_signals.md` section 4). Signed is not
+tested: each driver keeps its "from guidelines, not tested" or "simulated" tag. Data card: `docs/data_card_simulated.md`.
 
 ## Why a new rule was needed
 
@@ -185,6 +218,9 @@ research and educational use. See `LICENSE`. Third-party data and libraries keep
 
 - US OSHA Severe Injury Reports, Jan 2015 – Nov 2025 (US government public data). Raw file not committed; `docs/backtest_protocol.md` records its SHA-256.
 - Weather: Open-Meteo (CC BY 4.0): Historical Weather API (ERA5 reanalysis, Copernicus Climate Change Service), Previous Runs API, Forecast API.
+- Air quality (v4): Open-Meteo Air Quality API (CC BY 4.0), CAMS global PM10; `scripts/build_dust_replay.py`, `scripts/refresh_live.py`.
+- Satellite layers (v4): we acknowledge the use of imagery provided by services from NASA's Global Imagery Browse Services
+  (GIBS), part of NASA's Earth Science Data and Information System (ESDIS). Context only, not used by any alert.
 - Map (v3): Leaflet 1.9.4 (BSD-2-Clause, from cdnjs with a subresource-integrity hash); map tiles © OpenStreetMap contributors (ODbL), standard tile server.
 - Guidance quoted: NIOSH 2016; OSHA CPL 03-00-024 (2026); ADPHC CoP 11.0 and TG Safety in the Heat (v4.0); UAE MoHRE midday break. Evidence with quotes: `docs/evidence_pack.md`, `docs/evidence_relative_thresholds.md`.
 

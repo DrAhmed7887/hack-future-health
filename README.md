@@ -78,6 +78,38 @@ The dust and health thresholds were **signed by a physician (Ahmed Zayed) on 18 
 250 µg/m³, not the more cautious 100/200 pair (`docs/signoff.md` S8, `docs/evidence_v3_signals.md` section 4). Signed is not
 tested: each driver keeps its "from guidelines, not tested" or "simulated" tag. Data card: `docs/data_card_simulated.md`.
 
+## Command line and AI assistant prompt (`heatwarn` CLI)
+
+`cli/heatwarn.js` runs the app's own modules (`web/logic.js`, `web/alerts.js`, `web/health.js`, `web/backtest.js`) on the app's
+own data files, with the same day and signal logic as the map (`web/tests/cli.test.js` checks the 26 Jun 2025 replay: 11
+alerts, 2 newly High, as on the map). With `--remote` only the data files come from the live site; pull the repo to match its code. Node 18 or later, no dependencies. (The Python package `heatwarn/` is the rule and
+back-test code; the CLI shares its name only.)
+
+```bash
+node cli/heatwarn.js zones                                    # tomorrow, every zone
+node cli/heatwarn.js alerts --date 2025-06-26 --zone alain    # each alert: why, owner, escalation, actions
+node cli/heatwarn.js backtest --region h2 --year 2023         # the US back-test against real OSHA case days
+node cli/heatwarn.js alerts --remote --json                   # the live site's data, as JSON for other tools
+```
+
+`npm link` installs it as `heatwarn`. `heatwarn prompt` prints a ready prompt for any AI model. The prompt has three parts:
+- the rules in `prompts/supervisor_assistant.md`:
+  - use only the day's data;
+  - never clear anyone to work;
+  - give the emergency card word for word;
+  - name the simulated parts;
+  - never present "stop work" as an official dust rule;
+  - answer in the supervisor's own language;
+- the day's alerts as JSON;
+- the question.
+
+```bash
+heatwarn prompt --date 2025-06-26 --zone alain --question "My crew pours concrete from 11:00 to 15:00. What do I do?" | claude -p
+```
+
+Nothing is sent anywhere unless you pipe the prompt to a model. Answers are not evaluated; a two-question smoke test with
+Claude Haiku 5.5 is in `docs/prompt_smoke_test.md` (the emergency card came back word for word; one answer ran past the word limit).
+
 ## Why a new rule was needed
 
 A fixed heat trigger fails in both directions. The common US trigger (heat index ≥ 80 °F) alerted on **93 %** of summer days in

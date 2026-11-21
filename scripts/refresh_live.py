@@ -9,6 +9,8 @@ from __future__ import annotations
 
 import json
 import sys
+import time
+import urllib.error
 import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
@@ -29,10 +31,29 @@ from scripts.abu_dhabi_tiers import ZONES  # noqa: E402  one list of zones for t
 SEASON = (5, 9)
 
 
+ATTEMPTS = 3          # per request; worst case ~3 x 30 s + 6 s backoff, then the job fails (old live.json is kept)
+ATTEMPT_TIMEOUT = 30
+
+
+def get_json(url: str) -> dict:
+    """GET + parse JSON with bounded retries on network errors. After the last attempt the real error is raised."""
+    for attempt in range(1, ATTEMPTS + 1):
+        try:
+            with urllib.request.urlopen(url, timeout=ATTEMPT_TIMEOUT) as r:
+                return json.load(r)
+        except (urllib.error.URLError, TimeoutError, ConnectionError) as e:  # HTTPError is a URLError
+            if attempt == ATTEMPTS:
+                raise
+            wait = 2 * attempt
+            print(f"fetch attempt {attempt}/{ATTEMPTS} failed ({type(e).__name__}: {e}); retrying in {wait}s", file=sys.stderr)
+            time.sleep(wait)
+    raise RuntimeError("unreachable")
+
+
 def forecast_hourly(lat: float, lon: float) -> pd.DataFrame:
     q = urllib.parse.urlencode({"latitude": lat, "longitude": lon, "hourly": "temperature_2m,relative_humidity_2m",
                                 "past_days": 15, "forecast_days": 3, "timezone": "Asia/Dubai"})
-    h = json.load(urllib.request.urlopen(f"https://api.open-meteo.com/v1/forecast?{q}", timeout=60))["hourly"]
+    h = get_json(f"https://api.open-meteo.com/v1/forecast?{q}")["hourly"]
     return pd.DataFrame({"temp_c": h["temperature_2m"], "rh": h["relative_humidity_2m"]}, index=pd.to_datetime(h["time"]))
 
 
